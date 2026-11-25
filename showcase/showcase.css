@@ -468,6 +468,19 @@
     border-radius: var(--radius-small);
 }
 
+/* The language label in the upper left corner, from data-language */
+.sc-code::before {
+    content: attr(data-language);
+    display: block;
+    margin-bottom: var(--space-medium);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xsmall);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--sc-kicker-tracking);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+
 
 /* Pull quote */
 .sc-quote {

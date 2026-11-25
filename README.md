@@ -496,7 +496,13 @@ Don't edit the design system's files. Override tokens in your own stylesheet ins
 }
 ```
 
-**Dark mode:** the design system includes a dark theme (`css/themes/dark.css`, still a draft). Switch it on with `<html data-theme="dark">`.
+**Built-in themes:** switch one on with the `data-theme` attribute on `<html>`:
+
+| Theme | Attribute | Status |
+|---|---|---|
+| Light | none | The default EKO look |
+| Dark | `data-theme="dark"` | Draft, not yet checked by design |
+| Sky | `data-theme="sky"` | Experiment, not EKO brand colours |
 
 **Everything at once (your own theme or sub-brand):** override semantic tokens. Components only use semantic tokens, so a theme is a single block:
 

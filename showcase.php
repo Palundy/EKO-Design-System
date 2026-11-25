@@ -25,6 +25,17 @@ use Navigation\Breadcrumb;
 use Navigation\NavItem;
 
 
+/**
+ * The themes the theme button cycles through, in order: `data-theme` value => label.
+ * An empty value is the default (light) theme, which needs no attribute. Each other value needs a file in css/themes/.
+ */
+const THEMES = [
+    '' => 'Light',
+    'dark' => 'Dark',
+    'sky' => 'Sky',
+];
+
+
 /** The chapters of the magazine, in order: anchor => [title, summary]. Used for the contents and the top bar. */
 const CHAPTERS = [
     'foundations' => ['Foundations', 'Colour, type and space: the tokens every component is built from.'],
@@ -145,9 +156,12 @@ function printFootnotes($notes) {
  *
  * @param string $code
  * The code, shown exactly as written (it is escaped).
+ *
+ * @param string $language [optional]
+ * The language label shown in the upper left corner of the block. Defaults to "PHP".
  */
-function printCode($code) {
-    echo "<pre class=\"sc-code\"><code>" . escapeHtml(trim($code)) . "</code></pre>";
+function printCode($code, $language = 'PHP') {
+    echo "<pre class=\"sc-code\" data-language=\"" . escapeHtml($language) . "\"><code>" . escapeHtml(trim($code)) . "</code></pre>";
 }
 
 /**
@@ -185,7 +199,7 @@ function escapeHtml($value) {
                 <a class="nav-item" href="#product-card">Cards</a>
                 <a class="nav-item" href="#spec-table">Tables</a>
             </nav>
-            <?php new Button("Dark mode", state: "negative", icon: "/assets/icons/moon-outline.svg", attributes: ["id" => "sc-theme-toggle", "aria-pressed" => "false"]); ?>
+            <?php new Button("Theme: Light", state: "negative", icon: "/assets/icons/color-palette-outline.svg", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
         </div>
         <div class="sc-progress" aria-hidden="true"></div>
     </header>
@@ -204,7 +218,7 @@ function escapeHtml($value) {
                 <ol class="sc-cover-lines">
                     <li><strong>11 chapters</strong>From foundations to full specification tables.</li>
                     <li><strong>3 token layers</strong>Brand, semantic and component: change once, update everywhere.</li>
-                    <li><strong>Light &amp; dark</strong>Switch the theme in the top bar to see every page change.</li>
+                    <li><strong><?= count(THEMES) ?> themes</strong>Switch the theme in the top bar to see every page change.</li>
                     <li><strong>PHP &amp; HTML</strong>Each component comes with a class and plain markup.</li>
                 </ol>
             </div>
@@ -305,7 +319,7 @@ function escapeHtml($value) {
                             'Brand tokens' => 'The raw EKO values, such as <code>--brand-eko-blue</code>. Only the semantic layer uses them.',
                             'Semantic tokens' => 'What a value is for, such as <code>--color-text-brand</code>. Themes override only these.',
                             'Component tokens' => 'One per design decision in a component, such as <code>--product-card-width</code>. Override them to restyle one component.',
-                            'Themes' => 'Dark mode is a single block of semantic overrides under <code>[data-theme="dark"]</code>. Try it with the switch in the top bar.',
+                            'Themes' => 'A theme is a single block of semantic overrides, such as <code>[data-theme="dark"]</code> or the experimental <code>[data-theme="sky"]</code>. Cycle through them with the theme button in the top bar.',
                         ], 'How the tokens work'); ?>
                     </div>
                 </div>
@@ -347,9 +361,16 @@ function escapeHtml($value) {
                         }); ?>
 
                         <?php printCode('
-new Button("Save");
-new Button("Delete", style: "destructive", state: "loading");
+// 2.1: style is "destructive", "positive" or "enquiry" (none for primary),
+// state is "disabled", "loading" or "negative"
+new Button("Label");
+new Button("Label", style: "destructive", state: "loading");
+new Button("Label", style: "positive", state: "negative");
+
+// 2.2
 new Button("Send enquiry", style: "enquiry", icon: "/assets/icons/envelope-outline.svg");
+new Button("Download datasheet", icon: "/assets/icons/download-outline.svg");
+new Button("Contact sales", state: "negative", icon: "/assets/icons/call-outline.svg");
                         '); ?>
                     </div>
                     <?php printStates([
@@ -398,10 +419,22 @@ new Button("Send enquiry", style: "enquiry", icon: "/assets/icons/envelope-outli
                         }); ?>
 
                         <?php printCode('
-new Input("Email address", name: "email", type: "email", required: true,
+// 3.1
+new Input("Full name", name: "name", placeholder: "John Doe", info: "Your complete name.", required: true);
+new Input("Email address", name: "email", type: "email", value: "john@", required: true,
           state: "error", info: "Please enter a valid email address.");
+new Input("Email address", name: "email", type: "email", value: "john.doe@example.com", required: true,
+          state: "success", info: "Looks good!");
+new Input("Full name", name: "name", value: "John Doe", state: "disabled", info: "This field is disabled.");
 
-new Dropdown("Product of interest", name: "product", options: $products, value: "ms-80");
+// 3.2
+$products = ["ms-80sh" => "MS-80SH Pyranometer", "ms-80" => "MS-80 Pyranometer",
+             "ms-60" => "MS-60 Pyranometer", "ms-40" => "MS-40 Pyranometer"];
+new Dropdown("Product of interest", id: "product", options: $products, info: "Choose an instrument.", required: true);
+new Dropdown("Product of interest", id: "product", options: $products, value: "ms-80sh",
+             state: "success", info: "Successfully selected!");
+new Textarea("Message", name: "message", placeholder: "How can we help?",
+             info: "We usually answer within one working day.");
                         '); ?>
                     </div>
                     <?php printStates([
@@ -445,9 +478,13 @@ new Dropdown("Product of interest", name: "product", options: $products, value: 
                         }); ?>
 
                         <?php printCode('
+<!-- 4.1 -->
 <a class="link" href="/guide">calibration guide</a>
-<a class="link link-action" href="/products">View all <span aria-hidden="true">→</span></a>
-                        '); ?>
+<a class="link" aria-disabled="true">disabled link</a>
+
+<!-- 4.2 -->
+<a class="link link-action" href="/products">Learn More <span aria-hidden="true">→</span></a>
+                        ', 'HTML'); ?>
                     </div>
                     <?php printStates([
                         'Inline' => 'Inherits the size of the text around it. No underline; turns soft blue on hover.',
@@ -490,8 +527,14 @@ new Dropdown("Product of interest", name: "product", options: $products, value: 
                         }); ?>
 
                         <?php printCode('
+<!-- 5.1 -->
 <span class="icon" style="--icon-url: url(\'/assets/icons/sun-outline.svg\')" aria-hidden="true"></span>
-                        '); ?>
+<span class="icon" style="--icon-url: url(\'/assets/icons/chart-solid.svg\')" aria-hidden="true"></span>
+
+<!-- 5.2: 40px, in the colour of the text -->
+<span class="icon" style="--icon-url: url(\'/assets/icons/sun-outline.svg\');
+      --icon-width: 40px; --icon-height: 40px; color: var(--color-error)" aria-hidden="true"></span>
+                        ', 'HTML'); ?>
                     </div>
                     <?php printStates([
                         'Outline' => 'File names ending in <code>-outline</code>. The default for buttons and links.',
@@ -526,10 +569,16 @@ new Dropdown("Product of interest", name: "product", options: $products, value: 
                         }, 'sc-stage-flush'); ?>
 
                         <?php printCode('
-new Navigation\NavItem("Industries", "/industries", active: true);
+// 6.1
+new NavItem("Products", "/products");
+new NavItem("Industries", "/industries", active: true);
+new NavItem("Calibration", "/calibration");
+new NavItem("About EKO", "/about");
 
-new Navigation\Breadcrumb([
-    "Home" => "/", "Pyranometers" => "/pyranometers", "Talk to an Expert",
+// 6.2
+new Breadcrumb([
+    "Home" => "/", "Pyranometers" => "/pyranometers", "MS-80SH" => "/products/ms-80sh",
+    "Talk to an Expert",
 ]);
                         '); ?>
                     </div>
@@ -558,7 +607,10 @@ new Navigation\Breadcrumb([
                             new SectionHeading("About EKO");
                             echo "</div>";
                         }); ?>
-                        <?php printCode('new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");'); ?>
+                        <?php printCode('
+new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");
+new SectionHeading("About EKO");
+                        '); ?>
                     </div>
                     <?php printStates([
                         'Title only' => 'For sections without an overview page.',
@@ -614,9 +666,39 @@ new Navigation\Breadcrumb([
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
                         <?php printCode('
 new ProductCard(
-    title: "MS-80SH", label: "Class A", image: "/assets/images/ms80sh.png",
-    table: ["Warranty" => "5 years", "Recalibration" => "5 years"],
-    cta: "View product", ctaUrl: "/products/ms-80sh"
+    title: "MS-80SH",
+    label: "Class A",
+    description: "Class A pyranometer with ventilator and heater for utility-scale PV",
+    image: "/assets/images/ms80sh.png",
+    imageAlt: "MS-80SH Pyranometer",
+    table: [
+        "ISO 9060:2018" => "spectrally flat, Class A",
+        "IEC 61724-1:2021" => "Class A system compliant",
+        "Warranty" => "5 years",
+        "Recalibration" => "5 years",
+    ],
+    cta: "View product",
+    ctaUrl: "/products/ms-80sh"
+);
+
+// Repeat a name by writing the rows as lists; without ctaUrl the call to action is not a link
+new ProductCard(
+    title: "ICF-02",
+    label: "New!",
+    description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
+    image: "/assets/images/icf-02.png",
+    imageAlt: "EKO Instruments ICF-02 - Indoor Calibration Facility",
+    table: [
+        ["Standard", "IS0 9847:2023"],
+        ["Light Source", "300 LED or 150W Metal Halide"],
+    ],
+    cta: "Request Quote"
+);
+
+new ProductCard(
+    title: "Product Card",
+    description: "This is a card without an image, without a table and without a label.",
+    cta: "Call to action"
 );
                         '); ?>
                     </div>
@@ -659,9 +741,21 @@ new ProductCard(
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
                         <?php printCode('
 new ContactCard(
-    first: "Jane Doe", second: "EKO Instruments B.V.", third: "Sales Engineer",
-    email: "jane.doe@example.com", phone: "+31 (0)70 123 4567",
-    button: "Contact Jane", buttonIcon: "/assets/icons/envelope-outline.svg"
+    first: "Jane Doe",
+    second: "EKO Instruments B.V.",
+    third: "Sales Engineer",
+    email: "jane.doe@example.com",
+    phone: "+31 (0)70 123 4567",
+    website: "www.eko-instruments.com",
+    image: "/assets/images/user-silhouette-02.svg",
+    button: "Contact Jane",
+    buttonIcon: "/assets/icons/envelope-outline.svg"
+);
+
+new ContactCard(
+    first: "Customer service",
+    third: "Questions about your order",
+    email: "service@example.com"
 );
                         '); ?>
                     </div>
@@ -728,9 +822,29 @@ new ContactCard(
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
 
                         <?php printCode('
-new ApplicationCard(title: "Solar Energy", description: "…", cta: "Learn More", ctaUrl: "/applications/solar");
-new IndustryCard(title: "Solar Energy", description: "…", url: "/industries/solar");
-new ArticleCard(title: "…", url: "https://…", tag: "Instruments", readTime: "6 minutes read", share: true);
+// 10.1
+new ApplicationCard(
+    title: "Solar Energy",
+    description: "Resource assessment, performance monitoring and plant optimization.",
+    cta: "Learn More",
+    ctaUrl: "/applications/solar"
+);
+
+new ArticleCard(
+    title: "How to choose the right pyranometer for a utility-scale PV plant",
+    url: "https://www.eko-instruments.com/",
+    tag: "Instruments",
+    description: "A short introduction to the ISO 9060 classes, what they mean for your yield assessment and when a heated, ventilated instrument pays off.",
+    readTime: "6 minutes read",
+    share: true
+);
+
+// 10.2
+new IndustryCard(
+    title: "Solar Energy",
+    description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration.",
+    url: "/industries/solar"
+);
                         '); ?>
                     </div>
                 </div>
@@ -778,10 +892,29 @@ new ArticleCard(title: "…", url: "https://…", tag: "Instruments", readTime: 
                         }); ?>
 
                         <?php printCode('
+// 11.1
 new SpecTable(
     title: "ISO Specifications",
     header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
-    rows: ["Response time 95%" => ["< 10s", "< 0.5s"]]
+    rows: [
+        "Response time 95%" => ["< 10s", "< 0.5s"],
+        "Zero offset A, Thermal Radiation (200W/m²)" => ["± 7W/m²", "± 1W/m²"],
+        "Zero offset B, Temperature change (5K/hr)" => ["± 2W/m²", "± 1W/m²"],
+        "Non-stability (change/year)" => ["± 0.8%", "< 0.5% / 5 years"],
+        "Non-linearity (100 to 1000W/m²)" => ["± 0.5%", "± 0.2%"],
+        "Spectral Error" => ["± 0.5%", "± 0.2%"],
+    ]
+);
+
+// 11.2
+new SpecTable(
+    title: "Specifications",
+    rows: [
+        "Wavelength Range (nm)" => "285 to 3000",
+        "Signal Output" => "Modbus 485 RTU / SDI-12",
+        "Operating temperature" => "-40 to 80°C",
+        "Ingress Protection" => "IP 67",
+    ]
 );
                         '); ?>
                     </div>
@@ -810,19 +943,23 @@ new SpecTable(
     </footer>
 
     <script>
-        // Theme switch: toggles the draft dark theme and remembers the choice in this browser
+        // Theme switch: cycles through the THEMES list from PHP and remembers the choice in this browser
         (function () {
             const root = document.documentElement;
             const toggle = document.getElementById('sc-theme-toggle');
+            const themes = JSON.parse(toggle.dataset.themes);
+            const themeKeys = Object.keys(themes);
 
             function applyTheme(theme) {
-                if (theme === 'dark') {
-                    root.dataset.theme = 'dark';
+                if (!(theme in themes)) {
+                    theme = '';
+                }
+                if (theme) {
+                    root.dataset.theme = theme;
                 } else {
                     delete root.dataset.theme;
                 }
-                toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-                toggle.lastChild.textContent = theme === 'dark' ? ' Light mode' : ' Dark mode';
+                toggle.lastChild.textContent = ' Theme: ' + themes[theme];
                 showSwatchValues();
             }
 
@@ -842,10 +979,11 @@ new SpecTable(
 
             let saved = null;
             try { saved = localStorage.getItem('eko-showcase-theme'); } catch (e) {}
-            applyTheme(saved === 'dark' ? 'dark' : 'light');
+            applyTheme(saved || '');
 
             toggle.addEventListener('click', function () {
-                const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+                const current = themeKeys.indexOf(root.dataset.theme || '');
+                const next = themeKeys[(current + 1) % themeKeys.length];
                 try { localStorage.setItem('eko-showcase-theme', next); } catch (e) {}
                 applyTheme(next);
             });

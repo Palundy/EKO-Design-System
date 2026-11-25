@@ -1,0 +1,60 @@
+/*
+ * Sky theme. Switch it on with `<html data-theme="sky">`.
+ *
+ * EXPERIMENT: a test of how far the design system can be restyled with colour roles alone,
+ * in the glossy mid-2000s "Frutiger Aero" style: sky blue, aqua and fresh green on cloud white.
+ * It uses the `--brand-sky-*` palette, which is not part of the EKO brand.
+ *
+ * Like every theme, it only overrides semantic colour tokens (css/tokens/semantic.css) and never touches
+ * component files. Gradients and gloss are therefore out of reach: the components use flat colour roles.
+ * Every colour role from semantic.css is listed, so it stays easy to compare with the other themes.
+ */
+[data-theme="sky"] {
+    color-scheme: light;
+
+    /* Colour: actions. Blue is the main action, green confirms */
+    --color-primary: var(--brand-sky-blue);
+    --color-accent: var(--brand-sky-aqua);
+    --color-destructive: var(--brand-error);
+    --color-positive: var(--brand-sky-grass);
+    --color-enquiry: var(--brand-warning);
+    --color-disabled: var(--brand-sky-slate);
+
+    /* Colour: status */
+    --color-error: var(--brand-error);
+    --color-success: var(--brand-sky-grass);
+    --color-warning: var(--brand-warning);
+
+    /* Colour: text */
+    --color-text: var(--brand-sky-ink);
+    --color-text-brand: var(--brand-sky-deep);
+    --color-text-muted: var(--brand-sky-slate);
+    --color-text-placeholder: var(--brand-sky-slate);
+    --color-text-disabled: var(--brand-sky-ice);
+    --color-text-on-color: var(--brand-white);
+    --color-text-accent: var(--brand-sky-lime);
+
+    /* Colour: surfaces. Cloud white pages with misty blue panels */
+    --color-surface: var(--brand-sky-cloud);
+    --color-surface-raised: var(--brand-sky-mist);
+    --color-surface-disabled: var(--brand-sky-mist);
+    --color-surface-highlight: var(--brand-sky-ice);
+    --color-surface-placeholder: var(--brand-sky-ice);
+
+    /* Colour: borders */
+    --color-border: var(--brand-sky-ice);
+    --color-border-brand: var(--brand-sky-blue);
+    --color-border-focus: var(--brand-sky-aqua);
+
+    /* Colour: links */
+    --color-link: var(--brand-sky-blue);
+    --color-link-hover: var(--brand-sky-aqua);
+    --color-link-focus: var(--brand-sky-aqua);
+
+    /* Colour: scrollbars */
+    --color-scrollbar-thumb: var(--brand-sky-aqua);
+    --color-scrollbar-track: var(--brand-sky-mist);
+
+    /* Interaction states: hover lightens slightly, like light catching glass */
+    --state-overlay-color: var(--brand-white);
+}
