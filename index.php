@@ -3,6 +3,8 @@ require 'php/button.php';
 require 'php/fields.php';
 require 'php/cards.php';
 require 'php/spec-table.php';
+require 'php/navigation.php';
+require 'php/section-heading.php';
 ?>
 
 <!DOCTYPE html>
@@ -219,7 +221,7 @@ require 'php/spec-table.php';
             button: "Ask Palau",
             buttonIcon: "/assets/icons/typing-outline.svg",
             buttonAttributes: [
-                "onclick" => "alert('Eventlisteners also work here');"
+                "onclick" => "alert('eventListeners also work here');"
             ]
         ); ?>
 
@@ -241,7 +243,7 @@ require 'php/spec-table.php';
             email: "contact@example.com",
         ); ?>
     </div>
-    
+
     <div style="display: flex; flex-direction: column; gap: 48px; width: 1024px; margin: 48px 0;">
         <? new SpecTable(
             title: "Specifications",
@@ -263,6 +265,46 @@ require 'php/spec-table.php';
                 "Non-stability (change/year)" => ["± 0.8%", "< 0.5% / 5 years"],
                 "Spectral Error" => ["± 0.5%", "± 0.2%"],
             ]
+        ); ?>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 32px; margin: 48px 0;">
+        <? new Navigation\Breadcrumb([
+            "Home" => "/",
+            "Pyranometers" => "/pyranometers",
+            "MS-80SH" => "/products/ms-80sh",
+            "Talk to an Expert",
+        ]); ?>
+
+        <div style="display: flex; gap: 32px;">
+            <? new Navigation\NavItem("Products", "/products"); ?>
+            <? new Navigation\NavItem("Industries", "/industries", active: true); ?>
+            <? new Navigation\NavItem("About EKO", "/about"); ?>
+        </div>
+
+        <? new SectionHeading("Popular Products", link: "View all", linkUrl: "/products"); ?>
+
+        <div style="display: flex; gap: 24px; align-items: flex-start;">
+            <? new Cards\ApplicationCard(
+                title: "Solar Energy",
+                description: "Resource assessment, performance monitoring and plant optimization.",
+                cta: "Learn More",
+                ctaUrl: "/applications/solar-energy"
+            ); ?>
+
+            <? new Cards\ArticleCard(
+                title: "Headline placeholder for new about everything, maximum three lines here.",
+                url: "https://www.eko-instruments.com/blog/example",
+                tag: "Instruments",
+                description: "Here is the product description or highlight. It must contain maximum three lines of text. It must contain maximum three lines of text.",
+                readTime: "6 minutes read",
+                share: true
+            ); ?>
+        </div>
+
+        <? new Cards\IndustryCard(
+            title: "Solar Energy",
+            description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration",
+            url: "/industries/solar-energy"
         ); ?>
     </div>
 </body>

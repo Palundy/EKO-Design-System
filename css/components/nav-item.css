@@ -1,0 +1,61 @@
+/*
+ * Navigation item: one link in the main menu, followed by a yellow chevron (Figma: EKO/Navigation/Item).
+ *
+ *     <a class="nav-item" href="/products">Products</a>
+ *     <a class="nav-item" href="/products" aria-current="page">Products</a>
+ *
+ * States: the item of the current section is marked with `aria-current="page"` (or `"true"`),
+ * which makes it bold with a blue line underneath.
+ */
+
+
+/* Base */
+.nav-item {
+    /* Tokens */
+    --nav-item-height: 40px;
+    --nav-item-gap: var(--space-2xsmall);
+    --nav-item-font-size: var(--font-size-medium);
+    --nav-item-font-weight: var(--font-weight-regular);
+    --nav-item-color: var(--color-text-brand);
+    --nav-item-chevron-size: 12px;
+    --nav-item-chevron-color: var(--color-text-accent);
+    --nav-item-active-font-weight: var(--font-weight-bold);
+    --nav-item-active-line-width: var(--border-width-thick);
+    --nav-item-active-line-color: var(--color-border-brand);
+    --nav-item-focus-outline: var(--border-width-thin) solid var(--color-link-focus);
+    --nav-item-focus-offset: var(--space-3xsmall);
+
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--nav-item-gap);
+    height: var(--nav-item-height);
+    font-size: var(--nav-item-font-size);
+    font-weight: var(--nav-item-font-weight);
+    color: var(--nav-item-color);
+    text-decoration: none;
+}
+
+
+/* Child elements: the chevron after the label */
+.nav-item::after {
+    content: "";
+    flex: none;
+    width: var(--nav-item-chevron-size);
+    height: var(--nav-item-chevron-size);
+    background-color: var(--nav-item-chevron-color);
+    -webkit-mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
+    mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
+}
+
+
+/* States */
+.nav-item:focus-visible {
+    outline: var(--nav-item-focus-outline);
+    outline-offset: var(--nav-item-focus-offset);
+}
+
+.nav-item:is([aria-current="page"], [aria-current="true"]) {
+    font-weight: var(--nav-item-active-font-weight);
+    box-shadow: inset 0 calc(var(--nav-item-active-line-width) * -1) 0 var(--nav-item-active-line-color);
+}

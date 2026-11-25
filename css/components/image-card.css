@@ -1,0 +1,233 @@
+/*
+ * Image cards: the application, industry and article cards (Figma: EKO/Card/Application, Industry and Article).
+ * They share one layout, a photo across the top and the content below it on the card background,
+ * so they share this file and the `--image-card-*` tokens. Each card class only overrides the tokens that differ.
+ *
+ *     <article class="application-card | industry-card | article-card">
+ *         <div class="card-image"><img src="…" alt="…"></div>
+ *         <div class="card-body">
+ *             <span class="card-tag">Instruments</span>                  (article only)
+ *             <h3 class="card-title">…</h3>
+ *             <p class="card-description">…</p>
+ *             <a class="card-cta link link-action">Learn More →</a>   (application only)
+ *             <div class="card-footer">…</div>                          (article only)
+ *         </div>
+ *     </article>
+ *
+ * - Without an `<img>` (or with an empty `.card-image`), the image area shows the grey placeholder.
+ * - The industry card can be an `<a>` itself, so the whole card is clickable.
+ * - The article card limits the title and description to three lines each.
+ */
+
+
+/* Base: shared by all image cards */
+.application-card,
+.industry-card,
+.article-card {
+    /* Tokens: card */
+    --image-card-width: 328px;
+    --image-card-bg: var(--color-surface-raised);
+    --image-card-border-radius: var(--radius-large);
+    --image-card-padding: var(--space-2xlarge);
+    --image-card-focus-outline: var(--border-width-thick) solid var(--color-border-focus);
+    --image-card-focus-offset: var(--space-3xsmall);
+
+    /* Tokens: image */
+    --image-card-image-height: 234px;
+    --image-card-image-bg: var(--color-surface-placeholder);
+
+    /* Tokens: title */
+    --image-card-title-font-size: var(--font-size-large);
+    --image-card-title-font-weight: var(--font-weight-bold);
+    --image-card-title-line-height: var(--line-height-heading);
+    --image-card-title-letter-spacing: var(--letter-spacing-heading);
+    --image-card-title-color: var(--color-text-brand);
+
+    /* Tokens: description */
+    --image-card-description-spacing: var(--space-medium);
+    --image-card-description-font-size: var(--font-size-default);
+    --image-card-description-line-height: var(--line-height-body);
+    --image-card-description-color: var(--color-text);
+
+    /* Tokens: call to action or footer, pushed to the bottom of the card */
+    --image-card-footer-spacing: var(--space-2xlarge);
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: var(--image-card-width);
+    overflow: hidden;
+    background-color: var(--image-card-bg);
+    border-radius: var(--image-card-border-radius);
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* Child elements: image */
+:is(.application-card, .industry-card, .article-card) .card-image {
+    flex: none;
+    height: var(--image-card-image-height);
+    background-color: var(--image-card-image-bg);
+}
+
+:is(.application-card, .industry-card, .article-card) .card-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Child elements: body with the text */
+:is(.application-card, .industry-card, .article-card) .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: var(--image-card-padding);
+}
+
+:is(.application-card, .industry-card, .article-card) .card-title {
+    margin: 0;
+    font-size: var(--image-card-title-font-size);
+    font-weight: var(--image-card-title-font-weight);
+    line-height: var(--image-card-title-line-height);
+    letter-spacing: var(--image-card-title-letter-spacing);
+    color: var(--image-card-title-color);
+}
+
+:is(.application-card, .industry-card, .article-card) .card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+:is(.application-card, .industry-card, .article-card) .card-description {
+    margin: var(--image-card-description-spacing) 0 0;
+    font-size: var(--image-card-description-font-size);
+    line-height: var(--image-card-description-line-height);
+    color: var(--image-card-description-color);
+}
+
+:is(.application-card, .industry-card, .article-card) :is(.card-cta, .card-footer) {
+    margin-top: auto;
+    padding-top: var(--image-card-footer-spacing);
+}
+
+
+/* Variants: industry card, wide with a large title and a blue description */
+.industry-card {
+    --image-card-width: 702px;
+    --image-card-title-font-size: var(--font-size-2xlarge);
+    --image-card-description-spacing: var(--space-small);
+    --image-card-description-font-size: var(--font-size-medium);
+    --image-card-description-color: var(--color-text-brand);
+}
+
+/* Variants: article card, with a tag above the title and a footer with the reading time and share buttons */
+.article-card {
+    /* Tokens: card */
+    --image-card-width: 458px;
+    --image-card-padding: var(--space-xlarge);
+    --image-card-image-height: 237px;
+    --image-card-title-line-height: var(--line-height-body);
+    --image-card-title-letter-spacing: normal;
+    --image-card-description-spacing: var(--space-large);
+    --image-card-footer-spacing: var(--space-xlarge);
+
+    /* Tokens: tag */
+    --article-card-tag-spacing: var(--space-medium);
+    --article-card-tag-padding-x: var(--space-small);
+    --article-card-tag-padding-y: var(--space-3xsmall);
+    --article-card-tag-font-size: var(--font-size-2xsmall);
+    --article-card-tag-font-weight: var(--font-weight-bold);
+    --article-card-tag-line-height: var(--line-height-tight);
+    --article-card-tag-color: var(--color-text-on-color);
+    --article-card-tag-bg: var(--color-accent);
+
+    /* Tokens: footer */
+    --article-card-read-time-font-size: var(--font-size-xsmall);
+    --article-card-read-time-color: var(--color-text);
+    --article-card-share-gap: var(--space-small);
+    --article-card-share-size: 28px;
+    --article-card-share-icon-size: var(--icon-size-medium);
+    --article-card-share-border-width: var(--border-width-thin);
+    --article-card-share-radius: var(--radius-round);
+    --article-card-share-color: var(--color-primary);
+    --article-card-share-hover-bg: var(--color-surface-highlight);
+
+    /* Tokens: three lines at most for the title and description */
+    --article-card-line-clamp: 3;
+}
+
+.article-card .card-tag {
+    align-self: flex-start;
+    margin-bottom: var(--article-card-tag-spacing);
+    padding: var(--article-card-tag-padding-y) var(--article-card-tag-padding-x);
+    font-size: var(--article-card-tag-font-size);
+    font-weight: var(--article-card-tag-font-weight);
+    line-height: var(--article-card-tag-line-height);
+    text-transform: uppercase;
+    color: var(--article-card-tag-color);
+    background-color: var(--article-card-tag-bg);
+}
+
+.article-card :is(.card-title, .card-description) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--article-card-line-clamp);
+    line-clamp: var(--article-card-line-clamp);
+    overflow: hidden;
+}
+
+.article-card .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.article-card .card-read-time {
+    font-size: var(--article-card-read-time-font-size);
+    color: var(--article-card-read-time-color);
+}
+
+.article-card .card-share {
+    display: flex;
+    gap: var(--article-card-share-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.article-card .card-share-button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--article-card-share-size);
+    height: var(--article-card-share-size);
+    color: var(--article-card-share-color);
+    border: var(--article-card-share-border-width) solid var(--article-card-share-color);
+    border-radius: var(--article-card-share-radius);
+}
+
+.article-card .card-share-button .icon {
+    --icon-width: var(--article-card-share-icon-size);
+    --icon-height: var(--article-card-share-icon-size);
+}
+
+
+/* States */
+a:is(.application-card, .industry-card, .article-card):focus-visible,
+:is(.application-card, .industry-card, .article-card) .card-title a:focus-visible,
+.article-card .card-share-button:focus-visible {
+    outline: var(--image-card-focus-outline);
+    outline-offset: var(--image-card-focus-offset);
+}
+
+a:is(.application-card, .industry-card, .article-card):hover .card-title,
+:is(.application-card, .industry-card, .article-card) .card-title a:hover {
+    text-decoration: underline;
+}
+
+.article-card .card-share-button:hover {
+    background-color: var(--article-card-share-hover-bg);
+}

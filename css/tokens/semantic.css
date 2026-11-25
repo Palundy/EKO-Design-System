@@ -54,6 +54,9 @@
     --space-xlarge: var(--brand-space-xlarge);
     --space-2xlarge: var(--brand-space-2xlarge);
     --space-3xlarge: var(--brand-space-3xlarge);
+    --space-4xlarge: var(--brand-space-4xlarge);
+
+    --space-page-gutter: var(--space-4xlarge);
 
     --radius-none: var(--brand-radius-none);
     --radius-xsmall: var(--brand-radius-xsmall);
@@ -94,6 +97,7 @@
     --color-text-placeholder: var(--brand-mid-grey);
     --color-text-disabled: var(--brand-light-grey);
     --color-text-on-color: var(--brand-white);
+    --color-text-accent: var(--brand-warning);
 
     /* Colour: surfaces (backgrounds) */
     --color-surface: var(--brand-white);

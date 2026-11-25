@@ -1,0 +1,40 @@
+/*
+ * Section heading: the title above a page section, with an optional action link on the right
+ * (Figma: EKO/Section/Heading).
+ *
+ *     <div class="section-heading">
+ *         <h2 class="section-heading-title">Popular Products</h2>
+ *         <a class="link link-action" href="/products">View all <span aria-hidden="true">→</span></a>
+ *     </div>
+ *
+ * The title can be any heading level; only the class matters.
+ */
+
+
+/* Base */
+.section-heading {
+    /* Tokens */
+    --section-heading-gap: var(--space-2xlarge);
+    --section-heading-font-size: var(--font-size-3xlarge);
+    --section-heading-font-weight: var(--font-weight-bold);
+    --section-heading-line-height: var(--line-height-heading);
+    --section-heading-letter-spacing: var(--letter-spacing-heading);
+    --section-heading-color: var(--color-text-brand);
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--section-heading-gap);
+}
+
+
+/* Child elements */
+.section-heading .section-heading-title {
+    margin: 0;
+    font-size: var(--section-heading-font-size);
+    font-weight: var(--section-heading-font-weight);
+    line-height: var(--section-heading-line-height);
+    letter-spacing: var(--section-heading-letter-spacing);
+    color: var(--section-heading-color);
+}

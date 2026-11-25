@@ -27,3 +27,7 @@
 @import url("components/spec-table.css") layer(components);
 @import url("components/product-card.css") layer(components);
 @import url("components/contact-card.css") layer(components);
+@import url("components/image-card.css") layer(components);
+@import url("components/breadcrumb.css") layer(components);
+@import url("components/nav-item.css") layer(components);
+@import url("components/section-heading.css") layer(components);

@@ -2,7 +2,10 @@
  * Link: an opt-in text link. Bare `<a>` elements are not styled.
  *
  *     <a class="link" href="…">Text</a>
+ *     <a class="link link-action" href="…">Learn More <span aria-hidden="true">→</span></a>
  *
+ * Variants: `.link-action` is the larger call-to-action link from Figma (EKO/Link/Text): 20px bold,
+ * and on hover it stays blue and gets an underline.
  * Links have no `disabled` attribute, so disable one with `aria-disabled="true"`.
  */
 
@@ -14,21 +17,37 @@
     --link-hover-color: var(--color-link-hover);
     --link-active-color: var(--color-link-hover);
     --link-disabled-color: var(--color-text-disabled);
+    --link-font-size: inherit;
     --link-font-weight: var(--font-weight-regular);
+    --link-hover-decoration: none;
+    --link-underline-offset: var(--space-2xsmall);
     --link-focus-outline: var(--border-width-thin) solid var(--color-link-focus);
     --link-focus-offset: var(--space-3xsmall);
     --link-focus-radius: var(--radius-xsmall);
 
     color: var(--link-color);
+    font-size: var(--link-font-size);
     font-weight: var(--link-font-weight);
     text-decoration: none;
+    text-underline-offset: var(--link-underline-offset);
     cursor: pointer;
+}
+
+
+/* Variants */
+.link.link-action {
+    --link-font-size: var(--font-size-large);
+    --link-font-weight: var(--font-weight-bold);
+    --link-hover-color: var(--color-link);
+    --link-active-color: var(--color-link);
+    --link-hover-decoration: underline;
 }
 
 
 /* States */
 .link:hover {
     color: var(--link-hover-color);
+    text-decoration: var(--link-hover-decoration);
 }
 
 .link:active {

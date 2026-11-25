@@ -17,6 +17,9 @@ This guide covers using the design system in a **PHP** application.
   - [Product card](#product-card)
   - [Contact card](#contact-card)
   - [Spec table](#spec-table)
+  - [Application, industry and article cards](#application-industry-and-article-cards)
+  - [Breadcrumb and navigation item](#breadcrumb-and-navigation-item)
+  - [Section heading](#section-heading)
 - [Icons](#icons)
 - [Full example](#full-example)
 - [Customising the look](#customising-the-look)
@@ -62,8 +65,10 @@ Put this at the top of your page, then load only the groups you use:
 <?php
 require 'php/button.php';   // Button
 require 'php/fields.php';   // Fields\Input, Fields\Textarea, Fields\Dropdown
-require 'php/cards.php';    // Cards\ProductCard, Cards\ContactCard
-require 'php/spec-table.php'; // SpecTable
+require 'php/cards.php';           // Cards\ProductCard, ContactCard, ApplicationCard, IndustryCard, ArticleCard
+require 'php/spec-table.php';      // SpecTable
+require 'php/navigation.php';      // Navigation\Breadcrumb, Navigation\NavItem
+require 'php/section-heading.php'; // SectionHeading
 
 use Fields\Input;
 use Fields\Textarea;
@@ -324,6 +329,84 @@ If two rows have the same label, or a label is a number (such as a year), write 
 
 A table whose rows don't all have the same number of values throws an `InvalidArgumentException`, so a missing value is caught straight away.
 
+### Application, industry and article cards
+
+Three cards with a photo across the top and the text below it. Without `image:`, the photo area shows a grey placeholder.
+All three take `headingLevel:` (default `3`) for the title, and `imageAlt:`, which defaults to empty because the title already says what the photo shows.
+
+**Application card** (328px): a title, a description and a "Learn More →" link.
+
+```php
+new ApplicationCard(
+    title: "Solar Energy",
+    description: "Resource assessment, performance monitoring and plant optimization.",
+    image: "/assets/images/solar-energy.jpg",
+    cta: "Learn More",                         // the arrow is added for you
+    ctaUrl: "/applications/solar-energy"       // required when cta is given
+);
+```
+
+**Industry card** (702px): a large title and a blue description. With `url:`, the whole card is a link.
+
+```php
+new IndustryCard(
+    title: "Solar Energy",
+    description: "Precision instruments for solar resource assessment and PV performance monitoring.",
+    image: "/assets/images/solar-energy.jpg",
+    url: "/industries/solar-energy"
+);
+```
+
+**Article card** (458px): a blog or news item. The title links to `url:`, and the title and description are cut off after three lines.
+
+```php
+new ArticleCard(
+    title: "How to choose the right pyranometer",
+    url: "https://www.eko-instruments.com/blog/choosing-a-pyranometer",
+    tag: "Instruments",                        // shown in capitals above the title
+    description: "A short introduction to the ISO 9060 classes.",
+    image: "/assets/images/blog/pyranometer.jpg",
+    readTime: "6 minutes read",
+    share: true                                // LinkedIn, X, Facebook and email buttons
+);
+```
+
+With `share: true`, the buttons share `url:`, so give a full URL (with `https://`). Sharing without a `url:` throws an exception.
+
+### Breadcrumb and navigation item
+
+**Breadcrumb:** the trail from the home page to the current page, as `"Label" => "/url"` pairs. The last entry is the current page; give it without a URL.
+
+```php
+new Navigation\Breadcrumb([
+    "Home"         => "/",
+    "Pyranometers" => "/pyranometers",
+    "MS-80SH"      => "/products/ms-80sh",
+    "Talk to an Expert",
+]);
+```
+
+It spans the full width, with a line above and below and the page gutter (64px) on the left.
+
+**Navigation item:** one link in the main menu, followed by a yellow chevron. Mark the section the visitor is in with `active: true`; it becomes bold with a blue line underneath.
+
+```php
+new Navigation\NavItem("Products", "/products");
+new Navigation\NavItem("Industries", "/industries", active: true);
+```
+
+### Section heading
+
+The title above a page section, with an optional "View all →" style link on the right.
+
+```php
+new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");
+```
+
+`headingLevel:` (default `2`) sets the heading element without changing the look.
+
+The same large link is available on its own as `<a class="link link-action" href="…">View all <span aria-hidden="true">→</span></a>`.
+
 ---
 
 ## Icons
@@ -429,10 +512,13 @@ Switch it on with `<html data-theme="partner">`. See `css/themes/dark.css` for t
 
 ## Viewing every component
 
-`index.php` renders every component in all of its states. Run it from the design system folder:
+Run a local server from the design system folder:
 
 ```
 php -S localhost:8000
 ```
 
-Then open <http://localhost:8000/index.php>.
+Then open one of the two showcase pages:
+
+- **<http://localhost:8000/showcase.php>**: the guided tour. A magazine-style page with a chapter per component that explains what it's for, shows every state side by side, and gives the code to use it. Use the switch in the top bar to see everything in dark mode.
+- **<http://localhost:8000/index.php>**: the plain test page with every component in all of its states, without explanations.

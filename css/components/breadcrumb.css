@@ -1,0 +1,92 @@
+/*
+ * Breadcrumb: the trail to the current page, as a full-width bar with a line above and below (Figma: EKO/Breadcrumb).
+ *
+ *     <nav class="breadcrumb" aria-label="Breadcrumb">
+ *         <ol>
+ *             <li><a href="/">Home</a></li>
+ *             <li><a href="/pyranometers">Pyranometers</a></li>
+ *             <li aria-current="page">Talk to an Expert</li>
+ *         </ol>
+ *     </nav>
+ *
+ * A yellow chevron is drawn between the items. The current page (`aria-current="page"`) is bold and not a link.
+ */
+
+
+/* Base */
+.breadcrumb {
+    /* Tokens: bar */
+    --breadcrumb-min-height: 60px;
+    --breadcrumb-padding-x: var(--space-page-gutter);
+    --breadcrumb-line-width: var(--border-width-thin);
+    --breadcrumb-line-color: var(--color-border);
+
+    /* Tokens: items */
+    --breadcrumb-gap: var(--space-xsmall);
+    --breadcrumb-font-size: var(--font-size-medium);
+    --breadcrumb-color: var(--color-text-brand);
+    --breadcrumb-current-font-weight: var(--font-weight-bold);
+    --breadcrumb-separator-size: 16px;
+    --breadcrumb-separator-color: var(--color-text-accent);
+    --breadcrumb-focus-outline: var(--border-width-thin) solid var(--color-link-focus);
+    --breadcrumb-focus-offset: var(--space-3xsmall);
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-height: var(--breadcrumb-min-height);
+    padding: 0 var(--breadcrumb-padding-x);
+    border-top: var(--breadcrumb-line-width) solid var(--breadcrumb-line-color);
+    border-bottom: var(--breadcrumb-line-width) solid var(--breadcrumb-line-color);
+    font-size: var(--breadcrumb-font-size);
+    color: var(--breadcrumb-color);
+}
+
+
+/* Child elements */
+.breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumb li {
+    display: flex;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+}
+
+/* The chevron between two items */
+.breadcrumb li + li::before {
+    content: "";
+    flex: none;
+    width: var(--breadcrumb-separator-size);
+    height: var(--breadcrumb-separator-size);
+    background-color: var(--breadcrumb-separator-color);
+    -webkit-mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
+    mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
+}
+
+.breadcrumb a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* States */
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb a:focus-visible {
+    outline: var(--breadcrumb-focus-outline);
+    outline-offset: var(--breadcrumb-focus-offset);
+}
+
+.breadcrumb [aria-current="page"] {
+    font-weight: var(--breadcrumb-current-font-weight);
+}
