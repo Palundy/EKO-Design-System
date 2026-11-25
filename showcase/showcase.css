@@ -280,6 +280,7 @@
     letter-spacing: calc(var(--letter-spacing-heading) * 6);
     color: transparent;
     -webkit-text-stroke: var(--border-width-thin) var(--color-border-brand);
+    user-select: none;
 }
 
 .sc-chapter-title {
