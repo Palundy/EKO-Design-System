@@ -1,7 +1,20 @@
+/*
+ * Icon: an SVG used as a mask over the text colour, so icons take on the colour around them.
+ *
+ *     <span class="icon" style="--icon-url: url('/assets/icons/<name>.svg')" aria-hidden="true"></span>
+ *
+ * Set `--icon-width` and `--icon-height` on the icon or on any parent to change its size.
+ */
+
+
+/* Base */
 .icon {
+    /* Tokens */
+    --icon-default-size: var(--icon-size-medium);
+
     display: inline-block;
-    width: var(--icon-width, var(--icon-width-default));
-    height: var(--icon-height, var(--icon-height-default));
+    width: var(--icon-width, var(--icon-default-size));
+    height: var(--icon-height, var(--icon-default-size));
     background-color: currentColor;
 
     -webkit-mask-image: var(--icon-url);

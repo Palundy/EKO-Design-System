@@ -1,55 +1,85 @@
-.btn {
-    /* Default component variables */
-    --button-bg: var(--color-primary);
-    --button-text: var(--brand-white);
-    --button-border: var(--color-primary);
-    --button-icon-size: 16px; 
-    --button-gap: 8px;
+/*
+ * Button: `<button class="btn">`, with an optional `.icon` before the label.
+ *
+ * Variants (`.btn-destructive`, `.btn-positive`, `.btn-enquiry`) only override the three colour tokens.
+ * Hover and active colours are derived from those with `color-mix()`, so a variant gets them for free.
+ * States: the native `:disabled` attribute, plus the `.negative` (outlined) and `.loading` (spinner) classes.
+ */
 
-    /* Derived state colours */
+
+/* Base */
+.btn {
+    /* Tokens: size and type */
+    --button-height: 36px;
+    --button-padding-x: var(--space-2xlarge);
+    --button-padding-y: var(--space-small);
+    --button-gap: var(--space-small);
+    --button-border-width: var(--border-width-thin);
+    --button-border-radius: var(--radius-medium);
+    --button-font-family: var(--font-family);
+    --button-font-size: var(--font-size-default);
+    --button-font-weight: var(--font-weight-bold);
+    --button-line-height: 24px;
+    --button-icon-size: var(--icon-size-small);
+    --button-spinner-width: var(--border-width-thick);
+    --button-spinner-radius: var(--radius-round);
+    --button-spinner-duration: var(--duration-spin);
+    --button-transition-duration: var(--duration-fast);
+
+    /* Tokens: colours. Variants only override these three */
+    --button-bg: var(--color-primary);
+    --button-text: var(--color-text-on-color);
+    --button-border: var(--color-primary);
+
+    /* Tokens: colours of the other states */
+    --button-disabled-bg: var(--color-disabled);
+    --button-disabled-text: var(--color-text-on-color);
+    --button-negative-bg: var(--color-surface);
+
+    /* Tokens: derived state colours */
     --button-bg-hover: color-mix(
         in srgb,
         var(--button-bg),
-        var(--state-overlay-color-general) var(--state-hover-overlay)
+        var(--state-overlay-color) var(--state-hover-overlay)
     );
     --button-bg-active: color-mix(
         in srgb,
         var(--button-bg),
-        var(--state-overlay-color-general) var(--state-active-overlay)
+        var(--state-overlay-color) var(--state-active-overlay)
     );
     --button-border-color-hover: var(--button-bg-hover);
     --button-border-color-active: var(--button-bg-active);
     --button-text-hover: var(--button-text);
     --button-text-active: var(--button-text);
 
-    /* Appearance */
-    height: var(--button-height);
-    padding: 
-        var(--button-padding-x) 
-        var(--button-padding-y);
-    
-    font-family: 'reader', sans-serif;
-    font-size: var(--button-font-size);
-    font-weight: var(--button-font-weight);
-    line-height: var(--button-line-height);
-
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    
-    border: 1px solid var(--button-border);
-    border-radius: var(--button-border-radius);
-    
-    cursor: pointer;
-    transition: 
-        background-color 100ms ease,
-        border-color 100ms ease;
-
+    /* Layout */
     display: inline-flex;
     vertical-align: middle;
     align-items: center;
     justify-content: center;
     gap: var(--button-gap);
+    height: var(--button-height);
+    padding: var(--button-padding-y) var(--button-padding-x);
+
+    /* Type */
+    font-family: var(--button-font-family);
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
+    line-height: var(--button-line-height);
+
+    /* Appearance */
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: var(--button-border-width) solid var(--button-border);
+    border-radius: var(--button-border-radius);
+    cursor: pointer;
+    transition:
+        background-color var(--button-transition-duration) ease,
+        border-color var(--button-transition-duration) ease;
 }
+
+
+/* Child elements */
 .btn .icon {
     --icon-width: var(--button-icon-size);
     --icon-height: var(--button-icon-size);
@@ -57,88 +87,81 @@
 }
 
 /* Variants */
-
-/* Destructive */
 .btn.btn-destructive {
     --button-bg: var(--color-destructive);
-    --button-text: var(--brand-white);
-    --button-border: var(--brand-error);
+    --button-border: var(--color-destructive);
 }
 
-/* Positive */
 .btn.btn-positive {
     --button-bg: var(--color-positive);
-    --button-text: var(--brand-white);
-    --button-border: var(--brand-success);
+    --button-border: var(--color-positive);
 }
 
-/* Enquiry */
 .btn.btn-enquiry {
     --button-bg: var(--color-enquiry);
-    --button-text: var(--brand-white);
-    --button-border: var(--brand-warning);
+    --button-border: var(--color-enquiry);
 }
 
 
-/* Interaction states */
-
-/* Hover */
+/* States: hover */
 .btn:not(:disabled):hover {
     background-color: var(--button-bg-hover);
     border-color: var(--button-border-color-hover);
     color: var(--button-text-hover);
 }
+
 .btn:not(:disabled):hover .icon {
     background-color: var(--button-text-hover);
 }
 
-/* Active */
+/* States: active */
 .btn:not(:disabled):active {
     background-color: var(--button-bg-active);
     border-color: var(--button-border-color-active);
     color: var(--button-text-active);
 }
 
-/* Disabled */
+/* States: disabled */
 .btn:disabled {
-    background-color: var(--color-disabled);
+    background-color: var(--button-disabled-bg);
     border-color: transparent;
-    color: var(--brand-white);
+    color: var(--button-disabled-text);
     cursor: not-allowed;
 }
 
-/* Negative */
+/* States: negative (outlined) */
 .btn.negative {
-    background: var(--brand-white);
+    background: var(--button-negative-bg);
     color: var(--button-bg);
     border-color: var(--button-bg);
 
     --button-text-hover: var(--button-text);
     --button-text-active: var(--button-text);
 }
+
 .btn.negative .icon {
     background-color: var(--button-bg);
 }
 
-/* Loading */
+/* States: loading */
 .btn.loading {
     cursor: default;
     background-color: var(--button-bg);
     border-color: var(--button-border);
 }
+
 .btn.loading::before {
     content: "";
-
     width: var(--button-icon-size);
     height: var(--button-icon-size);
-
-    border: 2px solid currentColor;
+    border: var(--button-spinner-width) solid currentColor;
     border-right-color: transparent;
-    border-radius: 50%;
-
-    animation: spin 0.8s linear infinite;
+    border-radius: var(--button-spinner-radius);
+    animation: spin var(--button-spinner-duration) linear infinite;
 }
 
+
+/* Animations and media queries */
 @keyframes spin {
     from {
         transform: rotate(0deg);

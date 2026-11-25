@@ -4,7 +4,7 @@ namespace Cards;
 
 /**
  * `Card` is the shared base of the card components `ProductCard` and `ContactCard`
- * (see css/components/cards/). It is not used directly.
+ * (see css/components/product-card.css and contact-card.css). It is not used directly.
  *
  * It holds what every card has in common: the generated HTML and the escaping helpers.
  * Like the other components, a card is echoed straight away from its constructor,
@@ -29,7 +29,7 @@ abstract class Card {
     }
 
     /**
-     * Builds a decorative icon (see css/components/icons.css). It is hidden from screen readers.
+     * Builds a decorative icon (see css/components/icon.css). It is hidden from screen readers.
      *
      * @param string $url
      * The URL of the SVG icon (e.g., "/assets/icons/envelope-outline.svg").

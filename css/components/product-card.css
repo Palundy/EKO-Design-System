@@ -1,79 +1,159 @@
+/*
+ * Product card: a product with an optional image, label, description, specification table and call to action.
+ *
+ *     <div class="product-card">
+ *         <div class="card-image"><img></div>
+ *         <div class="card-label">…</div>
+ *         <div class="card-title">…</div>
+ *         <div class="card-description">…</div>
+ *         <table class="card-table">…</table>
+ *         <a class="card-cta">…</a>
+ *     </div>
+ *
+ * The child class names are shared with the contact card, so they are always scoped by `.product-card`.
+ */
+
+
+/* Base */
 .product-card {
+    /* Tokens: card */
+    --product-card-width: 322px;
+    --product-card-padding: var(--space-xlarge);
+    --product-card-gap: var(--space-medium);
+    --product-card-bg: var(--color-surface-raised);
+    --product-card-border-radius: var(--radius-large);
+
+    /* Tokens: image */
+    --product-card-image-height: 216px;
+    --product-card-image-width-percentage: 67%;
+
+    /* Tokens: label */
+    --product-card-label-font-size: var(--font-size-2xsmall);
+    --product-card-label-font-weight: var(--font-weight-bold);
+    --product-card-label-padding-x: var(--space-small);
+    --product-card-label-padding-y: var(--space-3xsmall);
+    --product-card-label-border-radius: var(--radius-none);
+    --product-card-label-color: var(--color-text-on-color);
+    --product-card-label-bg: var(--color-accent);
+
+    /* Tokens: title and description */
+    --product-card-title-font-size: var(--font-size-xlarge);
+    --product-card-title-font-weight: var(--font-weight-bold);
+    --product-card-title-color: var(--color-text-brand);
+    --product-card-title-line-height: var(--line-height-heading);
+    --product-card-title-letter-spacing: var(--letter-spacing-heading);
+    --product-card-description-font-size: var(--font-size-small);
+    --product-card-description-font-weight: var(--font-weight-regular);
+    --product-card-description-color: var(--color-text);
+
+    /* Tokens: table */
+    --product-card-table-font-size: var(--font-size-2xsmall);
+    --product-card-table-font-weight: var(--font-weight-regular);
+    --product-card-table-color: var(--color-text);
+    --product-card-table-line-height: var(--line-height-tight);
+    --product-card-table-row-padding-x: 0px;
+    --product-card-table-row-padding-y: var(--space-xsmall);
+    --product-card-table-row-border-width: var(--border-width-thin);
+    --product-card-table-row-border-color: var(--color-border);
+
+    /* Tokens: call to action */
+    --product-card-cta-font-size: var(--font-size-small);
+    --product-card-cta-font-weight: var(--font-weight-bold);
+    --product-card-cta-color: var(--color-text-brand);
+    --product-card-cta-hover-color: color-mix(
+        in srgb,
+        var(--product-card-cta-color),
+        var(--state-overlay-color) var(--state-hover-overlay)
+    );
+
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--product-card-gap);
-
     width: var(--product-card-width);
     height: fit-content;
-    background-color: var(--card-bg);
-    border-radius: var(--card-border-radius);
     padding: var(--product-card-padding);
+    background-color: var(--product-card-bg);
+    border-radius: var(--product-card-border-radius);
 }
 
-.product-card .card-title {
-    user-select: none;
-    font-size: var(--product-card-title-font-size);
-    font-weight: var(--brand-font-weight-bold);
-    color: var(--product-card-title-color);
-}
-.product-card .card-description {
-    user-select: none;
-    font-size: var(--product-card-description-font-size);
-    font-weight: var(--product-card-description-font-weight);
-    color: var(--product-card-description-color);
-}
 
-.product-card .card-table {
-    user-select: none;
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--product-card-table-font-size);
-    font-weight: var(--product-card-table-font-weight);
-    line-height: var(--product-card-table-line-height);
-}
-.product-card .card-table tr {
-    border-bottom: 1px solid var(--product-card-table-row-border-color);
-    padding: var(--product-card-table-row-padding-y) var(--product-card-table-row-padding-x);
-}
-.product-card .card-table td {
-    padding: var(--product-card-table-row-padding-y) var(--product-card-table-row-padding-x);
-    color: var(--product-card-table-color);
-    font-size: var(--product-card-table-font-size);
-}
-
+/* Child elements: image */
 .product-card .card-image {
     width: 100%;
     height: var(--product-card-image-height);
-
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .product-card .card-image img {
     max-width: var(--product-card-image-width-percentage);
     max-height: var(--product-card-image-height);
     object-fit: cover;
 }
 
+/* Child elements: label */
 .product-card .card-label {
     width: fit-content;
     padding: var(--product-card-label-padding-y) var(--product-card-label-padding-x);
-    user-select: none;
     font-size: var(--product-card-label-font-size);
-    background-color: var(--product-card-label-bg);
+    font-weight: var(--product-card-label-font-weight);
     color: var(--product-card-label-color);
+    background-color: var(--product-card-label-bg);
     border-radius: var(--product-card-label-border-radius);
+    user-select: none;
 }
 
-.product-card .card-cta {
+/* Child elements: title and description */
+.product-card .card-title {
+    font-size: var(--product-card-title-font-size);
+    font-weight: var(--product-card-title-font-weight);
+    line-height: var(--product-card-title-line-height);
+    letter-spacing: var(--product-card-title-letter-spacing);
+    color: var(--product-card-title-color);
     user-select: none;
+}
+
+.product-card .card-description {
+    font-size: var(--product-card-description-font-size);
+    font-weight: var(--product-card-description-font-weight);
+    color: var(--product-card-description-color);
+    user-select: none;
+}
+
+/* Child elements: specification table */
+.product-card .card-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--product-card-table-font-size);
+    font-weight: var(--product-card-table-font-weight);
+    line-height: var(--product-card-table-line-height);
+    user-select: none;
+}
+
+.product-card .card-table tr {
+    border-bottom: var(--product-card-table-row-border-width) solid var(--product-card-table-row-border-color);
+}
+
+.product-card .card-table td {
+    padding: var(--product-card-table-row-padding-y) var(--product-card-table-row-padding-x);
+    color: var(--product-card-table-color);
+    font-size: var(--product-card-table-font-size);
+}
+
+/* Child elements: call to action */
+.product-card .card-cta {
     font-size: var(--product-card-cta-font-size);
     font-weight: var(--product-card-cta-font-weight);
     color: var(--product-card-cta-color);
     text-decoration: none;
     cursor: pointer;
+    user-select: none;
 }
+
+
+/* States */
 .product-card .card-cta:hover {
     color: var(--product-card-cta-hover-color);
 }

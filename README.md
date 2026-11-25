@@ -346,18 +346,41 @@ $emailError = $_SERVER['REQUEST_METHOD'] === 'POST'
 
 ## Customising the look
 
-All colours, sizes and spacing come from CSS custom properties (tokens):
+All colours, sizes and spacing come from CSS custom properties (tokens), in three levels:
 
-- `css/tokens/brand.css` holds the raw EKO brand values: colours, font and font sizes.
-- `css/tokens/semantic.css` holds what each value is used for, including per-component tokens such as `--button-*`, `--field-*` and `--product-card-*`.
+| Level | Where | Example | Change it to… |
+|---|---|---|---|
+| Brand | `css/tokens/brand.css` | `--brand-eko-blue` | (don't: these are the EKO values) |
+| Semantic | `css/tokens/semantic.css` | `--color-text-brand`, `--space-medium` | restyle everything at once, e.g. a theme |
+| Component | top of each `css/components/*.css` | `--product-card-width` | restyle one component |
 
-To adjust a component in your application, override its token in your own stylesheet after `main.css`, instead of editing the design system's files:
+Don't edit the design system's files. Override tokens in your own stylesheet instead. Your CSS always wins over the design system, even with a simpler selector, because the design system sits in [cascade layers](https://developer.mozilla.org/docs/Web/CSS/@layer).
+
+**One component:** set its token on the component class. Use a parent selector to limit it to part of your page:
 
 ```css
-:root {
+.product-card {
     --product-card-width: 360px;
 }
+
+.sidebar .contact-card {
+    --contact-card-width: 100%;
+}
 ```
+
+**Dark mode:** the design system includes a dark theme (`css/themes/dark.css`, still a draft). Switch it on with `<html data-theme="dark">`.
+
+**Everything at once (your own theme or sub-brand):** override semantic tokens. Components only use semantic tokens, so a theme is a single block:
+
+```css
+[data-theme="partner"] {
+    --color-primary: #6a1b9a;
+    --color-text-brand: #6a1b9a;
+    --color-link: #6a1b9a;
+}
+```
+
+Switch it on with `<html data-theme="partner">`. See `css/themes/dark.css` for the full list of colour roles a theme can set.
 
 ## Viewing every component
 

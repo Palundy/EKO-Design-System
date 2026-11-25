@@ -1,0 +1,57 @@
+/*
+ * Dark theme. Switch it on with `<html data-theme="dark">`.
+ *
+ * A theme only overrides semantic colour tokens (css/tokens/semantic.css) and points them at brand tokens.
+ * It never touches component files: every component picks the new colours up through the semantic tokens.
+ * Sizes, spacing and fonts are not themed, so they are not listed here.
+ *
+ * DRAFT: these values are a first proposal and have not been checked by design or for contrast (WCAG AA).
+ * Every colour role from semantic.css is listed, so a role that still needs a decision is easy to find.
+ */
+[data-theme="dark"] {
+    color-scheme: dark;
+
+    /* Colour: actions */
+    --color-primary: var(--brand-eko-cyan);
+    --color-accent: var(--brand-eko-teal);
+    --color-destructive: var(--brand-error);
+    --color-positive: var(--brand-success);
+    --color-enquiry: var(--brand-warning);
+    --color-disabled: var(--brand-dark-600);
+
+    /* Colour: status */
+    --color-error: var(--brand-error);
+    --color-success: var(--brand-success);
+    --color-warning: var(--brand-warning);
+
+    /* Colour: text */
+    --color-text: var(--brand-white);
+    --color-text-brand: var(--brand-eko-soft);
+    --color-text-muted: var(--brand-eko-grey);
+    --color-text-placeholder: var(--brand-mid-grey);
+    --color-text-disabled: var(--brand-dark-600);
+    --color-text-on-color: var(--brand-white);
+
+    /* Colour: surfaces */
+    --color-surface: var(--brand-dark-900);
+    --color-surface-raised: var(--brand-dark-800);
+    --color-surface-disabled: var(--brand-dark-800);
+    --color-surface-highlight: var(--brand-dark-700);
+    --color-surface-placeholder: var(--brand-dark-700);
+
+    /* Colour: borders */
+    --color-border: var(--brand-dark-600);
+    --color-border-focus: var(--brand-eko-soft);
+
+    /* Colour: links */
+    --color-link: var(--brand-eko-soft);
+    --color-link-hover: var(--brand-eko-sky);
+    --color-link-focus: var(--brand-eko-sky);
+
+    /* Colour: scrollbars */
+    --color-scrollbar-thumb: var(--brand-dark-600);
+    --color-scrollbar-track: var(--brand-dark-800);
+
+    /* Interaction states: lighten on hover instead of darken */
+    --state-overlay-color: var(--brand-white);
+}

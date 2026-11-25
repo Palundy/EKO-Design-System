@@ -1,8 +1,40 @@
+/*
+ * Dropdown: a native `<select class="field-input">` inside `.field .dropdown`.
+ * js/dropdowns.js hides the select visually and builds a styled trigger and menu next to it:
+ *
+ *     <div class="dropdown">
+ *         <select class="field-input dropdown-native">…</select>
+ *         <button class="field-input dropdown-trigger"><span class="dropdown-value"></span><svg class="dropdown-icon"></svg></button>
+ *         <div class="dropdown-menu"><div class="dropdown-option">…</div></div>
+ *     </div>
+ *
+ * The trigger and menu also use the `--field-*` tokens, which they inherit from `.field`.
+ */
+
+
+/* Base */
 .field .dropdown {
+    /* Tokens */
+    --dropdown-gap: var(--space-medium);
+    --dropdown-open-border-width: var(--border-width-thick);
+    --dropdown-placeholder-color: var(--field-input-placeholder-color);
+    --dropdown-icon-size: var(--icon-size-small);
+    --dropdown-icon-color: var(--color-primary);
+    --dropdown-menu-offset: var(--space-2xsmall);
+    --dropdown-menu-max-height: 200px;
+    --dropdown-menu-shadow: var(--shadow-medium);
+    --dropdown-option-highlight-bg: var(--color-surface-highlight);
+    --dropdown-option-selected-color: var(--color-primary);
+    --dropdown-option-selected-font-weight: var(--font-weight-bold);
+    --dropdown-scrollbar-thumb: var(--color-scrollbar-thumb);
+    --dropdown-scrollbar-track: var(--color-scrollbar-track);
+
     position: relative;
     width: 100%;
 }
 
+
+/* Child elements: the native select, hidden visually but still used for the value, forms and validation */
 .field .dropdown-native {
     position: absolute;
     width: 1px;
@@ -13,19 +45,15 @@
     overflow: hidden;
 }
 
+/* Child elements: the trigger that opens the menu */
 .field .dropdown-trigger {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: var(--dropdown-gap);
     width: 100%;
     text-align: left;
     cursor: pointer;
-}
-
-.field .dropdown-trigger:focus-visible,
-.field .dropdown-trigger[aria-expanded="true"] {
-    border: 2px solid var(--field-input-focus-border-color);
 }
 
 .dropdown-value {
@@ -35,44 +63,32 @@
 }
 
 .dropdown-value.is-placeholder {
-    color: #808793;
+    color: var(--dropdown-placeholder-color);
 }
 
 .dropdown-icon {
     flex: none;
-    width: 16px;
-    height: 16px;
-    color: var(--color-primary);
+    width: var(--dropdown-icon-size);
+    height: var(--dropdown-icon-size);
+    color: var(--dropdown-icon-color);
 }
 
-.dropdown-trigger[aria-expanded="true"] .dropdown-icon {
-    transform: rotate(180deg);
-}
-
-.dropdown-trigger:disabled .dropdown-value,
-.dropdown-trigger:disabled .dropdown-icon {
-    color: var(--field-disabled-color);
-}
-
+/* Child elements: the menu and its options */
 .dropdown-menu {
     position: absolute;
     z-index: 10;
-    top: calc(100% + 4px);
+    top: calc(100% + var(--dropdown-menu-offset));
     left: 0;
     right: 0;
-    max-height: 200px;
+    max-height: var(--dropdown-menu-max-height);
     overflow-y: auto;
     box-sizing: border-box;
     background: var(--field-input-bg);
-    border: 1px solid var(--field-input-border-color);
+    border: var(--field-input-border-width) solid var(--field-input-border-color);
     border-radius: var(--field-input-border-radius);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    scrollbar-color: var(--brand-eko-grey) var(--brand-light-grey);
+    box-shadow: var(--dropdown-menu-shadow);
+    scrollbar-color: var(--dropdown-scrollbar-thumb) var(--dropdown-scrollbar-track);
     scrollbar-width: thin;
-}
-
-.dropdown-menu[hidden] {
-    display: none;
 }
 
 .dropdown-option {
@@ -83,15 +99,37 @@
     cursor: pointer;
 }
 
+
+/* States: open */
+.field .dropdown-trigger:focus-visible,
+.field .dropdown-trigger[aria-expanded="true"] {
+    border: var(--dropdown-open-border-width) solid var(--field-input-focus-border-color);
+}
+
+.dropdown-trigger[aria-expanded="true"] .dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu[hidden] {
+    display: none;
+}
+
+/* States: highlighted and selected options */
 .dropdown-option:hover,
 .dropdown-option.is-active,
 .dropdown-option[aria-selected="true"] {
-    background: var(--brand-eko-sky);
+    background: var(--dropdown-option-highlight-bg);
 }
 
 .dropdown-option[aria-selected="true"] {
-    color: var(--color-primary);
-    font-weight: var(--brand-font-weight-bold);
+    color: var(--dropdown-option-selected-color);
+    font-weight: var(--dropdown-option-selected-font-weight);
+}
+
+/* States: disabled */
+.dropdown-trigger:disabled .dropdown-value,
+.dropdown-trigger:disabled .dropdown-icon {
+    color: var(--field-disabled-color);
 }
 
 .dropdown-option[aria-disabled="true"] {

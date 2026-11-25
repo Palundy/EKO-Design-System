@@ -1,0 +1,21 @@
+/*
+ * Base: page-wide defaults that every component builds on.
+ *
+ * Text styles are set once on `body` and inherited, so a component only sets what differs.
+ * Form controls do not inherit fonts by default, so they are told to.
+ */
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-body);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}

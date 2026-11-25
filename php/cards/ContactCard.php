@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `ContactCard` renders a contact card (`.contact-card`, see css/components/cards/contact_card.css).
+ * `ContactCard` renders a contact card (`.contact-card`, see css/components/contact-card.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
  *
  * Every part except the first line is optional and is left out when not given:

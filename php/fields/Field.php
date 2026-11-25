@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * `Field` is the shared base of the form field components `Input`, `Textarea` and `Dropdown`
- * (see css/components/fields.css). It is not used directly.
+ * (see css/components/field.css). It is not used directly.
  *
  * It builds the parts every field has in common and leaves the control itself to the subclass:
  * ```html

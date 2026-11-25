@@ -1,16 +1,76 @@
+/*
+ * Contact card: a person or department with an optional photo, contact details and button.
+ *
+ *     <div class="contact-card">
+ *         <div class="card-header">
+ *             <div class="card-image"><img></div>
+ *             <div class="card-contact-details">
+ *                 <div class="card-contact-details-primary">first, second and third line</div>
+ *                 <div class="card-contact-details-secondary">email, phone and website rows</div>
+ *             </div>
+ *         </div>
+ *         <button class="card-button btn negative">…</button>
+ *     </div>
+ *
+ * The child class names are shared with the product card, so they are always scoped by `.contact-card`.
+ */
+
+
+/* Base */
 .contact-card {
+    /* Tokens: card */
+    --contact-card-width: 445px;
+    --contact-card-padding: var(--space-2xlarge);
+    --contact-card-gap: var(--space-2xlarge);
+    --contact-card-bg: var(--color-surface-raised);
+    --contact-card-border-radius: var(--radius-large);
+
+    /* Tokens: image */
+    --contact-card-image-width: 120px;
+    --contact-card-image-height: 120px;
+    --contact-card-image-gap: var(--space-2xlarge);
+    --contact-card-image-bg: var(--color-surface-placeholder);
+    --contact-card-image-border-radius: var(--radius-small);
+
+    /* Tokens: primary details (first, second and third line) */
+    --contact-card-details-padding-y: var(--space-large);
+    --contact-card-details-divider-width: var(--border-width-thin);
+    --contact-card-details-divider-color: var(--color-border);
+    --contact-card-details-first-font-size: var(--font-size-xlarge);
+    --contact-card-details-first-font-weight: var(--font-weight-bold);
+    --contact-card-details-first-color: var(--color-text-brand);
+    --contact-card-details-first-line-height: var(--line-height-heading);
+    --contact-card-details-first-letter-spacing: var(--letter-spacing-heading);
+    --contact-card-details-second-font-size: var(--font-size-small);
+    --contact-card-details-second-font-weight: var(--font-weight-bold);
+    --contact-card-details-second-color: var(--color-text-brand);
+    --contact-card-details-third-font-size: var(--font-size-small);
+    --contact-card-details-third-font-weight: var(--font-weight-regular);
+    --contact-card-details-third-color: var(--color-text);
+
+    /* Tokens: secondary details (email, phone and website rows) */
+    --contact-card-details-secondary-font-size: var(--font-size-small);
+    --contact-card-details-secondary-font-weight: var(--font-weight-medium);
+    --contact-card-details-secondary-color: var(--color-text-brand);
+    --contact-card-details-secondary-gap: var(--space-small);
+    --contact-card-details-secondary-icon-size: var(--icon-size-medium);
+
+    /* Tokens: button */
+    --contact-card-button-icon-size: var(--icon-size-medium);
+
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: var(--contact-card-gap);
-
     width: var(--contact-card-width);
     height: fit-content;
-    background-color: var(--card-bg);
-    border-radius: var(--card-border-radius);
     padding: var(--contact-card-padding);
+    background-color: var(--contact-card-bg);
+    border-radius: var(--contact-card-border-radius);
 }
 
+
+/* Child elements: header with the image next to the details */
 .contact-card .card-header {
     display: flex;
     flex-direction: row;
@@ -18,13 +78,13 @@
 
 .contact-card .card-header .card-image img {
     display: block;
-    min-width: var(--contact-card-image-width);
-    min-height: var(--contact-card-image-height);
     width: var(--contact-card-image-width);
+    min-width: var(--contact-card-image-width);
     height: var(--contact-card-image-height);
+    min-height: var(--contact-card-image-height);
+    margin-right: var(--contact-card-image-gap);
     background-color: var(--contact-card-image-bg);
     border-radius: var(--contact-card-image-border-radius);
-    margin-right: var(--contact-card-padding);
 }
 
 .contact-card .card-header .card-image img:not([src]),
@@ -33,61 +93,65 @@
 }
 
 .contact-card .card-contact-details {
-    width: 100%;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
+/* Child elements: primary details */
 .contact-card .card-contact-details-primary {
     width: 100%;
-    border-bottom: var(--contact-card-details-primary-border-bottom);
     padding-bottom: var(--contact-card-details-padding-y);
+    border-bottom: var(--contact-card-details-divider-width) solid var(--contact-card-details-divider-color);
 }
 
 .contact-card .card-contact-details-first {
     font-size: var(--contact-card-details-first-font-size);
     font-weight: var(--contact-card-details-first-font-weight);
+    line-height: var(--contact-card-details-first-line-height);
+    letter-spacing: var(--contact-card-details-first-letter-spacing);
     color: var(--contact-card-details-first-color);
 }
+
 .contact-card .card-contact-details-second {
     font-size: var(--contact-card-details-second-font-size);
     font-weight: var(--contact-card-details-second-font-weight);
     color: var(--contact-card-details-second-color);
 }
+
 .contact-card .card-contact-details-third {
     font-size: var(--contact-card-details-third-font-size);
     font-weight: var(--contact-card-details-third-font-weight);
     color: var(--contact-card-details-third-color);
 }
 
-
+/* Child elements: secondary details */
 .contact-card .card-contact-details-secondary {
     display: flex;
     flex-direction: column;
-    color: var(--contact-card-details-secondary-color);
+    gap: var(--contact-card-details-secondary-gap);
+    padding-top: var(--contact-card-details-padding-y);
     font-size: var(--contact-card-details-secondary-font-size);
     font-weight: var(--contact-card-details-secondary-font-weight);
-    padding-top: var(--contact-card-details-padding-y);
-    gap: var(--contact-card-details-secondary-gap);
+    color: var(--contact-card-details-secondary-color);
 }
+
 .contact-card .card-contact-details-email,
 .contact-card .card-contact-details-phone,
 .contact-card .card-contact-details-website {
     display: flex;
     gap: var(--contact-card-details-secondary-gap);
 }
-.contact-card .card-contact-details-secondary img {
-    display: block;
-    width: var(--contact-card-details-secondary-icon-width);
-    height: var(--contact-card-details-secondary-icon-height);
-    background: var(--contact-card-details-secondary-icon-bg);
+
+.contact-card .card-contact-details-secondary .icon {
+    --icon-width: var(--contact-card-details-secondary-icon-size);
+    --icon-height: var(--contact-card-details-secondary-icon-size);
 }
 
+/* Child elements: button (a `.btn.negative`, see css/components/button.css) */
 .contact-card .card-button {
-    width: 100%;
+    --button-icon-size: var(--contact-card-button-icon-size);
+
     box-sizing: border-box;
-}
-.contact-card .card-button .icon {
-    --icon-height: var(--contact-card-button-icon-size) !important;
-    --icon-width: var(--contact-card-button-icon-size) !important;
+    width: 100%;
 }

@@ -1,144 +1,121 @@
+/*
+ * Semantic tokens: what a value is FOR (body text, a raised surface, a focus border).
+ * They only point at brand tokens, and they are the only global tokens components may use.
+ *
+ * This file is the default (light) theme. A theme or sub-brand overrides these tokens and nothing else,
+ * for example in css/themes/dark.css:
+ *
+ *     [data-theme="dark"] {
+ *         --color-text: var(--brand-white);
+ *         --color-surface: var(--brand-black);
+ *         --state-overlay-color: var(--brand-white);
+ *     }
+ *
+ * Component-specific tokens (`--button-*`, `--field-*`, …) live at the top of each component's own file.
+ */
 :root {
-    /* Action colors */
+    /* Typography */
+    --font-family: var(--brand-font-primary);
+
+    --font-weight-regular: var(--brand-font-weight-regular);
+    --font-weight-medium: var(--brand-font-weight-medium);
+    --font-weight-bold: var(--brand-font-weight-bold);
+
+    --font-size-2xsmall: var(--brand-font-size-2xsmall);
+    --font-size-xsmall: var(--brand-font-size-xsmall);
+    --font-size-small: var(--brand-font-size-small);
+    --font-size-default: var(--brand-font-size-default);
+    --font-size-large: var(--brand-font-size-large);
+    --font-size-xlarge: var(--brand-font-size-xlarge);
+    --font-size-2xlarge: var(--brand-font-size-2xlarge);
+    --font-size-3xlarge: var(--brand-font-size-3xlarge);
+    --font-size-4xlarge: var(--brand-font-size-4xlarge);
+
+    --font-size-body: var(--font-size-small);
+
+    --line-height-tight: var(--brand-line-height-tight);
+    --line-height-snug: var(--brand-line-height-snug);
+    --line-height-relaxed: var(--brand-line-height-relaxed);
+
+    --line-height-body: var(--line-height-relaxed);
+    --line-height-heading: var(--line-height-snug);
+
+    --letter-spacing-heading: var(--brand-letter-spacing-tight);
+
+
+    /* Spacing, radius, borders, icons, shadows and motion */
+    --space-3xsmall: var(--brand-space-3xsmall);
+    --space-2xsmall: var(--brand-space-2xsmall);
+    --space-xsmall: var(--brand-space-xsmall);
+    --space-small: var(--brand-space-small);
+    --space-medium: var(--brand-space-medium);
+    --space-large: var(--brand-space-large);
+    --space-xlarge: var(--brand-space-xlarge);
+    --space-2xlarge: var(--brand-space-2xlarge);
+
+    --radius-none: var(--brand-radius-none);
+    --radius-xsmall: var(--brand-radius-xsmall);
+    --radius-small: var(--brand-radius-small);
+    --radius-medium: var(--brand-radius-medium);
+    --radius-large: var(--brand-radius-large);
+    --radius-round: var(--brand-radius-round);
+
+    --border-width-thin: var(--brand-border-width-thin);
+    --border-width-thick: var(--brand-border-width-thick);
+
+    --icon-size-small: var(--brand-icon-size-small);
+    --icon-size-medium: var(--brand-icon-size-medium);
+
+    --shadow-medium: var(--brand-shadow-medium);
+
+    --duration-fast: var(--brand-duration-fast);
+    --duration-spin: var(--brand-duration-spin);
+
+
+    /* Colour: actions (button variants and other interactive accents) */
     --color-primary: var(--brand-eko-blue);
+    --color-accent: var(--brand-eko-teal);
     --color-destructive: var(--brand-error);
     --color-positive: var(--brand-success);
     --color-enquiry: var(--brand-warning);
     --color-disabled: var(--brand-eko-grey);
 
-    /* Button interaction rules */
+    /* Colour: status (validation messages and borders) */
+    --color-error: var(--brand-error);
+    --color-success: var(--brand-success);
+    --color-warning: var(--brand-warning);
+
+    /* Colour: text */
+    --color-text: var(--brand-black);
+    --color-text-brand: var(--brand-eko-blue);
+    --color-text-muted: var(--brand-eko-grey);
+    --color-text-placeholder: var(--brand-mid-grey);
+    --color-text-disabled: var(--brand-light-grey);
+    --color-text-on-color: var(--brand-white);
+
+    /* Colour: surfaces (backgrounds) */
+    --color-surface: var(--brand-white);
+    --color-surface-raised: var(--brand-card);
+    --color-surface-disabled: var(--brand-card);
+    --color-surface-highlight: var(--brand-eko-sky);
+    --color-surface-placeholder: var(--brand-eko-grey);
+
+    /* Colour: borders */
+    --color-border: var(--brand-light-grey);
+    --color-border-focus: var(--brand-eko-blue);
+
+    /* Colour: links */
+    --color-link: var(--brand-eko-blue);
+    --color-link-hover: var(--brand-eko-soft);
+    --color-link-focus: var(--brand-eko-soft);
+
+    /* Colour: scrollbars */
+    --color-scrollbar-thumb: var(--brand-eko-grey);
+    --color-scrollbar-track: var(--brand-light-grey);
+
+
+    /* Interaction states: hover and active colours are the base colour mixed with this overlay colour */
     --state-hover-overlay: 15%;
     --state-active-overlay: 30%;
-    --state-overlay-color-general: var(--brand-black);
-    --state-overlay-color-secondary: var(--brand-eko-blue);
-
-    /* Button styles */
-    --button-height: 36px;
-    --button-border-radius: 5px;
-    --button-padding-x: 8px;
-    --button-padding-y: 24px;
-    --button-font-size: var(--brand-font-size-default);
-    --button-font-weight: 700;
-    --button-line-height: 1.1;
-
-    /* Icon styles */
-    --icon-width-default: 20px;
-    --icon-height-default: 20px;
-
-
-
-    /* Field styles */
-    --field-gap: 8px;
-    --field-width: 320px;
-
-    --field-textarea-height: 96px;
-    --field-input-height: 44px;
-    --field-input-bg: var(--brand-white);
-    --field-input-color: var(--brand-black);
-    --field-input-outline-color: var(--brand-light-grey);
-    --field-input-border-color: var(--brand-light-grey);
-    --field-input-border-radius: 4px;
-    --field-input-padding-x: 16px;
-    --field-input-padding-y: 12px;
-    --field-input-font-size: var(--brand-font-size-small);
-    --field-input-font-weight: var(--brand-font-weight-regular);
-    --field-input-border-color-error: var(--brand-error);
-    --field-input-border-color-success: var(--brand-success);
-    
-    --field-label-color: var(--brand-eko-blue);
-    --field-label-font-size: var(--brand-font-size-small);
-    --field-label-font-weight: var(--brand-font-weight-bold);
-
-    --field-disabled-bg: var(--brand-card);
-    --field-disabled-color: var(--brand-light-grey);
-
-    --field-input-focus-border-color: var(--brand-eko-blue);
-    --field-input-focus-border-width: 1px;
-
-    --field-info-color: var(--brand-eko-grey);
-    --field-info-font-size: var(--brand-font-size-xsmall);
-    --field-info-color-error: var(--brand-error);
-    --field-info-color-success: var(--brand-success);
-
-
-    /* General Card styles */
-    --card-bg: var(--brand-card);
-    --card-border-radius: 10px;
-
-    /* Product Card styles */
-    --product-card-width: 322px;
-    --product-card-bg: var(--brand-card);
-    --product-card-border-radius: 10px;
-    --product-card-padding: 20px;
-    --product-card-gap: 12px;
-
-    --product-card-image-height: 216px;
-    --product-card-image-width-percentage: 67%;
-
-    --product-card-label-font-size: var(--brand-font-size-2xsmall);
-    --product-card-label-padding-x: 8px;
-    --product-card-label-padding-y: 2px;
-    --product-card-label-border-radius: 0px;
-    --product-card-label-color: var(--brand-white);
-    --product-card-label-bg: var(--brand-eko-teal);
-
-    --product-card-title-font-size: var(--brand-font-size-xlarge);
-    --product-card-title-font-weight: var(--brand-font-weight-bold);
-    --product-card-title-color: var(--brand-eko-blue);
-    
-    --product-card-description-font-size: var(--brand-font-size-small);
-    --product-card-description-font-weight: var(--brand-font-weight-regular);
-    --product-card-description-color: var(--brand-black);
-
-    --product-card-table-font-size: var(--brand-font-size-2xsmall);
-    --product-card-table-font-weight: var(--brand-font-weight-regular);
-    --product-card-table-color: var(--brand-black);
-    --product-card-table-line-height: 1.0;
-    --product-card-table-row-padding-x: 0px;
-    --product-card-table-row-padding-y: 6px;
-    --product-card-table-row-border-color: var(--brand-light-grey); 
-
-    --product-card-cta-font-size: var(--brand-font-size-small);
-    --product-card-cta-font-weight: var(--brand-font-weight-bold);
-    --product-card-cta-color: var(--brand-eko-blue);
-    --product-card-cta-hover-color: color-mix(
-        in srgb,
-        var(--brand-eko-blue),
-        var(--state-overlay-color-general) var(--state-hover-overlay)
-    );
-
-    /* Contact Card styles */
-    --contact-card-width: 445px;
-    --contact-card-padding: 24px;
-    --contact-card-gap: 24px;
-    --contact-card-image-width: 120px;
-    --contact-card-image-height: 120px;
-    --contact-card-image-bg: var(--brand-eko-grey);
-    --contact-card-image-border-radius: 4px;
-    --contact-card-details-padding-y: 16px;
-    --contact-card-details-primary-border-bottom: 1px solid var(--brand-light-grey);
-    --contact-card-details-first-font-size: var(--brand-font-size-xlarge);
-    --contact-card-details-first-font-weight: var(--brand-font-weight-bold);
-    --contact-card-details-first-color: var(--brand-eko-blue);
-    --contact-card-details-second-font-size: var(--brand-font-size-small);
-    --contact-card-details-second-font-weight: var(--brand-font-weight-bold);
-    --contact-card-details-second-color: var(--brand-eko-blue);
-    --contact-card-details-third-font-size: var(--brand-font-size-small);
-    --contact-card-details-third-font-weight: var(--brand-font-weight-regular);
-    --contact-card-details-third-color: var(--brand-black);
-    --contact-card-details-secondary-font-size: var(--brand-font-size-small);
-    --contact-card-details-secondary-font-weight: var(--brand-font-weight-medium);
-    --contact-card-details-secondary-color: var(--brand-eko-blue);
-    --contact-card-details-secondary-gap: 8px;
-    --contact-card-details-secondary-icon-width: 20px;
-    --contact-card-details-secondary-icon-height: 20px;
-    --contact-card-button-icon-size: 20px;
-
-
-    /* Link styles */
-    --link-font-weight: var(--brand-font-weight-regular);
-    --link-color: var(--brand-eko-blue);
-    --link-hover-color: var(--brand-eko-soft);
-    --link-active-color: var(--brand-eko-soft);
-    --link-focus-outline: thin solid var(--brand-eko-soft);
+    --state-overlay-color: var(--brand-black);
 }

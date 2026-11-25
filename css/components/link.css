@@ -1,0 +1,48 @@
+/*
+ * Link: an opt-in text link. Bare `<a>` elements are not styled.
+ *
+ *     <a class="link" href="…">Text</a>
+ *
+ * Links have no `disabled` attribute, so disable one with `aria-disabled="true"`.
+ */
+
+
+/* Base */
+.link {
+    /* Tokens */
+    --link-color: var(--color-link);
+    --link-hover-color: var(--color-link-hover);
+    --link-active-color: var(--color-link-hover);
+    --link-disabled-color: var(--color-text-disabled);
+    --link-font-weight: var(--font-weight-regular);
+    --link-focus-outline: var(--border-width-thin) solid var(--color-link-focus);
+    --link-focus-offset: var(--space-3xsmall);
+    --link-focus-radius: var(--radius-xsmall);
+
+    color: var(--link-color);
+    font-weight: var(--link-font-weight);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* States */
+.link:hover {
+    color: var(--link-hover-color);
+}
+
+.link:active {
+    color: var(--link-active-color);
+}
+
+.link:focus-visible {
+    outline: var(--link-focus-outline);
+    outline-offset: var(--link-focus-offset);
+    border-radius: var(--link-focus-radius);
+}
+
+.link[aria-disabled="true"] {
+    color: var(--link-disabled-color);
+    pointer-events: none;
+    cursor: default;
+}

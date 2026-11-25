@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `ProductCard` renders a product card (`.product-card`, see css/components/cards/product_card.css).
+ * `ProductCard` renders a product card (`.product-card`, see css/components/product-card.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
  *
  * Every part except the title is optional and is left out when not given:

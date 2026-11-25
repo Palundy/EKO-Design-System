@@ -1,18 +1,28 @@
-@import "tokens/brand.css";
-@import "tokens/semantic.css";
-@import "typography.css";
+/*
+ * EKO design system: the only stylesheet a page links. It contains no rules of its own.
+ *
+ * Everything is placed in a cascade layer. Layers listed later win over earlier ones,
+ * whatever the selector specificity. CSS that an application writes outside a layer
+ * wins over all of them, so apps can override the design system without `!important`.
+ */
+@layer tokens, base, components, utilities;
 
-@import "components/links.css";
-@import "components/icons.css";
-@import "components/buttons.css";
-@import "components/fields.css";
-@import "components/dropdowns.css";
-@import "components/cards/product_card.css";
-@import "components/cards/contact_card.css";
+/* Tokens: brand values first, then the semantic roles that point at them */
+@import url("tokens/brand.css") layer(tokens);
+@import url("tokens/semantic.css") layer(tokens);
 
+/* Themes: override semantic tokens when switched on with `<html data-theme="…">`. Import them after semantic.css */
+@import url("themes/dark.css") layer(tokens);
 
-* {
-    font-family: var(--brand-font-primary);
-    font-weight: var(--brand-font-weight-regular);
-    font-size: var(--brand-font-size-small);
-}
+/* Base: fonts and page-wide defaults */
+@import url("base/typography.css") layer(base);
+@import url("base/base.css") layer(base);
+
+/* Components: one file per component, each starting with its own tokens */
+@import url("components/link.css") layer(components);
+@import url("components/icon.css") layer(components);
+@import url("components/button.css") layer(components);
+@import url("components/field.css") layer(components);
+@import url("components/dropdown.css") layer(components);
+@import url("components/product-card.css") layer(components);
+@import url("components/contact-card.css") layer(components);

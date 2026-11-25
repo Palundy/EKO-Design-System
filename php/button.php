@@ -1,6 +1,6 @@
 <?php
 /**
- * `Button` renders a design-system button (`.btn`, see css/components/buttons.css).
+ * `Button` renders a design-system button (`.btn`, see css/components/button.css).
  * The button is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
  *
  * Examples:

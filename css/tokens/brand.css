@@ -1,21 +1,44 @@
+/*
+ * Brand tokens: the raw EKO values, named after what they ARE (a colour, a size), not what they are FOR.
+ *
+ * Rules:
+ * - Only semantic.css may use these. Components never reference `--brand-*` directly.
+ * - A sub-brand or theme does not change this file. It points the semantic tokens at other values.
+ * - Add a value here only when the design actually uses it, so the scales stay small.
+ */
 :root {
+    /* Colours: EKO palette */
     --brand-eko-blue: #00559e;
     --brand-eko-cyan: #009ad8;
     --brand-eko-teal: #00a9b7;
     --brand-eko-soft: #8cabd9;
     --brand-eko-sky: #e5f0fa;
     --brand-eko-grey: #b2b7c3;
-    --brand-light-grey: #dedede;
 
+    /* Colours: neutrals */
     --brand-white: #ffffff;
-    --brand-black: #000000;
     --brand-card: #f4f2f2;
+    --brand-light-grey: #dedede;
+    --brand-mid-grey: #6e7380;
+    --brand-black: #000000;
+
+    /* Colours: dark neutrals for the dark theme (css/themes/dark.css).
+       DRAFT: not official EKO values yet, to be confirmed by design. */
+    --brand-dark-900: #121418;
+    --brand-dark-800: #1d1f24;
+    --brand-dark-700: #2a2d34;
+    --brand-dark-600: #3a3f48;
+
+    /* Colours: status and extras */
     --brand-warning: #f7b01a;
     --brand-error: #f05461;
-    --brand-purple: #8073cc;
     --brand-success: #33b278;
+    --brand-purple: #8073cc;
 
-    --brand-font-primary: 'reader', sans-serif;
+
+    /* Typography */
+    --brand-font-primary: "reader", sans-serif;
+
     --brand-font-weight-regular: 400;
     --brand-font-weight-medium: 500;
     --brand-font-weight-bold: 700;
@@ -29,4 +52,44 @@
     --brand-font-size-2xlarge: 30px;
     --brand-font-size-3xlarge: 38px;
     --brand-font-size-4xlarge: 48px;
+
+    --brand-line-height-tight: 1;
+    --brand-line-height-snug: 1.1;
+    --brand-line-height-relaxed: 1.4;
+
+    --brand-letter-spacing-tight: -0.6px;
+
+
+    /* Spacing: gaps, paddings and margins */
+    --brand-space-3xsmall: 2px;
+    --brand-space-2xsmall: 4px;
+    --brand-space-xsmall: 6px;
+    --brand-space-small: 8px;
+    --brand-space-medium: 12px;
+    --brand-space-large: 16px;
+    --brand-space-xlarge: 20px;
+    --brand-space-2xlarge: 24px;
+
+    /* Corner radius */
+    --brand-radius-none: 0px;
+    --brand-radius-xsmall: 2px;
+    --brand-radius-small: 4px;
+    --brand-radius-medium: 5px;
+    --brand-radius-large: 10px;
+    --brand-radius-round: 50%;
+
+    /* Borders */
+    --brand-border-width-thin: 1px;
+    --brand-border-width-thick: 2px;
+
+    /* Icon sizes */
+    --brand-icon-size-small: 16px;
+    --brand-icon-size-medium: 20px;
+
+    /* Shadows */
+    --brand-shadow-medium: 0 4px 12px rgb(0 0 0 / 0.1);
+
+    /* Motion */
+    --brand-duration-fast: 100ms;
+    --brand-duration-spin: 800ms;
 }
