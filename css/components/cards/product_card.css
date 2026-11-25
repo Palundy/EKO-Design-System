@@ -1,0 +1,77 @@
+.product-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--product-card-gap);
+
+    width: var(--product-card-width);
+    height: fit-content;
+    background-color: var(--card-bg);
+    border-radius: var(--card-border-radius);
+    padding: var(--product-card-padding);
+}
+
+.product-card .card-title {
+    user-select: none;
+    font-size: var(--product-card-title-font-size);
+    font-weight: var(--brand-font-weight-bold);
+    color: var(--product-card-title-color);
+}
+.product-card .card-description {
+    user-select: none;
+    font-size: var(--product-card-description-font-size);
+    font-weight: var(--product-card-description-font-weight);
+    color: var(--product-card-description-color);
+}
+
+.product-card .card-table {
+    user-select: none;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--product-card-table-font-size);
+    font-weight: var(--product-card-table-font-weight);
+    line-height: var(--product-card-table-line-height);
+}
+.product-card .card-table tr {
+    border-bottom: 1px solid var(--product-card-table-row-border-color);
+    padding: var(--product-card-table-row-padding-y) var(--product-card-table-row-padding-x);
+}
+.product-card .card-table td {
+    padding: var(--product-card-table-row-padding-y) var(--product-card-table-row-padding-x);
+    color: var(--product-card-table-color);
+    font-size: var(--product-card-table-font-size);
+}
+
+.product-card .card-image {
+    width: 100%;
+    height: var(--product-card-image-height);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.product-card .card-image img {
+    max-width: var(--product-card-image-width-percentage);
+    object-fit: cover;
+}
+
+.product-card .card-label {
+    width: fit-content;
+    padding: var(--product-card-label-padding-y) var(--product-card-label-padding-x);
+    user-select: none;
+    font-size: var(--product-card-label-font-size);
+    background-color: var(--product-card-label-bg);
+    color: var(--product-card-label-color);
+    border-radius: var(--product-card-label-border-radius);
+}
+
+.product-card .card-cta {
+    user-select: none;
+    font-size: var(--product-card-cta-font-size);
+    font-weight: var(--product-card-cta-font-weight);
+    color: var(--product-card-cta-color);
+    cursor: pointer;
+}
+.product-card .card-cta:hover {
+    color: var(--product-card-cta-hover-color);
+}

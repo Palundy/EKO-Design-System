@@ -1,0 +1,32 @@
+:root {
+    --brand-eko-blue: #00559e;
+    --brand-eko-cyan: #009ad8;
+    --brand-eko-teal: #00a9b7;
+    --brand-eko-soft: #8cabd9;
+    --brand-eko-sky: #e5f0fa;
+    --brand-eko-grey: #b2b7c3;
+    --brand-light-grey: #dedede;
+
+    --brand-white: #ffffff;
+    --brand-black: #000000;
+    --brand-card: #f4f2f2;
+    --brand-warning: #f7b01a;
+    --brand-error: #f05461;
+    --brand-purple: #8073cc;
+    --brand-success: #33b278;
+
+    --brand-font-primary: 'reader', sans-serif;
+    --brand-font-weight-regular: 400;
+    --brand-font-weight-medium: 500;
+    --brand-font-weight-bold: 700;
+
+    --brand-font-size-2xsmall: 10px;
+    --brand-font-size-xsmall: 12px;
+    --brand-font-size-small: 15px;
+    --brand-font-size-default: 18px;
+    --brand-font-size-large: 20px;
+    --brand-font-size-xlarge: 22px;
+    --brand-font-size-2xlarge: 30px;
+    --brand-font-size-3xlarge: 38px;
+    --brand-font-size-4xlarge: 48px;
+}

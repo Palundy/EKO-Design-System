@@ -1,0 +1,80 @@
+/* Styling for the field container */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--field-gap);
+    width: var(--field-width);
+}
+
+/* Styling for the field label */
+.field .field-label {
+    color: var(--field-label-color);
+    font-size: var(--field-label-font-size);
+    font-weight: var(--field-label-font-weight);
+    user-select: none;
+}
+
+/* Styling for the field input (can be input, select or textarea) */
+.field .field-input {
+    height: var(--field-input-height);
+    background-color: var(--field-input-bg);
+    color: var(--field-input-color);
+    border: 1px solid var(--field-input-border-color);
+    border-radius: var(--field-input-border-radius);
+    padding: var(--field-input-padding-y) var(--field-input-padding-x);
+    font-size: var(--field-input-font-size);
+    font-weight: var(--field-input-font-weight);
+    outline: none;
+    box-sizing: border-box;
+}
+/* Styling for the textarea field input */
+.field textarea.field-input {
+    height: var(--field-textarea-height);
+}
+
+/* Styling for the disabled field input */
+.field .field-input:disabled {
+    background-color: var(--field-disabled-bg);
+    color: var(--field-disabled-color);
+    cursor: not-allowed;
+}
+
+/* Styling for the field label when the input is disabled */
+.field:has(.field-input:disabled) .field-label {
+    color: var(--field-disabled-color);
+}
+
+/* Styling for the focussed field input */
+.field .field-input:focus {
+    border-color: var(--field-input-focus-border-color);
+    border-width: var(--field-input-focus-border-width);
+}
+
+/* Styling for the field input when there is an error */
+.field.error .field-input {
+    border-color: var(--field-input-border-color-error);
+}
+
+/* Styling for the field input when there is a success */
+.field.success .field-input {
+    border-color: var(--field-input-border-color-success);
+}
+
+
+
+/* Styling for the field info text */
+.field .field-info {
+    color: var(--field-info-color);
+    font-size: var(--field-info-font-size);
+    user-select: none;
+}
+
+/* Styling for the field info text when there is an error */
+.field.error .field-info {
+    color: var(--field-info-color-error);
+}
+
+/* Styling for the field info text when there is a success */
+.field.success .field-info {
+    color: var(--field-info-color-success);
+}

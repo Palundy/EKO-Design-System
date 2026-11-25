@@ -1,0 +1,136 @@
+:root {
+    /* Action colors */
+    --color-primary: var(--brand-eko-blue);
+    --color-destructive: var(--brand-error);
+    --color-positive: var(--brand-success);
+    --color-enquiry: var(--brand-warning);
+    --color-disabled: var(--brand-eko-grey);
+
+    /* Button interaction rules */
+    --state-hover-overlay: 15%;
+    --state-active-overlay: 30%;
+    --state-overlay-color-general: var(--brand-black);
+    --state-overlay-color-secondary: var(--brand-eko-blue);
+
+    /* Button styles */
+    --button-height: 36px;
+    --button-border-radius: 5px;
+    --button-padding-x: 8px;
+    --button-padding-y: 24px;
+    --button-font-size: var(--brand-font-size-default);
+    --button-font-weight: 700;
+    --button-line-height: 1.1;
+
+    /* Icon styles */
+    --icon-width-default: 20px;
+    --icon-height-default: 20px;
+
+
+
+    /* Field styles */
+    --field-gap: 8px;
+    --field-width: 320px;
+
+    --field-textarea-height: 96px;
+    --field-input-height: 44px;
+    --field-input-bg: var(--brand-white);
+    --field-input-color: var(--brand-black);
+    --field-input-outline-color: var(--brand-light-grey);
+    --field-input-border-color: var(--brand-light-grey);
+    --field-input-border-radius: 4px;
+    --field-input-padding-x: 16px;
+    --field-input-padding-y: 12px;
+    --field-input-font-size: var(--brand-font-size-small);
+    --field-input-font-weight: var(--brand-font-weight-regular);
+    --field-input-border-color-error: var(--brand-error);
+    --field-input-border-color-success: var(--brand-success);
+    
+    --field-label-color: var(--brand-eko-blue);
+    --field-label-font-size: var(--brand-font-size-small);
+    --field-label-font-weight: var(--brand-font-weight-bold);
+
+    --field-disabled-bg: var(--brand-card);
+    --field-disabled-color: var(--brand-light-grey);
+
+    --field-input-focus-border-color: var(--brand-eko-blue);
+    --field-input-focus-border-width: 1px;
+
+    --field-info-color: var(--brand-eko-grey);
+    --field-info-font-size: var(--brand-font-size-xsmall);
+    --field-info-color-error: var(--brand-error);
+    --field-info-color-success: var(--brand-success);
+
+
+    /* General Card styles */
+    --card-bg: var(--brand-card);
+    --card-border-radius: 10px;
+
+    /* Product Card styles */
+    --product-card-width: 322px;
+    --product-card-bg: var(--brand-card);
+    --product-card-border-radius: 10px;
+    --product-card-padding: 20px;
+    --product-card-gap: 12px;
+
+    --product-card-image-height: 216px;
+    --product-card-image-width-percentage: 67%;
+
+    --product-card-label-font-size: var(--brand-font-size-2xsmall);
+    --product-card-label-padding-x: 8px;
+    --product-card-label-padding-y: 2px;
+    --product-card-label-border-radius: 0px;
+    --product-card-label-color: var(--brand-white);
+    --product-card-label-bg: var(--brand-eko-teal);
+
+    --product-card-title-font-size: var(--brand-font-size-xlarge);
+    --product-card-title-font-weight: var(--brand-font-weight-bold);
+    --product-card-title-color: var(--brand-eko-blue);
+    
+    --product-card-description-font-size: var(--brand-font-size-small);
+    --product-card-description-font-weight: var(--brand-font-weight-regular);
+    --product-card-description-color: var(--brand-black);
+
+    --product-card-table-font-size: var(--brand-font-size-2xsmall);
+    --product-card-table-font-weight: var(--brand-font-weight-regular);
+    --product-card-table-color: var(--brand-black);
+    --product-card-table-line-height: 1.0;
+    --product-card-table-row-padding-x: 0px;
+    --product-card-table-row-padding-y: 6px;
+    --product-card-table-row-border-color: var(--brand-light-grey); 
+
+    --product-card-cta-font-size: var(--brand-font-size-small);
+    --product-card-cta-font-weight: var(--brand-font-weight-bold);
+    --product-card-cta-color: var(--brand-eko-blue);
+    --product-card-cta-hover-color: color-mix(
+        in srgb,
+        var(--brand-eko-blue),
+        var(--state-overlay-color-general) var(--state-hover-overlay)
+    );
+
+    /* Contact Card styles */
+    --contact-card-width: 445px;
+    --contact-card-padding: 24px;
+    --contact-card-gap: 24px;
+    --contact-card-image-width: 120px;
+    --contact-card-image-height: 120px;
+    --contact-card-image-bg: var(--brand-eko-grey);
+    --contact-card-image-border-radius: 4px;
+    --contact-card-details-padding-y: 16px;
+    --contact-card-details-primary-border-bottom: 1px solid var(--brand-light-grey);
+    --contact-card-details-first-font-size: var(--brand-font-size-xlarge);
+    --contact-card-details-first-font-weight: var(--brand-font-weight-bold);
+    --contact-card-details-first-color: var(--brand-eko-blue);
+    --contact-card-details-second-font-size: var(--brand-font-size-small);
+    --contact-card-details-second-font-weight: var(--brand-font-weight-bold);
+    --contact-card-details-second-color: var(--brand-eko-blue);
+    --contact-card-details-third-font-size: var(--brand-font-size-small);
+    --contact-card-details-third-font-weight: var(--brand-font-weight-regular);
+    --contact-card-details-third-color: var(--brand-black);
+    --contact-card-details-secondary-font-size: var(--brand-font-size-small);
+    --contact-card-details-secondary-font-weight: var(--brand-font-weight-medium);
+    --contact-card-details-secondary-color: var(--brand-eko-blue);
+    --contact-card-details-secondary-gap: 8px;
+    --contact-card-details-secondary-icon-width: 20px;
+    --contact-card-details-secondary-icon-height: 20px;
+    --contact-card-button-icon-size: 20px;
+}

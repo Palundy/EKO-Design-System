@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/dropdowns.js" defer></script>
+</head>
+<body>
+    <table>
+        <tr><th colspan="7">Buttons</th></tr>
+        <tr>
+            <th></th>
+            <th>Default</th>
+            <th>Disabled</th>
+            <th>Loading</th>
+            <th>Negative</th>
+        </tr>
+        <tr>
+            <td>Primary</td>
+            <td><button class="btn">Label</button></td>
+            <td><button class="btn" disabled>Label</button></td>
+            <td><button class="btn loading">Label</button></td>
+            <td><button class="btn negative">Label</button></td>
+        </tr>
+        <tr>
+            <td>Destructive</td>
+            <td><button class="btn btn-destructive">Label</button></td>
+            <td><button class="btn btn-destructive" disabled>Label</button></td>
+            <td><button class="btn btn-destructive loading">Label</button></td>
+            <td><button class="btn btn-destructive negative">Label</button></td>
+        </tr>
+        <tr>
+            <td>Positive</td>
+            <td><button class="btn btn-positive">Label</button></td>
+            <td><button class="btn btn-positive" disabled>Label</button></td>
+            <td><button class="btn btn-positive loading">Label</button></td>
+            <td><button class="btn btn-positive negative">Label</button></td>
+        </tr>
+        <tr>
+            <td>Enquiry</td>
+            <td><button class="btn btn-enquiry">Label</button></td>
+            <td><button class="btn btn-enquiry" disabled>Label</button></td>
+            <td><button class="btn btn-enquiry loading">Label</button></td>
+            <td><button class="btn btn-enquiry negative">Label</button></td>
+        </tr>
+    </table>
+
+    <div style="display:flex;gap:20px;">
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <input type="text" class="field-input" placeholder="John Doe" required />
+            <div class="field-info">Your complete name.</div>
+        </div>
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <input type="text" class="field-input" placeholder="John Doe" required disabled/>
+            <div class="field-info">This field is disabled.</div>
+        </div>
+        <div class="field error" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <input type="text" class="field-input" placeholder="John Doe" required/>
+            <div class="field-info">Please fill in this field.</div>
+        </div>
+        <div class="field success" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <input type="text" class="field-input" placeholder="John Doe" required/>
+            <div class="field-info">Successfully entered!</div>
+        </div>
+    </div>
+    
+    <div style="display:flex;gap:20px;">
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <textarea class="field-input" placeholder="John Doe" required></textarea>
+            <div class="field-info">Your complete name.</div>
+        </div>
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <textarea class="field-input" placeholder="John Doe" required disabled></textarea>
+            <div class="field-info">This field is disabled.</div>
+        </div>
+        <div class="field error" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <textarea class="field-input" placeholder="John Doe" required></textarea>
+            <div class="field-info">Please fill in this field.</div>
+        </div>
+        <div class="field success" style="margin-bottom: 24px;">
+            <label class="field-label">Full Name *</label>
+            <textarea class="field-input" placeholder="John Doe" required></textarea>
+            <div class="field-info">Successfully entered!</div>
+        </div>
+    </div>
+    
+    <div style="display:flex;gap:20px;">
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label" for="product">Product of interest</label>
+            <div class="dropdown">
+                <select id="product" name="product" class="field-input" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="ms-80sh">MS-80SH</option>
+                    <option value="ms-80">MS-80</option>
+                    <option value="ms-60">MS-60</option>
+                    <option value="ms-40">MS-40</option>
+                </select>
+            </div>
+            <div class="field-info">Please select a product.</div>
+        </div>
+        <div class="field" style="margin-bottom: 24px;">
+            <label class="field-label" for="product-disabled">Product of interest</label>
+            <div class="dropdown">
+                <select id="product-disabled" name="product-disabled" class="field-input" required disabled>
+                    <option value="" disabled selected>Select</option>
+                    <option value="ms-80sh">MS-80SH</option>
+                    <option value="ms-80">MS-80</option>
+                    <option value="ms-60">MS-60</option>
+                    <option value="ms-40">MS-40</option>
+                </select>
+            </div>
+            <div class="field-info">This field is disabled.</div>
+        </div>
+        <div class="field error" style="margin-bottom: 24px;">
+            <label class="field-label" for="product-error">Product of interest</label>
+            <div class="dropdown">
+                <select id="product-error" name="product-error" class="field-input" required aria-describedby="product-error-info">
+                    <option value="" disabled selected>Select</option>
+                    <option value="ms-80sh">MS-80SH</option>
+                    <option value="ms-80">MS-80</option>
+                    <option value="ms-60">MS-60</option>
+                    <option value="ms-40">MS-40</option>
+                </select>
+            </div>
+            <div id="product-error-info" class="field-info">Please select a product.</div>
+        </div>
+        <div class="field success" style="margin-bottom: 24px;">
+            <label class="field-label" for="product-success">Product of interest</label>
+            <div class="dropdown">
+                <select id="product-success" name="product-success" class="field-input" required aria-describedby="product-success-info">
+                    <option value="" disabled>Select</option>
+                    <option value="ms-80sh" selected>MS-80SH Pyranometer</option>
+                    <option value="ms-80">MS-80 Pyranometer</option>
+                </select>
+            </div>
+            <div id="product-success-info" class="field-info">Successfully selected!</div>
+        </div>
+    </div>
+
+    <div style="margin-bottom: 24px;display: flex; gap: 24px;">
+        <div class="product-card">
+            <div class="card-image">
+                <img src="assets/images/ms80sh.png" alt="MS-80SH Pyranometer" style="height: var(--card-image-height); object-fit: cover;">
+            </div>
+
+            <div class="card-label">
+                Class A
+            </div>
+
+            <div class="card-title">
+                MS-80SH
+            </div>
+            <div class="card-description">
+                Class A pyranometer with ventilator and heater for utility-scale PV
+            </div>
+            <table class="card-table">
+                <tr>
+                    <td>ISO 9060:2018</td>
+                    <td>spectrally flat, Class A</td>
+                </tr>
+                <tr>
+                    <td>IEC 61724-1:2021</td>
+                    <td>Class A system compliant</td>
+                </tr>
+                <tr>
+                    <td>Warranty</td>
+                    <td>5 years</td>
+                </tr>
+                <tr>
+                    <td>Recalibration</td>
+                    <td>5 years</td>
+                </tr>
+            </table>
+            <div class="card-cta">
+                Call to action
+            </div>
+        </div>
+
+        <div class="product-card">
+            <!-- <div class="card-image">
+                <img src="assets/images/ms80sh.png" alt="MS-80SH Pyranometer" style="height: var(--card-image-height); object-fit: cover;">
+            </div> -->
+
+            <div class="card-label">
+                Label
+            </div>
+
+            <div class="card-title">
+                Product Card
+            </div>
+            <div class="card-description">
+                This is a card without an image and without
+                a table.
+            </div>
+            <div class="card-cta">
+                Call to action
+            </div>
+        </div>
+
+
+        <div class="contact-card">
+            <div class="card-header">
+                <div class="card-image">
+                    <img>
+                </div>
+                <div class="card-contact-details">
+                    <div class="card-contact-details-primary">
+                        <div class="card-contact-details-first">Palau van Helden</div>
+                        <div class="card-contact-details-second">EKO Instruments B.V.</div>
+                        <div class="card-contact-details-third">Project Development Engineer</div>
+                    </div>
+                    <div class="card-contact-details-secondary">
+                        <div class="card-contact-details-email">
+                            <span class="icon" style="--icon-url: url('/assets/icons/envelope-outline.svg');" aria-hidden="true"></span>
+                            palau@vhelden.nl
+                        </div>
+                        <div class="card-contact-details-phone">
+                            <span class="icon" style="--icon-url: url('/assets/icons/call-outline.svg');" aria-hidden="true"></span>
+                            +31 (0)6 24175606
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="card-button btn negative">
+                <span class="icon" style="--icon-url: url('/assets/icons/envelope-outline.svg');" aria-hidden="true"></span>
+                Contact Palau
+            </button>
+        </div>
+    </div>
+</body>
+</html>
