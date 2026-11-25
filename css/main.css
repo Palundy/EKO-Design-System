@@ -24,5 +24,6 @@
 @import url("components/button.css") layer(components);
 @import url("components/field.css") layer(components);
 @import url("components/dropdown.css") layer(components);
+@import url("components/spec-table.css") layer(components);
 @import url("components/product-card.css") layer(components);
 @import url("components/contact-card.css") layer(components);

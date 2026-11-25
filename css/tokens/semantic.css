@@ -24,6 +24,7 @@
     --font-size-2xsmall: var(--brand-font-size-2xsmall);
     --font-size-xsmall: var(--brand-font-size-xsmall);
     --font-size-small: var(--brand-font-size-small);
+    --font-size-medium: var(--brand-font-size-medium);
     --font-size-default: var(--brand-font-size-default);
     --font-size-large: var(--brand-font-size-large);
     --font-size-xlarge: var(--brand-font-size-xlarge);
@@ -52,6 +53,7 @@
     --space-large: var(--brand-space-large);
     --space-xlarge: var(--brand-space-xlarge);
     --space-2xlarge: var(--brand-space-2xlarge);
+    --space-3xlarge: var(--brand-space-3xlarge);
 
     --radius-none: var(--brand-radius-none);
     --radius-xsmall: var(--brand-radius-xsmall);
@@ -102,6 +104,7 @@
 
     /* Colour: borders */
     --color-border: var(--brand-light-grey);
+    --color-border-brand: var(--brand-eko-blue);
     --color-border-focus: var(--brand-eko-blue);
 
     /* Colour: links */

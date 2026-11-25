@@ -1,0 +1,136 @@
+/*
+ * Spec table: a titled specifications table for product pages (Figma: EKO/Table/Title, Row and Cell).
+ *
+ *     <section class="spec-table">
+ *         <h2 class="spec-table-title">ISO Specifications</h2>
+ *         <div class="spec-table-panel">
+ *             <table>
+ *                 <thead>
+ *                     <tr><th>ISO 9060:2018 Parameters</th><th>Class A</th><th>MS-80SH</th></tr>
+ *                 </thead>
+ *                 <tbody>
+ *                     <tr><th scope="row">Response time 95%</th><td>&lt; 10s</td><td>&lt; 0.5s</td></tr>
+ *                 </tbody>
+ *             </table>
+ *         </div>
+ *     </section>
+ *
+ * - Two columns (name and value) for a key/value list, three or more to compare classes or products.
+ *   The column count is detected from the markup, so no modifier class is needed.
+ * - The header row (`<thead>`) is optional. Header cells are bold; the first one is left-aligned, the others centred.
+ * - In the body, the first cell of each row is the label (`<th scope="row">`, bold, left) and the rest are values (`<td>`, regular, centred).
+ * - The title can be any heading level; only the class matters.
+ */
+
+
+/* Base */
+.spec-table {
+    /* Tokens: layout */
+    --spec-table-gap: var(--space-xlarge);
+    --spec-table-panel-padding-x: var(--space-3xlarge);
+    --spec-table-panel-padding-y: var(--space-2xlarge);
+    --spec-table-panel-bg: transparent;
+
+    /* Tokens: title */
+    --spec-table-title-font-size: var(--font-size-default);
+    --spec-table-title-font-weight: var(--font-weight-bold);
+    --spec-table-title-line-height: normal;
+    --spec-table-title-color: var(--color-text-brand);
+    --spec-table-title-padding-bottom: var(--space-medium);
+
+    /* Tokens: rows and cells */
+    --spec-table-row-min-height: 44px;
+    --spec-table-cell-padding-x: var(--space-xlarge);
+    --spec-table-cell-padding-y: var(--space-medium);
+    --spec-table-cell-font-size: var(--font-size-medium);
+    --spec-table-cell-line-height: var(--line-height-body);
+    --spec-table-cell-color: var(--color-text-brand);
+    --spec-table-header-font-weight: var(--font-weight-bold);
+    --spec-table-label-font-weight: var(--font-weight-bold);
+    --spec-table-value-font-weight: var(--font-weight-regular);
+
+    /* Tokens: lines */
+    --spec-table-line-width: var(--border-width-thin);
+    --spec-table-line-color: var(--color-border-brand);
+
+    /* Tokens: column widths (Figma: 560 of 960 px for two columns, 200 of 960 px per value column for more) */
+    --spec-table-value-column-width: 58.333%;
+    --spec-table-comparison-column-width: 20.833%;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spec-table-gap);
+}
+
+
+/* Child elements: title with a line underneath */
+.spec-table .spec-table-title {
+    margin: 0;
+    padding-bottom: var(--spec-table-title-padding-bottom);
+    border-bottom: var(--spec-table-line-width) solid var(--spec-table-line-color);
+    font-size: var(--spec-table-title-font-size);
+    font-weight: var(--spec-table-title-font-weight);
+    line-height: var(--spec-table-title-line-height);
+    color: var(--spec-table-title-color);
+}
+
+/* Child elements: panel around the table, scrolls sideways when the table doesn't fit */
+.spec-table .spec-table-panel {
+    padding: var(--spec-table-panel-padding-y) var(--spec-table-panel-padding-x);
+    background-color: var(--spec-table-panel-bg);
+    overflow-x: auto;
+}
+
+/* Child elements: table, rows and cells */
+.spec-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* A row's height works as a minimum, and includes the cell padding */
+.spec-table tr {
+    height: var(--spec-table-row-min-height);
+    border-bottom: var(--spec-table-line-width) solid var(--spec-table-line-color);
+}
+
+.spec-table th,
+.spec-table td {
+    padding: var(--spec-table-cell-padding-y) var(--spec-table-cell-padding-x);
+    font-size: var(--spec-table-cell-font-size);
+    font-weight: var(--spec-table-value-font-weight);
+    line-height: var(--spec-table-cell-line-height);
+    color: var(--spec-table-cell-color);
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Vertical lines between columns */
+.spec-table th:not(:first-child),
+.spec-table td:not(:first-child) {
+    border-left: var(--spec-table-line-width) solid var(--spec-table-line-color);
+}
+
+/* Header row: all bold, first cell left-aligned */
+.spec-table thead th {
+    font-weight: var(--spec-table-header-font-weight);
+}
+
+.spec-table thead th:first-child {
+    text-align: left;
+}
+
+/* Body rows: the label is bold and left-aligned */
+.spec-table tbody th {
+    font-weight: var(--spec-table-label-font-weight);
+    text-align: left;
+}
+
+
+/* Variants: column widths follow the number of columns */
+.spec-table tr > :not(:first-child) {
+    width: var(--spec-table-value-column-width);
+}
+
+.spec-table table:has(tr > :nth-child(3)) tr > :not(:first-child) {
+    width: var(--spec-table-comparison-column-width);
+}

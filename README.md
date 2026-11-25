@@ -16,6 +16,7 @@ This guide covers using the design system in a **PHP** application.
   - [Dropdown](#dropdown)
   - [Product card](#product-card)
   - [Contact card](#contact-card)
+  - [Spec table](#spec-table)
 - [Icons](#icons)
 - [Full example](#full-example)
 - [Customising the look](#customising-the-look)
@@ -62,6 +63,7 @@ Put this at the top of your page, then load only the groups you use:
 require 'php/button.php';   // Button
 require 'php/fields.php';   // Fields\Input, Fields\Textarea, Fields\Dropdown
 require 'php/cards.php';    // Cards\ProductCard, Cards\ContactCard
+require 'php/spec-table.php'; // SpecTable
 
 use Fields\Input;
 use Fields\Textarea;
@@ -278,6 +280,49 @@ new ContactCard("Jane Doe", button: "Contact Jane");                 // label on
 new ContactCard("Jane Doe", button: "Contact Jane",
                 buttonIcon: "/assets/icons/envelope-outline.svg");   // label and icon
 ```
+
+### Spec table
+
+A titled table for product specifications, with blue lines under every row and between the columns.
+Write one `"label" => value` pair per row. The number of values decides the kind of table:
+
+**One value per row: a key/value table.**
+
+```php
+new SpecTable(
+    title: "Specifications",
+    rows: [
+        "Wavelength Range (nm)" => "285 to 3000",
+        "Signal Output"         => "Modbus 485 RTU / SDI-12",
+        "Ingress Protection"    => "IP 67",
+    ]
+);
+```
+
+**Several values per row: a comparison table.** Add a `header:` row to name the columns:
+
+```php
+new SpecTable(
+    title: "ISO Specifications",
+    header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
+    rows: [
+        "Response time 95%" => ["< 10s", "< 0.5s"],
+        "Spectral Error"    => ["± 0.5%", "± 0.2%"],
+    ]
+);
+```
+
+| Argument        | Default    | Description |
+|-----------------|------------|-------------|
+| `rows:`         | (required) | The rows, see above. Every row needs the same number of values. |
+| `title:`        | `null`     | The title above the table. Without it, the title and its line are left out. |
+| `header:`       | `[]`       | The header row, including the first column, e.g. `["Parameter", "Class A", "MS-80SH"]`. |
+| `headingLevel:` | `2`        | Which heading the title is (`2` to `6` for `<h2>` to `<h6>`). Pick what fits your page; the look doesn't change. |
+
+If two rows have the same label, or a label is a number (such as a year), write those rows as a list with the label first:
+`rows: [["Warranty", "5 years"], ["Warranty", "10 years (extended)"]]`.
+
+A table whose rows don't all have the same number of values throws an `InvalidArgumentException`, so a missing value is caught straight away.
 
 ---
 

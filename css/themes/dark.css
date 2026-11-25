@@ -41,6 +41,7 @@
 
     /* Colour: borders */
     --color-border: var(--brand-dark-600);
+    --color-border-brand: var(--brand-eko-soft);
     --color-border-focus: var(--brand-eko-soft);
 
     /* Colour: links */

@@ -46,6 +46,7 @@
     --brand-font-size-2xsmall: 10px;
     --brand-font-size-xsmall: 12px;
     --brand-font-size-small: 15px;
+    --brand-font-size-medium: 16px;
     --brand-font-size-default: 18px;
     --brand-font-size-large: 20px;
     --brand-font-size-xlarge: 22px;
@@ -69,6 +70,7 @@
     --brand-space-large: 16px;
     --brand-space-xlarge: 20px;
     --brand-space-2xlarge: 24px;
+    --brand-space-3xlarge: 32px;
 
     /* Corner radius */
     --brand-radius-none: 0px;

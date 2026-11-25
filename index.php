@@ -2,6 +2,7 @@
 require 'php/button.php';
 require 'php/fields.php';
 require 'php/cards.php';
+require 'php/spec-table.php';
 ?>
 
 <!DOCTYPE html>
@@ -238,6 +239,30 @@ require 'php/cards.php';
             first: "Contact Card",
             third: "This contact card has minimal information.",
             email: "contact@example.com",
+        ); ?>
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 48px; width: 1024px; margin: 48px 0;">
+        <? new SpecTable(
+            title: "Specifications",
+            rows: [
+                "Wavelength Range (nm)" => "285 to 3000",
+                "Maximum Operational Irradiance (W/m²)" => "4000",
+                "Signal Output" => "Modbus 485 RTU / SDI-12",
+                "EMC / Surge Protection Standard" => "IEC61326-1 (Industrial Electromagnetic Environment test level) / IEC61000-4-5 (Level 2, Test Criterion B)",
+                "Ingress Protection" => "IP 67",
+            ]
+        ); ?>
+
+        <? new SpecTable(
+            title: "ISO Specifications",
+            header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
+            rows: [
+                "Response time 95%" => ["< 10s", "< 0.5s"],
+                "Zero offset A, Thermal Radiation (200W/m²)" => ["± 7W/m²", "± 1W/m²"],
+                "Non-stability (change/year)" => ["± 0.8%", "< 0.5% / 5 years"],
+                "Spectral Error" => ["± 0.5%", "± 0.2%"],
+            ]
         ); ?>
     </div>
 </body>
