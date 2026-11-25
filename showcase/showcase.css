@@ -29,6 +29,11 @@
     margin: 0;
 }
 
+/* Show code exactly as typed: no ligatures such as => turning into an arrow */
+.sc-page code {
+    font-variant-ligatures: none;
+}
+
 .sc-wrap {
     box-sizing: border-box;
     width: 100%;
@@ -389,6 +394,64 @@
 .sc-figure figcaption code {
     font-family: var(--sc-font-mono);
     font-size: 0.9em;
+}
+
+
+/* Footnotes: a superscript marker in the text, the note at the end of the chapter */
+.sc-footnote-ref {
+    margin-left: var(--space-3xsmall);
+    font-size: var(--font-size-xsmall);
+    line-height: 0;
+}
+
+.sc-footnote-ref a {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.sc-footnote-ref a:hover {
+    text-decoration: underline;
+}
+
+.sc-footnotes {
+    max-width: 90ch;
+    margin-top: var(--space-4xlarge);
+    padding-top: var(--space-large);
+    border-top: var(--border-width-thin) solid var(--color-border-brand);
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-body);
+}
+
+.sc-footnotes ol {
+    margin: 0;
+    padding-left: var(--space-xlarge);
+}
+
+.sc-footnotes li {
+    padding: var(--space-2xsmall) var(--space-small);
+    border-radius: var(--radius-small);
+    scroll-margin-top: calc(64px + var(--space-2xlarge));
+}
+
+.sc-footnotes li::marker {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
+}
+
+/* The footnote you jumped to lights up briefly */
+.sc-footnotes li:target {
+    background-color: var(--color-surface-highlight);
+}
+
+.sc-footnotes code {
+    font-family: var(--sc-font-mono);
+    font-size: 0.9em;
+}
+
+.sc-footnote-back {
+    color: var(--color-text-brand);
+    text-decoration: none;
 }
 
 

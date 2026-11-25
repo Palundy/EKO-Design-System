@@ -79,6 +79,9 @@ function printChapterHead($anchor, $kicker, $lede) {
  *
  * @param string $stageClass [optional]
  * Extra classes for the stage (e.g., "sc-stage-flush" for an example that fills it).
+ *
+ * @param string $style [optional]
+ * Extra inline styles for the stage (e.g., "background: var(--color-surface);").
  */
 function printFigure($number, $caption, $render, $stageClass = '', $style = '') {
     echo "<figure class=\"sc-figure\">";
@@ -104,6 +107,37 @@ function printStates($states, $title = 'States & variants') {
         echo "<dt>" . escapeHtml($name) . "</dt><dd>$explanation</dd>";
     }
     echo "</dl></aside>";
+}
+
+/**
+ * Builds a footnote marker: a small superscript number that links to the footnote at the end of the chapter.
+ *
+ * @param string $id
+ * The footnote id, matching a key passed to `printFootnotes()` (e.g., "buttons-events").
+ *
+ * @param int $number
+ * The number shown, matching the footnote's position in its chapter.
+ *
+ * @return string
+ * The marker's HTML.
+ */
+function footnoteRef($id, $number) {
+    return "<sup class=\"sc-footnote-ref\"><a href=\"#fn-$id\" id=\"fnref-$id\" aria-label=\"Footnote $number\">$number</a></sup>";
+}
+
+/**
+ * Prints the footnotes of a chapter, each with a link back to its marker.
+ *
+ * @param array $notes
+ * The footnotes in order, as id => text. The id matches `footnoteRef()`.
+ * The text is inserted as HTML, so it may contain `<code>`.
+ */
+function printFootnotes($notes) {
+    echo "<aside class=\"sc-footnotes\" aria-label=\"Footnotes\"><ol>";
+    foreach ($notes as $id => $text) {
+        echo "<li id=\"fn-$id\">$text <a class=\"sc-footnote-back\" href=\"#fnref-$id\" aria-label=\"Back to the text\">↩</a></li>";
+    }
+    echo "</ol></aside>";
 }
 
 /**
@@ -134,7 +168,7 @@ function escapeHtml($value) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EKO Design System · Issue 01</title>
+    <title>EKO Design System</title>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/showcase/showcase.css">
     <script src="/js/dropdowns.js" defer></script>
@@ -144,7 +178,7 @@ function escapeHtml($value) {
     <!-- Top bar -->
     <header class="sc-topbar">
         <div class="sc-wrap">
-            <a class="sc-wordmark" href="#top"><strong>EKO</strong><span>Design System · Issue 01</span></a>
+            <a class="sc-wordmark" href="#top"><strong>EKO</strong><span>Design System</span></a>
             <nav class="sc-topbar-links" aria-label="Chapters">
                 <a class="nav-item" href="#foundations">Foundations</a>
                 <a class="nav-item" href="#buttons">Components</a>
@@ -161,12 +195,11 @@ function escapeHtml($value) {
         <!-- Cover -->
         <section class="sc-cover">
             <div class="sc-wrap">
-                <p class="sc-kicker">EKO Instruments · Design System · Issue 01 · <?= date('F Y') ?></p>
+                <p class="sc-kicker">EKO Instruments · Design System · <?= date('F Y') ?></p>
                 <h1 class="sc-cover-title">Precision, built to scale.</h1>
                 <p class="sc-cover-lede">
                     A tour of the components behind the EKO website: what they are for, how they behave,
-                    and every state they can be in. Everything you see in this issue is the real thing,
-                    rendered live by the design system.
+                    and every state they can be in. Everything you see on this page is rendered live by the design system.
                 </p>
                 <ol class="sc-cover-lines">
                     <li><strong>11 chapters</strong>From foundations to full specification tables.</li>
@@ -182,7 +215,7 @@ function escapeHtml($value) {
         <section class="sc-contents" aria-labelledby="contents-title">
             <div class="sc-wrap">
                 <div class="sc-contents-head">
-                    <h2 id="contents-title">In this issue</h2>
+                    <h2 id="contents-title">On this page</h2>
                     <p class="sc-kicker">11 chapters</p>
                 </div>
                 <ol class="sc-contents-list">
@@ -326,8 +359,15 @@ new Button("Send enquiry", style: "enquiry", icon: "/assets/icons/envelope-outli
                         'Disabled' => 'Muted grey and not clickable. Uses the native <code>disabled</code> attribute.',
                         'Loading' => 'A spinner replaces the icon; the button keeps its colour. Stops spinning for visitors who prefer reduced motion.',
                         'Negative' => 'Outlined, for secondary actions and links to other pages. Fills with its colour on hover.',
+                        'Events' => 'Attach click handlers through the <code>attributes</code> argument.' . footnoteRef('buttons-events', 1),
                     ]); ?>
                 </div>
+                <?php printFootnotes([
+                    'buttons-events' => 'Event listeners can be injected by setting them as an attribute of the element, through the
+                        <code>attributes</code> argument: <code>new Button("Send", attributes: ["onclick" =&gt; "sendForm()"]);</code>
+                        The value is escaped, so quotes in it are safe. For anything longer than a single call, give the button an
+                        <code>id</code> and attach the listener in your own script with <code>addEventListener</code>.',
+                ]); ?>
             </div>
         </section>
 
@@ -371,8 +411,16 @@ new Dropdown("Product of interest", name: "product", options: $products, value: 
                         'Success' => 'Green border and green help text, after a successful check.',
                         'Disabled' => 'Grey background, greyed label. The value is not submitted.',
                         'Dropdown options' => 'Hover and keyboard focus get a light blue background; the selected option is bold and blue.',
+                        'Events' => 'React to typing or a new choice through the <code>attributes</code> argument.' . footnoteRef('fields-events', 1),
                     ]); ?>
                 </div>
+                <?php printFootnotes([
+                    'fields-events' => 'Event listeners can be injected by setting them as an attribute of the element. The
+                        <code>attributes</code> argument of <code>Input</code>, <code>Textarea</code> and <code>Dropdown</code> lands on the
+                        control itself: <code>new Input("Email", name: "email", attributes: ["oninput" =&gt; "checkEmail(this)"]);</code>
+                        For a dropdown, listen to <code>onchange</code> on the native select: the styled menu passes every choice on to it
+                        as a normal <code>input</code> and <code>change</code> event.',
+                ]); ?>
             </div>
         </section>
 
@@ -620,10 +668,16 @@ new ContactCard(
                     <?php printStates([
                         'Details' => 'Only the first line is required. Each of the three lines and each contact row appears only when given.',
                         'Contact links' => 'Email, phone and website open the mail app, the phone or a new tab.',
-                        'Button' => 'None, a label, or a label with an icon.',
+                        'Button' => 'None, a label, or a label with an icon.' . footnoteRef('contact-events', 1),
                         'Photo' => 'Optional, shown to the left of the details.',
                     ], 'Parts'); ?>
                 </div>
+                <?php printFootnotes([
+                    'contact-events' => 'Event listeners can be injected by setting them as an attribute of the element. The button takes
+                        them through <code>buttonAttributes</code>, for example to open a contact form for this person:
+                        <code>buttonAttributes: ["onclick" =&gt; "openContactForm(\'jane\')"]</code>. Its <code>class</code> and
+                        <code>type</code> cannot be changed this way.',
+                ]); ?>
             </div>
         </section>
 
