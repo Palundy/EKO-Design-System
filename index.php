@@ -1,6 +1,7 @@
 <?php
 require 'php/button.php';
 require 'php/fields.php';
+require 'php/cards.php';
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +61,7 @@ require 'php/fields.php';
             placeholder: "John Doe", 
             required: true
         ); ?>
+
         <? new Fields\Input(
             label: "Full Name",
             info: "Your complete name.",
@@ -68,6 +70,7 @@ require 'php/fields.php';
             required: true,
             state: "disabled"
         ); ?>
+
         <? new Fields\Input(
             label: "Full Name",
             info: "Your complete name.",
@@ -76,6 +79,7 @@ require 'php/fields.php';
             required: true,
             state: "error"
         ); ?>
+
         <? new Fields\Input(
             label: "Full Name",
             info: "Your complete name.",
@@ -94,6 +98,7 @@ require 'php/fields.php';
             placeholder: "John Doe", 
             required: true
         ); ?>
+
         <? new Fields\Textarea(
             label: "Full Name",
             info: "Your complete name.",
@@ -102,6 +107,7 @@ require 'php/fields.php';
             required: true,
             state: "disabled"
         ); ?>
+
         <? new Fields\Textarea(
             label: "Full Name",
             info: "Your complete name.",
@@ -110,6 +116,7 @@ require 'php/fields.php';
             required: true,
             state: "error"
         ); ?>
+
         <? new Fields\Textarea(
             label: "Full Name",
             info: "Your complete name.",
@@ -134,147 +141,104 @@ require 'php/fields.php';
             options: $options,
             required: true
         ); ?>
-        <div class="field" style="margin-bottom: 24px;">
-            <label class="field-label" for="product">Product of interest</label>
-            <div class="dropdown">
-                <select id="product" name="product" class="field-input" required>
-                    <option value="" disabled selected>Select</option>
-                    <option value="ms-80sh">MS-80SH</option>
-                    <option value="ms-80">MS-80</option>
-                    <option value="ms-60">MS-60</option>
-                    <option value="ms-40">MS-40</option>
-                </select>
-            </div>
-            <div class="field-info">Please select a product.</div>
-        </div>
-        <div class="field" style="margin-bottom: 24px;">
-            <label class="field-label" for="product-disabled">Product of interest</label>
-            <div class="dropdown">
-                <select id="product-disabled" name="product-disabled" class="field-input" required disabled>
-                    <option value="" disabled selected>Select</option>
-                    <option value="ms-80sh">MS-80SH</option>
-                    <option value="ms-80">MS-80</option>
-                    <option value="ms-60">MS-60</option>
-                    <option value="ms-40">MS-40</option>
-                </select>
-            </div>
-            <div class="field-info">This field is disabled.</div>
-        </div>
-        <div class="field error" style="margin-bottom: 24px;">
-            <label class="field-label" for="product-error">Product of interest</label>
-            <div class="dropdown">
-                <select id="product-error" name="product-error" class="field-input" required aria-describedby="product-error-info">
-                    <option value="" disabled selected>Select</option>
-                    <option value="ms-80sh">MS-80SH</option>
-                    <option value="ms-80">MS-80</option>
-                    <option value="ms-60">MS-60</option>
-                    <option value="ms-40">MS-40</option>
-                </select>
-            </div>
-            <div id="product-error-info" class="field-info">Please select a product.</div>
-        </div>
-        <div class="field success" style="margin-bottom: 24px;">
-            <label class="field-label" for="product-success">Product of interest</label>
-            <div class="dropdown">
-                <select id="product-success" name="product-success" class="field-input" required aria-describedby="product-success-info">
-                    <option value="" disabled>Select</option>
-                    <option value="ms-80sh" selected>MS-80SH Pyranometer</option>
-                    <option value="ms-80">MS-80 Pyranometer</option>
-                </select>
-            </div>
-            <div id="product-success-info" class="field-info">Successfully selected!</div>
-        </div>
+
+        <? new Fields\Dropdown(
+            label: "Product of interest",
+            info: "This field is disabled.",
+            id: "product-disabled",
+            options: $options,
+            required: true,
+            state: "disabled"
+        ); ?>
+
+        <? new Fields\Dropdown(
+            label: "Product of interest",
+            info: "Please select a product.",
+            id: "product-error",
+            options: $options,
+            required: true,
+            state: "error"
+        ); ?>
+
+        <? new Fields\Dropdown(
+            label: "Product of interest",
+            info: "Successfully selected!",
+            value: "ms-80sh",
+            id: "product-success",
+            options: $options,
+            required: true,
+            state: "success"
+        ); ?>
     </div>
 
     <div style="margin-bottom: 24px;display: flex; gap: 24px;">
-        <div class="product-card">
-            <div class="card-image">
-                <img src="assets/images/ms80sh.png" alt="MS-80SH Pyranometer" style="height: var(--card-image-height); object-fit: cover;">
-            </div>
+        <? new Cards\ProductCard(
+            title: "MS-80SH",
+            label: "Class A",
+            description: "Class A pyranometer with ventilator and heater for utility-scale PV",
+            image: "assets/images/ms80sh.png",
+            imageAlt: "MS-80SH Pyranometer",
+            table: [
+                "ISO 9060:2018" => "spectrally flat, Class A",
+                "IEC 61724-1:2021" => "Class A system compliant",
+                "Warranty" => "5 years",
+                "Recalibration" => "5 years",
+            ],
+            cta: "Call to action"
+        ); ?>
 
-            <div class="card-label">
-                Class A
-            </div>
+        <? new Cards\ProductCard(
+            title: "ICF-02",
+            label: "New!",
+            description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
+            image: "assets/images/icf-02.png",
+            imageAlt: "EKO Instruments ICF-02 - Indoor Calibration Facility",
+            table: [
+                ["Standard", "IS0 9847:2023"],
+                ["Light Source", "300 LED or 150W Metal Halide"]
+            ],
+            cta: "Request Quote"
+        ); ?>
 
-            <div class="card-title">
-                MS-80SH
-            </div>
-            <div class="card-description">
-                Class A pyranometer with ventilator and heater for utility-scale PV
-            </div>
-            <table class="card-table">
-                <tr>
-                    <td>ISO 9060:2018</td>
-                    <td>spectrally flat, Class A</td>
-                </tr>
-                <tr>
-                    <td>IEC 61724-1:2021</td>
-                    <td>Class A system compliant</td>
-                </tr>
-                <tr>
-                    <td>Warranty</td>
-                    <td>5 years</td>
-                </tr>
-                <tr>
-                    <td>Recalibration</td>
-                    <td>5 years</td>
-                </tr>
-            </table>
-            <div class="card-cta">
-                Call to action
-            </div>
-        </div>
+        <? new Cards\ProductCard(
+            title: "Product Card",
+            description: "This is a card without an image, without a table and without a label.",
+            cta: "Call to action"
+        ); ?>
+    </div>
 
-        <div class="product-card">
-            <!-- <div class="card-image">
-                <img src="assets/images/ms80sh.png" alt="MS-80SH Pyranometer" style="height: var(--card-image-height); object-fit: cover;">
-            </div> -->
+    <div style="margin-bottom: 24px;display: flex; gap: 24px;">
+        <? new Cards\ContactCard(
+            first: "Palau van Helden",
+            second: "EKO Instruments B.V.",
+            third: "Project Development Engineer",
+            email: "palau@vhelden.nl",
+            phone: "+31 (0)6 24175606",
+            website: "vhelden.nl",
+            button: "Ask Palau",
+            buttonIcon: "/assets/icons/typing-outline.svg",
+            buttonAttributes: [
+                "onclick" => "alert('Eventlisteners also work here');"
+            ]
+        ); ?>
 
-            <div class="card-label">
-                Label
-            </div>
+        <? new Cards\ContactCard(
+            first: "John Doe",
+            second: "Example Corp.",
+            third: "Sales Manager",
+            email: "john.doe@example.com",
+            phone: "+31 (0)6 12345678",
+            website: "example.com",
+            button: "Contact John",
+            buttonIcon: "/assets/icons/envelope-outline.svg",
+            image: "assets/images/user-silhouette-" . str_pad(rand(1, 5), 2, "0", STR_PAD_LEFT) . ".svg"
+        ); ?>
 
-            <div class="card-title">
-                Product Card
-            </div>
-            <div class="card-description">
-                This is a card without an image and without
-                a table.
-            </div>
-            <div class="card-cta">
-                Call to action
-            </div>
-        </div>
-
-
-        <div class="contact-card">
-            <div class="card-header">
-                <div class="card-image">
-                    <img>
-                </div>
-                <div class="card-contact-details">
-                    <div class="card-contact-details-primary">
-                        <div class="card-contact-details-first">Palau van Helden</div>
-                        <div class="card-contact-details-second">EKO Instruments B.V.</div>
-                        <div class="card-contact-details-third">Project Development Engineer</div>
-                    </div>
-                    <div class="card-contact-details-secondary">
-                        <div class="card-contact-details-email">
-                            <span class="icon" style="--icon-url: url('/assets/icons/envelope-outline.svg');" aria-hidden="true"></span>
-                            palau@vhelden.nl
-                        </div>
-                        <div class="card-contact-details-phone">
-                            <span class="icon" style="--icon-url: url('/assets/icons/call-outline.svg');" aria-hidden="true"></span>
-                            +31 (0)6 24175606
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="card-button btn negative">
-                <span class="icon" style="--icon-url: url('/assets/icons/envelope-outline.svg');" aria-hidden="true"></span>
-                Contact Palau
-            </button>
-        </div>
+        <? new Cards\ContactCard(
+            first: "Contact Card",
+            third: "This contact card has minimal information.",
+            email: "contact@example.com",
+        ); ?>
     </div>
 </body>
 </html>

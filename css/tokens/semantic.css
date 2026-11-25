@@ -133,4 +133,12 @@
     --contact-card-details-secondary-icon-width: 20px;
     --contact-card-details-secondary-icon-height: 20px;
     --contact-card-button-icon-size: 20px;
+
+
+    /* Link styles */
+    --link-font-weight: var(--brand-font-weight-regular);
+    --link-color: var(--brand-eko-blue);
+    --link-hover-color: var(--brand-eko-soft);
+    --link-active-color: var(--brand-eko-soft);
+    --link-focus-outline: thin solid var(--brand-eko-soft);
 }

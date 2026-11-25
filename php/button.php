@@ -43,9 +43,10 @@ class Button {
     /**
      * Builds the button HTML, stores it in `$html` and echoes it.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
+     * All text and attribute values are HTML-escaped, so user input can be passed safely.
      *
      * @param string $label
-     * The button text. It is inserted as raw HTML, not escaped.
+     * The button text. It is escaped, so it is shown literally and cannot contain HTML.
      *
      * @param string|null $style [optional]
      * One of `VALID_STYLES`, or `null` for the primary button.
@@ -62,7 +63,8 @@ class Button {
      *
      * @param array $attributes [optional]
      * Extra HTML attributes as name => value (e.g., `["id" => "send-btn"]`).
-     * Keys that match a state name are ignored, so use `$state` for those. Values are inserted as is, not escaped.
+     * `true` writes a bare attribute, `false` or `null` leaves it out.
+     * Keys that match a state name are ignored, so use `$state` for those.
      *
      * @throws InvalidArgumentException if `$style` or `$state` is not an accepted value.
      */
@@ -83,37 +85,95 @@ class Button {
         }
 
 
-        // Build the class list
+        // Build the class list: "disabled" is a native attribute, the other states are classes
         $class = 'btn';
         if ($style) {
             $class .= " $style btn-$style";
         }
-
-        // Build the extra attributes, skipping any that should be set through `$state`
-        $attributesHtml = '';
-        foreach ($attributes as $key => $value) {
-            if (!in_array($key, self::VALID_STATES)) {
-                $attributesHtml .= " $key='$value'";
-            }
-        }
-
-        // Apply the state: "disabled" is a native attribute, the other states are classes
-        if ($state == 'disabled') {
-            $attributesHtml .= " disabled";
-        } else {
+        if ($state && $state !== 'disabled') {
             $class .= " $state";
         }
 
-        // Add the icon before the label (not possible while loading)
-        if ($icon && $state != 'loading') {
-            $label = "<span class='.icon' style='--icon-src:url($icon)'></span> $label";
+        // Collect the attributes, skipping any that should be set through `$state`
+        $allAttributes = [
+            'type' => $type,
+            'class' => $class,
+        ];
+        foreach ($attributes as $key => $value) {
+            if (!in_array($key, self::VALID_STATES)) {
+                $allAttributes[$key] = $value;
+            }
+        }
+        $allAttributes['disabled'] = $state === 'disabled';
+
+        // Build the content: the escaped label, with the icon before it (not possible while loading)
+        $content = self::escape($label);
+        if ($icon && $state !== 'loading') {
+            $iconStyle = "--icon-url: url('" . self::escapeCssString($icon) . "')";
+            $content = "<span class=\"icon\" style=\"" . self::escape($iconStyle) . "\" aria-hidden=\"true\"></span> $content";
         }
 
 
         // Create, store and print the HTML
-        $html = "<button type='$type' class='$class' $attributesHtml>";
-        $html .= "$label</button>";
+        $html = "<button" . self::attributesToHtml($allAttributes) . ">$content</button>";
         $this->html = $html;
         echo $html;
+    }
+
+
+
+    /**
+     * Turns name => value pairs into an escaped attribute string with a leading space.
+     *
+     * @param array $attributes
+     * The attributes as name => value. `true` writes a bare attribute (e.g., ` disabled`), `false` and `null` are skipped.
+     *
+     * @return string
+     * The attributes as HTML (e.g., ` type="button" disabled`).
+     */
+    private static function attributesToHtml($attributes) {
+        $html = '';
+        foreach ($attributes as $key => $value) {
+            if ($value === null || $value === false) {
+                continue;
+            }
+            $html .= ' ' . self::escape($key);
+            if ($value !== true) {
+                $html .= '="' . self::escape($value) . '"';
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * Escapes a value for use in HTML text or a quoted attribute.
+     *
+     * @param mixed $value
+     * The value to escape. It is converted to a string first.
+     *
+     * @return string
+     * The escaped value.
+     */
+    private static function escape($value) {
+        return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * Escapes a value for use inside a single-quoted CSS string, such as `url('...')`.
+     * Quotes, backslashes and line breaks are replaced by CSS escapes so the value cannot end the string.
+     * The result still needs `escape()` when it is placed in an HTML attribute.
+     *
+     * @param mixed $value
+     * The value to escape. It is converted to a string first.
+     *
+     * @return string
+     * The escaped value.
+     */
+    private static function escapeCssString($value) {
+        return str_replace(
+            ["\\", "'", '"', "\n", "\r"],
+            ['\5c ', '\27 ', '\22 ', '\a ', '\d '],
+            (string) $value
+        );
     }
 }

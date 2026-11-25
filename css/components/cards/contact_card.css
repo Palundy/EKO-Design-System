@@ -71,7 +71,8 @@
     gap: var(--contact-card-details-secondary-gap);
 }
 .contact-card .card-contact-details-email,
-.contact-card .card-contact-details-phone {
+.contact-card .card-contact-details-phone,
+.contact-card .card-contact-details-website {
     display: flex;
     gap: var(--contact-card-details-secondary-gap);
 }

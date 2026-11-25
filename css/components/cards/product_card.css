@@ -52,6 +52,7 @@
 }
 .product-card .card-image img {
     max-width: var(--product-card-image-width-percentage);
+    max-height: var(--product-card-image-height);
     object-fit: cover;
 }
 
@@ -70,6 +71,7 @@
     font-size: var(--product-card-cta-font-size);
     font-weight: var(--product-card-cta-font-weight);
     color: var(--product-card-cta-color);
+    text-decoration: none;
     cursor: pointer;
 }
 .product-card .card-cta:hover {
