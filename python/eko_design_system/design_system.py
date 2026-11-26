@@ -43,6 +43,9 @@ class DesignSystem:
     Icon arguments that do not match it are treated as URLs.
     """
 
+    _ABSOLUTE_URL_PATTERN: re.Pattern = re.compile(r"^([a-z][a-z0-9+.-]*:)?//", re.IGNORECASE)
+    """The pattern of a full URL with a scheme (e.g., "https://") or a protocol-relative URL ("//")."""
+
 
     _base_url: str = "/"
     """The URL the design system's folder is served from. It always ends with a slash."""
@@ -54,14 +57,27 @@ class DesignSystem:
         Set the URL the design system's folder is served from.
         This is the folder that contains `assets/`.
 
+        A path is always made root-relative: "design-system" becomes "/design-system/".
+        A relative URL cannot work, because icon URLs are passed to the CSS in the `--icon-url` custom property,
+        and browsers resolve a relative URL in a custom property against the stylesheet that uses it (icon.css),
+        not against the page. The icon would then be looked for inside the CSS folder.
+
         ### Parameters
-        - base_url (`str`): A root-relative path (e.g., "/design-system") or a full URL
-        (e.g., "https://intranet.example.com/design-system"). A trailing slash is optional.
+        - base_url (`str`): A path from the web root (e.g., "/design-system"; the leading slash is optional),
+        a full URL (e.g., "https://intranet.example.com/design-system") or a protocol-relative URL
+        (e.g., "//cdn.example.com/ds"). A trailing slash is optional.
 
         ### Returns
         - `None`
         """
-        DesignSystem._base_url = str(base_url).rstrip("/") + "/"
+        base_url = str(base_url).strip()
+
+        # Full and protocol-relative URLs are used as given, anything else is a path from the web root
+        if DesignSystem._ABSOLUTE_URL_PATTERN.match(base_url):
+            DesignSystem._base_url = base_url.rstrip("/") + "/"
+            return
+        path = base_url.strip("/")
+        DesignSystem._base_url = "/" if path == "" else f"/{path}/"
 
 
     @staticmethod

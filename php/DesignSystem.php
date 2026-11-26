@@ -45,6 +45,9 @@ class DesignSystem {
      */
     private const ICON_NAME_PATTERN = '/^[a-z0-9]+(-[a-z0-9]+)*$/';
 
+    /** The pattern of a full URL with a scheme (e.g., "https://") or a protocol-relative URL ("//"). */
+    private const ABSOLUTE_URL_PATTERN = '#^([a-z][a-z0-9+.-]*:)?//#i';
+
 
     /** The URL the design system's folder is served from. It always ends with a slash. */
     private static $_baseUrl = '/';
@@ -54,12 +57,26 @@ class DesignSystem {
      * Sets the URL the design system's folder is served from.
      * This is the folder that contains `assets/`.
      *
+     * A path is always made root-relative: "design-system" becomes "/design-system/".
+     * A relative URL cannot work, because icon URLs are passed to the CSS in the `--icon-url` custom property,
+     * and browsers resolve a relative URL in a custom property against the stylesheet that uses it (icon.css),
+     * not against the page. The icon would then be looked for inside the CSS folder.
+     *
      * @param string $baseUrl
-     * A root-relative path (e.g., "/vendor/eko/design-system") or a full URL
-     * (e.g., "https://intranet.example.com/design-system"). A trailing slash is optional.
+     * A path from the web root (e.g., "/design-system"; the leading slash is optional), a full URL
+     * (e.g., "https://intranet.example.com/design-system") or a protocol-relative URL (e.g., "//cdn.example.com/ds").
+     * A trailing slash is optional.
      */
     public static function setBaseUrl($baseUrl) {
-        self::$_baseUrl = rtrim((string) $baseUrl, '/') . '/';
+        $baseUrl = trim((string) $baseUrl);
+
+        // Full and protocol-relative URLs are used as given, anything else is a path from the web root
+        if (preg_match(self::ABSOLUTE_URL_PATTERN, $baseUrl)) {
+            self::$_baseUrl = rtrim($baseUrl, '/') . '/';
+            return;
+        }
+        $path = trim($baseUrl, '/');
+        self::$_baseUrl = $path === '' ? '/' : "/$path/";
     }
 
 
