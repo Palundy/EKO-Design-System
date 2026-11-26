@@ -7,28 +7,25 @@ use InvalidArgumentException;
 /**
  * `SectionHeading` renders the title above a page section, with an optional action link on the right
  * (`.section-heading`, see css/components/section-heading.css).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new SectionHeading(...) ?>` or `echo`,
+ * or keep the string with `(string) new SectionHeading(...)`.
  * Import it with `use EKO\DesignSystem\SectionHeading;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
- * - `new SectionHeading("Popular Products");`
- * - `new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");`
+ * - `echo new SectionHeading("Popular Products");`
+ * - `echo new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");`
  *
  * All text and attribute values are HTML-escaped.
  */
-class SectionHeading {
+class SectionHeading extends Component {
 
 
     /** Heading levels accepted by the `$headingLevel` argument (`<h1>` to `<h6>`). */
     private const VALID_HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
 
 
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
-
-
     /**
-     * Builds the section heading HTML, stores it in `$html` and echoes it.
+     * Builds the section heading HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $title
@@ -75,9 +72,8 @@ class SectionHeading {
         $html .= "</div>";
 
 
-        // Store and print the HTML
+        // Store the HTML
         $this->html = $html;
-        echo $html;
     }
 
 

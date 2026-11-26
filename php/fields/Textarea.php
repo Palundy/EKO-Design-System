@@ -6,18 +6,19 @@ use InvalidArgumentException;
 
 /**
  * `Textarea` renders a multi-line `<textarea>` field. Its height comes from `--field-textarea-height`.
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new Textarea(...) ?>` or `echo`,
+ * or keep the string with `(string) new Textarea(...)`.
  * Import it with `use EKO\DesignSystem\Fields\Textarea;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
- * - `new Textarea("Message", name: "message", placeholder: "Your question", info: "Max. 500 characters.");`
- * - `new Textarea("Message", name: "message", state: "error", info: "Please fill in this field.");`
+ * - `echo new Textarea("Message", name: "message", placeholder: "Your question", info: "Max. 500 characters.");`
+ * - `echo new Textarea("Message", name: "message", state: "error", info: "Please fill in this field.");`
  */
 class Textarea extends Field {
 
 
     /**
-     * Builds the textarea field, stores the HTML in `$html` and echoes it.
+     * Builds the textarea field, stores the HTML in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $label

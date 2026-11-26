@@ -28,7 +28,7 @@ use InvalidArgumentException;
  *     <?= DesignSystem::scripts() ?>
  * </head>
  * ...
- * new Button("Send", icon: "envelope-outline");
+ * echo new Button("Send", icon: "envelope-outline");
  * ```
  *
  * Composer's autoloader loads this class, and the components use it through the same namespace.

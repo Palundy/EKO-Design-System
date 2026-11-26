@@ -88,7 +88,7 @@ function printChapterHead($anchor, $kicker, $lede) {
  * The caption text. It is inserted as HTML, so it may contain `<code>`.
  *
  * @param callable $render
- * A function that prints the example. Components echo themselves, so it simply creates them.
+ * A function that prints the example, e.g. with `echo new Button("Label");`.
  *
  * @param string $stageClass [optional]
  * Extra classes for the stage (e.g., "sc-stage-flush" for an example that fills it).
@@ -201,7 +201,7 @@ function escapeHtml($value) {
                 <a class="nav-item" href="#product-card">Cards</a>
                 <a class="nav-item" href="#spec-table">Tables</a>
             </nav>
-            <?php new Button("Theme: Light", state: "negative", icon: "color-palette-outline", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
+            <?php echo new Button("Theme: Light", state: "negative", icon: "color-palette-outline", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
         </div>
         <div class="sc-progress" aria-hidden="true"></div>
     </header>
@@ -349,7 +349,7 @@ function escapeHtml($value) {
                                 foreach ($columns as $label => $class) {
                                     $state = in_array($label, ['Disabled', 'Loading', 'Negative']) ? strtolower($label) : null;
                                     echo "<div class=\"$class\">";
-                                    new Button("Label", style: $style ?: null, state: $state);
+                                    echo new Button("Label", style: $style ?: null, state: $state);
                                     echo "</div>";
                                 }
                             }
@@ -357,22 +357,22 @@ function escapeHtml($value) {
                         }); ?>
 
                         <?php printFigure('2.2', 'With an icon. The icon follows the text colour, also when the button is outlined or hovered.', function () {
-                            new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
-                            new Button("Download datasheet", icon: "download-outline");
-                            new Button("Contact sales", state: "negative", icon: "call-outline");
+                            echo new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
+                            echo new Button("Download datasheet", icon: "download-outline");
+                            echo new Button("Contact sales", state: "negative", icon: "call-outline");
                         }); ?>
 
                         <?php printCode('
 // 2.1: style is "destructive", "positive" or "enquiry" (none for primary),
 // state is "disabled", "loading" or "negative"
-new Button("Label");
-new Button("Label", style: "destructive", state: "loading");
-new Button("Label", style: "positive", state: "negative");
+echo new Button("Label");
+echo new Button("Label", style: "destructive", state: "loading");
+echo new Button("Label", style: "positive", state: "negative");
 
 // 2.2
-new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
-new Button("Download datasheet", icon: "download-outline");
-new Button("Contact sales", state: "negative", icon: "call-outline");
+echo new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
+echo new Button("Download datasheet", icon: "download-outline");
+echo new Button("Contact sales", state: "negative", icon: "call-outline");
                         '); ?>
                     </div>
                     <?php printStates([
@@ -387,7 +387,7 @@ new Button("Contact sales", state: "negative", icon: "call-outline");
                 </div>
                 <?php printFootnotes([
                     'buttons-events' => 'Event listeners can be injected by setting them as an attribute of the element, through the
-                        <code>attributes</code> argument: <code>new Button("Send", attributes: ["onclick" =&gt; "sendForm()"]);</code>
+                        <code>attributes</code> argument: <code>echo new Button("Send", attributes: ["onclick" =&gt; "sendForm()"]);</code>
                         The value is escaped, so quotes in it are safe. For anything longer than a single call, give the button an
                         <code>id</code> and attach the listener in your own script with <code>addEventListener</code>.',
                 ]); ?>
@@ -404,38 +404,38 @@ new Button("Contact sales", state: "negative", icon: "call-outline");
                 <div class="sc-chapter-body">
                     <div class="sc-stack">
                         <?php printFigure('3.1', 'Text input in its five states. Focus is frozen here to show the blue border.', function () {
-                            new Input("Full name", name: "sc-name", placeholder: "John Doe", info: "Your complete name.", required: true);
+                            echo new Input("Full name", name: "sc-name", placeholder: "John Doe", info: "Your complete name.", required: true);
                             echo "<div class=\"sc-force-focus\">";
-                            new Input("Full name", name: "sc-name-focus", value: "John Doe", info: "Focus: a blue border.", required: true);
+                            echo new Input("Full name", name: "sc-name-focus", value: "John Doe", info: "Focus: a blue border.", required: true);
                             echo "</div>";
-                            new Input("Email address", name: "sc-email-error", type: "email", value: "john@", state: "error", info: "Please enter a valid email address.", required: true);
-                            new Input("Email address", name: "sc-email-success", type: "email", value: "john.doe@example.com", state: "success", info: "Looks good!", required: true);
-                            new Input("Full name", name: "sc-name-disabled", value: "John Doe", state: "disabled", info: "This field is disabled.");
+                            echo new Input("Email address", name: "sc-email-error", type: "email", value: "john@", state: "error", info: "Please enter a valid email address.", required: true);
+                            echo new Input("Email address", name: "sc-email-success", type: "email", value: "john.doe@example.com", state: "success", info: "Looks good!", required: true);
+                            echo new Input("Full name", name: "sc-name-disabled", value: "John Doe", state: "disabled", info: "This field is disabled.");
                         }); ?>
 
                         <?php printFigure('3.2', 'Dropdown and text area. The dropdown is a native select underneath, so it submits, validates and resets like any field. Open it to see the option states.', function () {
                             $options = ['ms-80sh' => 'MS-80SH Pyranometer', 'ms-80' => 'MS-80 Pyranometer', 'ms-60' => 'MS-60 Pyranometer', 'ms-40' => 'MS-40 Pyranometer'];
-                            new Dropdown("Product of interest", id: "sc-product", options: $options, info: "Choose an instrument.", required: true);
-                            new Dropdown("Product of interest", id: "sc-product-selected", options: $options, value: "ms-80sh", state: "success", info: "Successfully selected!");
-                            new Textarea("Message", name: "sc-message", placeholder: "How can we help?", info: "We usually answer within one working day.");
+                            echo new Dropdown("Product of interest", id: "sc-product", options: $options, info: "Choose an instrument.", required: true);
+                            echo new Dropdown("Product of interest", id: "sc-product-selected", options: $options, value: "ms-80sh", state: "success", info: "Successfully selected!");
+                            echo new Textarea("Message", name: "sc-message", placeholder: "How can we help?", info: "We usually answer within one working day.");
                         }); ?>
 
                         <?php printCode('
 // 3.1
-new Input("Full name", name: "name", placeholder: "John Doe", info: "Your complete name.", required: true);
-new Input("Email address", name: "email", type: "email", value: "john@", required: true,
+echo new Input("Full name", name: "name", placeholder: "John Doe", info: "Your complete name.", required: true);
+echo new Input("Email address", name: "email", type: "email", value: "john@", required: true,
           state: "error", info: "Please enter a valid email address.");
-new Input("Email address", name: "email", type: "email", value: "john.doe@example.com", required: true,
+echo new Input("Email address", name: "email", type: "email", value: "john.doe@example.com", required: true,
           state: "success", info: "Looks good!");
-new Input("Full name", name: "name", value: "John Doe", state: "disabled", info: "This field is disabled.");
+echo new Input("Full name", name: "name", value: "John Doe", state: "disabled", info: "This field is disabled.");
 
 // 3.2
 $products = ["ms-80sh" => "MS-80SH Pyranometer", "ms-80" => "MS-80 Pyranometer",
              "ms-60" => "MS-60 Pyranometer", "ms-40" => "MS-40 Pyranometer"];
-new Dropdown("Product of interest", id: "product", options: $products, info: "Choose an instrument.", required: true);
-new Dropdown("Product of interest", id: "product", options: $products, value: "ms-80sh",
+echo new Dropdown("Product of interest", id: "product", options: $products, info: "Choose an instrument.", required: true);
+echo new Dropdown("Product of interest", id: "product", options: $products, value: "ms-80sh",
              state: "success", info: "Successfully selected!");
-new Textarea("Message", name: "message", placeholder: "How can we help?",
+echo new Textarea("Message", name: "message", placeholder: "How can we help?",
              info: "We usually answer within one working day.");
                         '); ?>
                     </div>
@@ -452,7 +452,7 @@ new Textarea("Message", name: "message", placeholder: "How can we help?",
                 <?php printFootnotes([
                     'fields-events' => 'Event listeners can be injected by setting them as an attribute of the element. The
                         <code>attributes</code> argument of <code>Input</code>, <code>Textarea</code> and <code>Dropdown</code> lands on the
-                        control itself: <code>new Input("Email", name: "email", attributes: ["oninput" =&gt; "checkEmail(this)"]);</code>
+                        control itself: <code>echo new Input("Email", name: "email", attributes: ["oninput" =&gt; "checkEmail(this)"]);</code>
                         For a dropdown, listen to <code>onchange</code> on the native select: the styled menu passes every choice on to it
                         as a normal <code>input</code> and <code>change</code> event.',
                 ]); ?>
@@ -558,27 +558,27 @@ new Textarea("Message", name: "message", placeholder: "How can we help?",
                 <div class="sc-chapter-body">
                     <div class="sc-stack">
                         <?php printFigure('6.1', 'Navigation items. The section the visitor is in is bold with a blue line underneath.', function () {
-                            new NavItem("Products", "#navigation");
-                            new NavItem("Industries", "#navigation", active: true);
-                            new NavItem("Calibration", "#navigation");
-                            new NavItem("About EKO", "#navigation");
+                            echo new NavItem("Products", "#navigation");
+                            echo new NavItem("Industries", "#navigation", active: true);
+                            echo new NavItem("Calibration", "#navigation");
+                            echo new NavItem("About EKO", "#navigation");
                         }); ?>
 
                         <?php printFigure('6.2', 'The breadcrumb spans the full page width, with the page gutter on the left. The current page is bold and not a link.', function () {
                             echo "<div style=\"width: 100%\">";
-                            new Breadcrumb(["Home" => "#navigation", "Pyranometers" => "#navigation", "MS-80SH" => "#navigation", "Talk to an Expert"]);
+                            echo new Breadcrumb(["Home" => "#navigation", "Pyranometers" => "#navigation", "MS-80SH" => "#navigation", "Talk to an Expert"]);
                             echo "</div>";
                         }, 'sc-stage-flush'); ?>
 
                         <?php printCode('
 // 6.1
-new NavItem("Products", "/products");
-new NavItem("Industries", "/industries", active: true);
-new NavItem("Calibration", "/calibration");
-new NavItem("About EKO", "/about");
+echo new NavItem("Products", "/products");
+echo new NavItem("Industries", "/industries", active: true);
+echo new NavItem("Calibration", "/calibration");
+echo new NavItem("About EKO", "/about");
 
 // 6.2
-new Breadcrumb([
+echo new Breadcrumb([
     "Home" => "/", "Pyranometers" => "/pyranometers", "MS-80SH" => "/products/ms-80sh",
     "Talk to an Expert",
 ]);
@@ -605,13 +605,13 @@ new Breadcrumb([
                     <div class="sc-stack">
                         <?php printFigure('7.1', 'With an action link, and on its own.', function () {
                             echo "<div style=\"display: flex; flex-direction: column; gap: 48px; width: 100%\">";
-                            new SectionHeading("Popular Products", link: "View all", linkUrl: "#section-heading");
-                            new SectionHeading("About EKO");
+                            echo new SectionHeading("Popular Products", link: "View all", linkUrl: "#section-heading");
+                            echo new SectionHeading("About EKO");
                             echo "</div>";
                         }); ?>
                         <?php printCode('
-new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");
-new SectionHeading("About EKO");
+echo new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");
+echo new SectionHeading("About EKO");
                         '); ?>
                     </div>
                     <?php printStates([
@@ -633,7 +633,7 @@ new SectionHeading("About EKO");
                 <div class="sc-chapter-body">
                     <div class="sc-stack">
                         <?php printFigure('8.1', 'Complete, and stripped back to title, label, description and link.', function () {
-                            new ProductCard(
+                            echo new ProductCard(
                                 title: "MS-80SH",
                                 label: "Class A",
                                 description: "Class A pyranometer with ventilator and heater for utility-scale PV",
@@ -648,7 +648,7 @@ new SectionHeading("About EKO");
                                 cta: "View product",
                                 ctaUrl: "#product-card"
                             );
-                            new ProductCard(
+                            echo new ProductCard(
                                 title: "ICF-02",
                                 label: "New!",
                                 description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
@@ -660,14 +660,14 @@ new SectionHeading("About EKO");
                                 ],
                                 cta: "Request Quote"
                             );
-                            new ProductCard(
+                            echo new ProductCard(
                                 title: "Product Card",
                                 description: "This is a card without an image, without a table and without a label.",
                                 cta: "Call to action"
                             );
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
                         <?php printCode('
-new ProductCard(
+echo new ProductCard(
     title: "MS-80SH",
     label: "Class A",
     description: "Class A pyranometer with ventilator and heater for utility-scale PV",
@@ -684,7 +684,7 @@ new ProductCard(
 );
 
 // Repeat a name by writing the rows as lists; without ctaUrl the call to action is not a link
-new ProductCard(
+echo new ProductCard(
     title: "ICF-02",
     label: "New!",
     description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
@@ -697,7 +697,7 @@ new ProductCard(
     cta: "Request Quote"
 );
 
-new ProductCard(
+echo new ProductCard(
     title: "Product Card",
     description: "This is a card without an image, without a table and without a label.",
     cta: "Call to action"
@@ -724,7 +724,7 @@ new ProductCard(
                 <div class="sc-chapter-body">
                     <div class="sc-stack">
                         <?php printFigure('9.1', 'With a photo and a button, and with the minimum: a name and one way to reach out.', function () {
-                            new ContactCard(
+                            echo new ContactCard(
                                 first: "Jane Doe",
                                 second: "EKO Instruments B.V.",
                                 third: "Sales Engineer",
@@ -735,14 +735,14 @@ new ProductCard(
                                 button: "Contact Jane",
                                 buttonIcon: "envelope-outline"
                             );
-                            new ContactCard(
+                            echo new ContactCard(
                                 first: "Customer service",
                                 third: "Questions about your order",
                                 email: "service@example.com"
                             );
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
                         <?php printCode('
-new ContactCard(
+echo new ContactCard(
     first: "Jane Doe",
     second: "EKO Instruments B.V.",
     third: "Sales Engineer",
@@ -754,7 +754,7 @@ new ContactCard(
     buttonIcon: "envelope-outline"
 );
 
-new ContactCard(
+echo new ContactCard(
     first: "Customer service",
     third: "Questions about your order",
     email: "service@example.com"
@@ -788,14 +788,14 @@ new ContactCard(
                     <div class="sc-stack">
                         <?php printFigure('10.1', 'Application card and article card. The article title and description stop after three lines, and the share buttons open LinkedIn, X, Facebook or email.', function () {
                             echo "<div class=\"sc-photo\" style=\"--sc-photo-icon: url('/assets/icons/sun-outline.svg')\">";
-                            new ApplicationCard(
+                            echo new ApplicationCard(
                                 title: "Solar Energy",
                                 description: "Resource assessment, performance monitoring and plant optimization.",
                                 cta: "Learn More",
                                 ctaUrl: "#image-cards"
                             );
                             echo "</div>";
-                            new ArticleCard(
+                            echo new ArticleCard(
                                 title: "How to choose the right pyranometer for a utility-scale PV plant",
                                 url: "https://www.eko-instruments.com/",
                                 tag: "Instruments",
@@ -804,7 +804,7 @@ new ContactCard(
                                 share: true
                             );
                             echo "<div class=\"sc-photo\" style=\"--sc-photo-icon: url('/assets/icons/temperature-outline.svg')\">";
-                            new ApplicationCard(
+                            echo new ApplicationCard(
                                 title: "Meteorology",
                                 description: "Accurate radiation data for weather and climate networks.",
                                 cta: "Learn More",
@@ -815,7 +815,7 @@ new ContactCard(
 
                         <?php printFigure('10.2', 'Industry card. The whole card is a link; hover it to see the title underline.', function () {
                             echo "<div class=\"sc-photo\" style=\"--sc-photo-icon: url('/assets/icons/bolt-outline.svg')\">";
-                            new IndustryCard(
+                            echo new IndustryCard(
                                 title: "Solar Energy",
                                 description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration.",
                                 url: "#image-cards"
@@ -825,14 +825,14 @@ new ContactCard(
 
                         <?php printCode('
 // 10.1
-new ApplicationCard(
+echo new ApplicationCard(
     title: "Solar Energy",
     description: "Resource assessment, performance monitoring and plant optimization.",
     cta: "Learn More",
     ctaUrl: "/applications/solar"
 );
 
-new ArticleCard(
+echo new ArticleCard(
     title: "How to choose the right pyranometer for a utility-scale PV plant",
     url: "https://www.eko-instruments.com/",
     tag: "Instruments",
@@ -842,7 +842,7 @@ new ArticleCard(
 );
 
 // 10.2
-new IndustryCard(
+echo new IndustryCard(
     title: "Solar Energy",
     description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration.",
     url: "/industries/solar"
@@ -864,7 +864,7 @@ new IndustryCard(
                     <div class="sc-stack">
                         <?php printFigure('11.1', 'A comparison table with a header row: the ISO 9060 Class A limits next to the MS-80SH.', function () {
                             echo "<div style=\"width: 100%\">";
-                            new SpecTable(
+                            echo new SpecTable(
                                 title: "ISO Specifications",
                                 header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
                                 rows: [
@@ -881,7 +881,7 @@ new IndustryCard(
 
                         <?php printFigure('11.2', 'A key/value table without a header row.', function () {
                             echo "<div style=\"width: 100%\">";
-                            new SpecTable(
+                            echo new SpecTable(
                                 title: "Specifications",
                                 rows: [
                                     "Wavelength Range (nm)" => "285 to 3000",
@@ -895,7 +895,7 @@ new IndustryCard(
 
                         <?php printCode('
 // 11.1
-new SpecTable(
+echo new SpecTable(
     title: "ISO Specifications",
     header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
     rows: [
@@ -909,7 +909,7 @@ new SpecTable(
 );
 
 // 11.2
-new SpecTable(
+echo new SpecTable(
     title: "Specifications",
     rows: [
         "Wavelength Range (nm)" => "285 to 3000",

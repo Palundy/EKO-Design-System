@@ -6,7 +6,8 @@ use InvalidArgumentException;
 
 /**
  * `ProductCard` renders a product card (`.product-card`, see css/components/product-card.css).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new ProductCard(...) ?>` or `echo`,
+ * or keep the string with `(string) new ProductCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ProductCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * Every part except the title is optional and is left out when not given:
@@ -23,7 +24,7 @@ use InvalidArgumentException;
  *
  * The table is passed as name => value pairs, one pair per row:
  * ```php
- * new ProductCard(
+ * echo new ProductCard(
  *     title: "MS-80SH",
  *     label: "Class A",
  *     description: "Class A pyranometer with ventilator and heater for utility-scale PV",
@@ -46,7 +47,7 @@ class ProductCard extends Card {
 
 
     /**
-     * Builds the product card HTML, stores it in `$html` and echoes it.
+     * Builds the product card HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $title
@@ -114,8 +115,8 @@ class ProductCard extends Card {
         $html .= "</div>";
 
 
-        // Store and print the HTML
-        $this->output($html);
+        // Store the HTML
+        $this->html = $html;
     }
 
     /**

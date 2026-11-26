@@ -6,18 +6,19 @@ use InvalidArgumentException;
 
 /**
  * `Input` renders a single-line `<input>` field.
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new Input(...) ?>` or `echo`,
+ * or keep the string with `(string) new Input(...)`.
  * Import it with `use EKO\DesignSystem\Fields\Input;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
- * - `new Input("Full Name", name: "name", placeholder: "John Doe", required: true);`
- * - `new Input("E-mail", name: "email", type: "email", state: "error", info: "Please enter a valid e-mail address.");`
+ * - `echo new Input("Full Name", name: "name", placeholder: "John Doe", required: true);`
+ * - `echo new Input("E-mail", name: "email", type: "email", state: "error", info: "Please enter a valid e-mail address.");`
  */
 class Input extends Field {
 
 
     /**
-     * Builds the input field, stores the HTML in `$html` and echoes it.
+     * Builds the input field, stores the HTML in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $label

@@ -2,6 +2,7 @@
 namespace EKO\DesignSystem\Fields;
 
 use InvalidArgumentException;
+use EKO\DesignSystem\Component;
 
 
 /**
@@ -18,10 +19,10 @@ use InvalidArgumentException;
  * ```
  *
  * The fields live in the `EKO\DesignSystem\Fields` namespace (e.g., `use EKO\DesignSystem\Fields\Input;`).
- * Like `Button`, a field is echoed straight away from its constructor, so creating one inside a template prints it at that spot.
+ * Like every `Component`, a field returns its HTML instead of printing it.
  * All text and attribute values are HTML-escaped.
  */
-abstract class Field {
+abstract class Field extends Component {
 
 
     /**
@@ -37,13 +38,9 @@ abstract class Field {
     ];
 
 
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
-
-
     /**
      * Checks the shared arguments, builds the wrapper, label and info text around the control
-     * from `renderControl()`, stores the HTML in `$html` and echoes it.
+     * from `renderControl()`, stores the HTML in `$html`.
      *
      * @param string $label
      * The visible label text. " *" is added when `$required` is `true`.
@@ -98,7 +95,7 @@ abstract class Field {
         $labelText = self::escape($label) . ($required ? ' *' : '');
 
 
-        // Create, store and print the HTML
+        // Create and store the HTML
         $html = "<div class=\"$class\">";
         $html .= "<label class=\"field-label\" for=\"" . self::escape($this->id) . "\">$labelText</label>";
         $html .= $this->renderControl();
@@ -107,7 +104,6 @@ abstract class Field {
         }
         $html .= "</div>";
         $this->html = $html;
-        echo $html;
     }
 
 

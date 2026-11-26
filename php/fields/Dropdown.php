@@ -7,11 +7,12 @@ use InvalidArgumentException;
 /**
  * `Dropdown` renders a dropdown field: a native `<select>` inside `.dropdown`,
  * which js/dropdowns.js turns into the styled dropdown. Include that script on the page (see `DesignSystem::scripts()`).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new Dropdown(...) ?>` or `echo`,
+ * or keep the string with `(string) new Dropdown(...)`.
  * Import it with `use EKO\DesignSystem\Fields\Dropdown;` after requiring Composer's `vendor/autoload.php`.
  *
  * Example:
- * - `new Dropdown("Product of interest", name: "product", options: ["ms-80sh" => "MS-80SH", "ms-80" => "MS-80"], value: "ms-80", required: true);`
+ * - `echo new Dropdown("Product of interest", name: "product", options: ["ms-80sh" => "MS-80SH", "ms-80" => "MS-80"], value: "ms-80", required: true);`
  *
  * The native `<select>` stays the source of truth: it holds the value and takes part in form submission and validation.
  */
@@ -19,7 +20,7 @@ class Dropdown extends Field {
 
 
     /**
-     * Builds the dropdown field, stores the HTML in `$html` and echoes it.
+     * Builds the dropdown field, stores the HTML in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $label

@@ -7,14 +7,15 @@ use InvalidArgumentException;
 /**
  * `ArticleCard` renders a blog or news card (`.article-card`, see css/components/image-card.css):
  * a photo, a category tag, a title, a description, and a footer with the reading time and share buttons.
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new ArticleCard(...) ?>` or `echo`,
+ * or keep the string with `(string) new ArticleCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ArticleCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * The title and description are cut off after three lines.
  *
  * Example:
  * ```php
- * new ArticleCard(
+ * echo new ArticleCard(
  *     title: "How to choose the right pyranometer",
  *     url: "https://www.eko-instruments.com/blog/choosing-a-pyranometer",
  *     tag: "Instruments",
@@ -43,7 +44,7 @@ class ArticleCard extends ImageCard {
 
 
     /**
-     * Builds the article card HTML, stores it in `$html` and echoes it.
+     * Builds the article card HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $title
@@ -117,8 +118,8 @@ class ArticleCard extends ImageCard {
         $html .= "</div></article>";
 
 
-        // Store and print the HTML
-        $this->output($html);
+        // Store the HTML
+        $this->html = $html;
     }
 
 

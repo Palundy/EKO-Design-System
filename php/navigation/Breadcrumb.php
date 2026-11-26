@@ -2,17 +2,19 @@
 namespace EKO\DesignSystem\Navigation;
 
 use InvalidArgumentException;
+use EKO\DesignSystem\Component;
 
 
 /**
  * `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see css/components/breadcrumb.css).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new Breadcrumb(...) ?>` or `echo`,
+ * or keep the string with `(string) new Breadcrumb(...)`.
  * Import it with `use EKO\DesignSystem\Navigation\Breadcrumb;` after requiring Composer's `vendor/autoload.php`.
  *
  * Pass the trail from the home page to the current page as label => URL pairs. The last item is the current page;
  * give it without a URL:
  * ```php
- * new Breadcrumb([
+ * echo new Breadcrumb([
  *     "Home" => "/",
  *     "Pyranometers" => "/pyranometers",
  *     "MS-80SH" => "/products/ms-80sh",
@@ -22,15 +24,11 @@ use InvalidArgumentException;
  *
  * All text and attribute values are HTML-escaped.
  */
-class Breadcrumb {
-
-
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
+class Breadcrumb extends Component {
 
 
     /**
-     * Builds the breadcrumb HTML, stores it in `$html` and echoes it.
+     * Builds the breadcrumb HTML, stores it in `$html`.
      *
      * @param array $items
      * The trail, in order. Each entry is label => URL (a link), or just a label (no link).
@@ -68,9 +66,8 @@ class Breadcrumb {
         $html .= "</ol></nav>";
 
 
-        // Store and print the HTML
+        // Store the HTML
         $this->html = $html;
-        echo $html;
     }
 
 

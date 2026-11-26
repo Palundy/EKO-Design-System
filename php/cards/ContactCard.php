@@ -6,7 +6,8 @@ use InvalidArgumentException;
 
 /**
  * `ContactCard` renders a contact card (`.contact-card`, see css/components/contact-card.css).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new ContactCard(...) ?>` or `echo`,
+ * or keep the string with `(string) new ContactCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ContactCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * Every part except the first line is optional and is left out when not given:
@@ -32,9 +33,9 @@ use InvalidArgumentException;
  * ```
  *
  * Examples:
- * - `new ContactCard("Palau van Helden");`
- * - `new ContactCard("Palau van Helden", second: "EKO Instruments B.V.", email: "info@eko-instruments.com");`
- * - `new ContactCard("Sales", phone: "+31 70 3050117", button: "Call us", buttonIcon: "call-outline");`
+ * - `echo new ContactCard("Palau van Helden");`
+ * - `echo new ContactCard("Palau van Helden", second: "EKO Instruments B.V.", email: "info@eko-instruments.com");`
+ * - `echo new ContactCard("Sales", phone: "+31 70 3050117", button: "Call us", buttonIcon: "call-outline");`
  *
  * All text and attribute values are HTML-escaped. The generated class names must stay in sync
  * with the hand-written contact card in index.html.
@@ -53,7 +54,7 @@ class ContactCard extends Card {
 
 
     /**
-     * Builds the contact card HTML, stores it in `$html` and echoes it.
+     * Builds the contact card HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $first
@@ -164,8 +165,8 @@ class ContactCard extends Card {
         $html .= "</div>";
 
 
-        // Store and print the HTML
-        $this->output($html);
+        // Store the HTML
+        $this->html = $html;
     }
 
     /**

@@ -6,17 +6,18 @@ use InvalidArgumentException;
 
 /**
  * `Button` renders a design-system button (`.btn`, see css/components/button.css).
- * The button is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new Button(...) ?>` or `echo`,
+ * or keep the string with `(string) new Button(...)`.
  * Import it with `use EKO\DesignSystem\Button;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
- * - `new Button("Save");`
- * - `new Button("Delete", style: "destructive", state: "loading");`
- * - `new Button("Send", type: "submit", attributes: ["id" => "send-btn"]);`
+ * - `echo new Button("Save");`
+ * - `echo new Button("Delete", style: "destructive", state: "loading");`
+ * - `echo new Button("Send", type: "submit", attributes: ["id" => "send-btn"]);`
  *
  * The generated class names must stay in sync with the hand-written buttons in index.html.
  */
-class Button {
+class Button extends Component {
 
 
     /**
@@ -42,12 +43,8 @@ class Button {
     ];
 
 
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
-
-
     /**
-     * Builds the button HTML, stores it in `$html` and echoes it.
+     * Builds the button HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      * All text and attribute values are HTML-escaped, so user input can be passed safely.
      *
@@ -120,10 +117,9 @@ class Button {
         }
 
 
-        // Create, store and print the HTML
+        // Create and store the HTML
         $html = "<button" . self::attributesToHtml($allAttributes) . ">$content</button>";
         $this->html = $html;
-        echo $html;
     }
 
 

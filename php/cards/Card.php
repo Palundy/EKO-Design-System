@@ -2,6 +2,7 @@
 namespace EKO\DesignSystem\Cards;
 
 use InvalidArgumentException;
+use EKO\DesignSystem\Component;
 use EKO\DesignSystem\DesignSystem;
 
 
@@ -10,27 +11,11 @@ use EKO\DesignSystem\DesignSystem;
  * the image cards (see css/components/product-card.css, contact-card.css and image-card.css). It is not used directly.
  * The cards live in the `EKO\DesignSystem\Cards` namespace (e.g., `use EKO\DesignSystem\Cards\ProductCard;`).
  *
- * It holds what every card has in common: the generated HTML and the escaping helpers.
- * Like the other components, a card is echoed straight away from its constructor,
- * so creating one inside a template prints it at that spot.
+ * It holds what every card has in common: the escaping, icon and attribute helpers.
+ * Like every `Component`, a card returns its HTML instead of printing it.
  */
-abstract class Card {
+abstract class Card extends Component {
 
-
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
-
-
-    /**
-     * Stores the HTML in `$html` and echoes it.
-     *
-     * @param string $html
-     * The card's complete HTML.
-     */
-    protected function output($html) {
-        $this->html = $html;
-        echo $html;
-    }
 
     /**
      * Builds a decorative icon (see css/components/icon.css). It is hidden from screen readers.

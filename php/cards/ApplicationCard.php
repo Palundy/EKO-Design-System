@@ -7,12 +7,13 @@ use InvalidArgumentException;
 /**
  * `ApplicationCard` renders an application card (`.application-card`, see css/components/image-card.css):
  * a photo, a title, a description and a "Learn More →" link.
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new ApplicationCard(...) ?>` or `echo`,
+ * or keep the string with `(string) new ApplicationCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ApplicationCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * Example:
  * ```php
- * new ApplicationCard(
+ * echo new ApplicationCard(
  *     title: "Solar Energy",
  *     description: "Resource assessment, performance monitoring and plant optimization.",
  *     image: "/assets/images/solar-energy.jpg",
@@ -27,7 +28,7 @@ class ApplicationCard extends ImageCard {
 
 
     /**
-     * Builds the application card HTML, stores it in `$html` and echoes it.
+     * Builds the application card HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param string $title
@@ -83,7 +84,7 @@ class ApplicationCard extends ImageCard {
         $html .= "</div></article>";
 
 
-        // Store and print the HTML
-        $this->output($html);
+        // Store the HTML
+        $this->html = $html;
     }
 }

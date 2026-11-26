@@ -73,10 +73,8 @@ DesignSystem::setBaseUrl('/design-system');
 </head>
 <body>
     <form method="post">
-        <?php
-        new Input("Email address", name: "email", type: "email", required: true);
-        new Button("Send", type: "submit", icon: "envelope-outline");
-        ?>
+        <?= new Input("Email address", name: "email", type: "email", required: true) ?>
+        <?= new Button("Send", type: "submit", icon: "envelope-outline") ?>
     </form>
 </body>
 </html>
@@ -92,7 +90,12 @@ Open <http://localhost:8000>. You now have an EKO input field and button.
 
 ## The basics in four rules
 
-1. **Creating a component prints it.** `new Button("Save")` outputs the HTML right where you write it, so you don't need `echo`.
+1. **A component is its HTML.** Creating one doesn't print anything; print it where you want it, or keep it as a string:
+   ```php
+   <?= new Button("Save") ?>                // in a template
+   echo new Button("Save");                 // in PHP code
+   $html = (string) new Button("Save");     // as a string, e.g. for a template engine
+   ```
 2. **Pass options by name.** `new Button("Delete", style: "destructive", state: "loading")`. Everything except the first argument is optional.
 3. **Pass plain text.** All text, URLs and attributes are escaped for you, so user input is safe and you don't need to escape it yourself.
 4. **Icons go by name.** `icon: "envelope-outline"` uses one of the ~1,600 bundled icons (see `public/design-system/assets/icons/` for the names). A misspelled name throws an exception instead of showing an empty square.

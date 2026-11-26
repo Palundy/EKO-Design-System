@@ -2,28 +2,26 @@
 namespace EKO\DesignSystem\Navigation;
 
 use InvalidArgumentException;
+use EKO\DesignSystem\Component;
 
 
 /**
  * `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see css/components/nav-item.css).
- * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new NavItem(...) ?>` or `echo`,
+ * or keep the string with `(string) new NavItem(...)`.
  * Import it with `use EKO\DesignSystem\Navigation\NavItem;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
- * - `new NavItem("Products", "/products");`
- * - `new NavItem("Products", "/products", active: true);` for the section the visitor is in.
+ * - `echo new NavItem("Products", "/products");`
+ * - `echo new NavItem("Products", "/products", active: true);` for the section the visitor is in.
  *
  * All text and attribute values are HTML-escaped.
  */
-class NavItem {
-
-
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
+class NavItem extends Component {
 
 
     /**
-     * Builds the navigation item HTML, stores it in `$html` and echoes it.
+     * Builds the navigation item HTML, stores it in `$html`.
      *
      * @param string $label
      * The menu text.
@@ -44,11 +42,10 @@ class NavItem {
         }
 
 
-        // Create, store and print the HTML
+        // Create and store the HTML
         $current = $active ? " aria-current=\"page\"" : "";
         $html = "<a class=\"nav-item\" href=\"" . self::escape($url) . "\"$current>" . self::escape($label) . "</a>";
         $this->html = $html;
-        echo $html;
     }
 
 

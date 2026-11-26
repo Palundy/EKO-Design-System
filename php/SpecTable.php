@@ -6,13 +6,14 @@ use InvalidArgumentException;
 
 /**
  * `SpecTable` renders a titled specifications table (`.spec-table`, see css/components/spec-table.css).
- * The table is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * It returns its HTML instead of printing it: print it with `<?= new SpecTable(...) ?>` or `echo`,
+ * or keep the string with `(string) new SpecTable(...)`.
  * Import it with `use EKO\DesignSystem\SpecTable;` after requiring Composer's `vendor/autoload.php`.
  *
  * Rows are passed as label => value pairs, one pair per row. A single value gives a two-column key/value table,
  * a list of values gives a comparison table with one column per value:
  * ```php
- * new SpecTable(
+ * echo new SpecTable(
  *     title: "Specifications",
  *     rows: [
  *         "Wavelength Range (nm)" => "285 to 3000",
@@ -20,7 +21,7 @@ use InvalidArgumentException;
  *     ]
  * );
  *
- * new SpecTable(
+ * echo new SpecTable(
  *     title: "ISO Specifications",
  *     header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
  *     rows: [
@@ -36,19 +37,15 @@ use InvalidArgumentException;
  *
  * All text is HTML-escaped. The generated class names must stay in sync with the hand-written tables in index.html.
  */
-class SpecTable {
+class SpecTable extends Component {
 
 
     /** Heading levels accepted by the `$headingLevel` argument for the title (`<h2>` to `<h6>`). */
     private const VALID_HEADING_LEVELS = [2, 3, 4, 5, 6];
 
 
-    /** The HTML that was generated and echoed, kept so callers can reuse it. */
-    public $html = null;
-
-
     /**
-     * Builds the table HTML, stores it in `$html` and echoes it.
+     * Builds the table HTML, stores it in `$html`.
      * Pass named arguments (PHP 8+) so the optional parameters can be skipped.
      *
      * @param array $rows
@@ -131,9 +128,8 @@ class SpecTable {
         $html .= "</tbody></table></div></section>";
 
 
-        // Store and print the HTML
+        // Store the HTML
         $this->html = $html;
-        echo $html;
     }
 
 
