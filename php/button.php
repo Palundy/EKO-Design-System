@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `Button` renders a design-system button (`.btn`, see css/components/button.css).
+ * `Button` renders a design-system button (`.btn`, see assets/css/components/button.css).
  * It returns its HTML instead of printing it: print it with `<?= new Button(...) ?>` or `echo`,
  * or keep the string with `(string) new Button(...)`.
  * Import it with `use EKO\DesignSystem\Button;` after requiring Composer's `vendor/autoload.php`.

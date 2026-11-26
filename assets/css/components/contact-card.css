@@ -148,7 +148,7 @@
     --icon-height: var(--contact-card-details-secondary-icon-size);
 }
 
-/* Child elements: button (a `.btn.negative`, see css/components/button.css) */
+/* Child elements: button (a `.btn.negative`, see assets/css/components/button.css) */
 .contact-card .card-button {
     --button-icon-size: var(--contact-card-button-icon-size);
 

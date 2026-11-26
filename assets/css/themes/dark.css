@@ -1,7 +1,7 @@
 /*
  * Dark theme. Switch it on with `<html data-theme="dark">`.
  *
- * A theme only overrides semantic colour tokens (css/tokens/semantic.css) and points them at brand tokens.
+ * A theme only overrides semantic colour tokens (assets/css/tokens/semantic.css) and points them at brand tokens.
  * It never touches component files: every component picks the new colours up through the semantic tokens.
  * Sizes, spacing and fonts are not themed, so they are not listed here.
  *

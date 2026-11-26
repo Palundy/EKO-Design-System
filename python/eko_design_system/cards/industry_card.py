@@ -3,7 +3,7 @@ from .image_card import ImageCard
 
 class IndustryCard(ImageCard):
     """
-    `IndustryCard` renders a wide industry card (`.industry-card`, see css/components/image-card.css):
+    `IndustryCard` renders a wide industry card (`.industry-card`, see assets/css/components/image-card.css):
     a photo, a large title and a blue description.
     It returns its HTML instead of printing it: use it as a string with `str(IndustryCard(...))`,
     or print it in a Jinja template with `{{ card }}`.

@@ -1,6 +1,6 @@
 /*
  * Dropdown: a native `<select class="field-input">` inside `.field .dropdown`.
- * js/dropdowns.js hides the select visually and builds a styled trigger and menu next to it:
+ * assets/js/dropdowns.js hides the select visually and builds a styled trigger and menu next to it:
  *
  *     <div class="dropdown">
  *         <select class="field-input dropdown-native">…</select>

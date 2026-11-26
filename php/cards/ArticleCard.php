@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `ArticleCard` renders a blog or news card (`.article-card`, see css/components/image-card.css):
+ * `ArticleCard` renders a blog or news card (`.article-card`, see assets/css/components/image-card.css):
  * a photo, a category tag, a title, a description, and a footer with the reading time and share buttons.
  * It returns its HTML instead of printing it: print it with `<?= new ArticleCard(...) ?>` or `echo`,
  * or keep the string with `(string) new ArticleCard(...)`.

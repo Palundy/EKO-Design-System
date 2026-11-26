@@ -6,7 +6,7 @@ from .field import Field
 class Dropdown(Field):
     """
     `Dropdown` renders a dropdown field: a native `<select>` inside `.dropdown`,
-    which js/dropdowns.js turns into the styled dropdown. Include that script on the page.
+    which assets/js/dropdowns.js turns into the styled dropdown. Include that script on the page.
     It returns its HTML instead of printing it: use it as a string with `str(Dropdown(...))`,
     or print it in a Jinja template with `{{ field }}`.
     Import it with `from eko_design_system.fields import Dropdown`.

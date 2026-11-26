@@ -67,8 +67,8 @@
     width: var(--breadcrumb-separator-size);
     height: var(--breadcrumb-separator-size);
     background-color: var(--breadcrumb-separator-color);
-    -webkit-mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
-    mask: url("../../assets/icons/angle-right-b-solid.svg") center / contain no-repeat;
+    -webkit-mask: url("../../icons/angle-right-b-solid.svg") center / contain no-repeat;
+    mask: url("../../icons/angle-right-b-solid.svg") center / contain no-repeat;
 }
 
 .breadcrumb a {

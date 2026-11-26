@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `ProductCard` renders a product card (`.product-card`, see css/components/product-card.css).
+ * `ProductCard` renders a product card (`.product-card`, see assets/css/components/product-card.css).
  * It returns its HTML instead of printing it: print it with `<?= new ProductCard(...) ?>` or `echo`,
  * or keep the string with `(string) new ProductCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ProductCard;` after requiring Composer's `vendor/autoload.php`.

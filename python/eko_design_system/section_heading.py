@@ -6,7 +6,7 @@ from eko_design_system.component import Component
 class SectionHeading(Component):
     """
     `SectionHeading` renders the title above a page section, with an optional action link on the right
-    (`.section-heading`, see css/components/section-heading.css).
+    (`.section-heading`, see assets/css/components/section-heading.css).
     It returns its HTML instead of printing it: use it as a string with `str(SectionHeading(...))`,
     or print it in a Jinja template with `{{ heading }}`.
     Import it with `from eko_design_system import SectionHeading`.

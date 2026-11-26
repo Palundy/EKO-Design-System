@@ -6,7 +6,7 @@ from .card import Card
 
 class ContactCard(Card):
     """
-    `ContactCard` renders a contact card (`.contact-card`, see css/components/contact-card.css).
+    `ContactCard` renders a contact card (`.contact-card`, see assets/css/components/contact-card.css).
     It returns its HTML instead of printing it: use it as a string with `str(ContactCard(...))`,
     or print it in a Jinja template with `{{ card }}`.
     Import it with `from eko_design_system.cards import ContactCard`.

@@ -5,7 +5,7 @@
  * in the glossy mid-2000s "Frutiger Aero" style: sky blue, aqua and fresh green on cloud white.
  * It uses the `--brand-sky-*` palette, which is not part of the EKO brand.
  *
- * Like every theme, it only overrides semantic colour tokens (css/tokens/semantic.css) and never touches
+ * Like every theme, it only overrides semantic colour tokens (assets/css/tokens/semantic.css) and never touches
  * component files. Gradients and gloss are therefore out of reach: the components use flat colour roles.
  * Every colour role from semantic.css is listed, so it stays easy to compare with the other themes.
  */

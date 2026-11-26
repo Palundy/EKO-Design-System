@@ -3,7 +3,7 @@ from .image_card import ImageCard
 
 class ApplicationCard(ImageCard):
     """
-    `ApplicationCard` renders an application card (`.application-card`, see css/components/image-card.css):
+    `ApplicationCard` renders an application card (`.application-card`, see assets/css/components/image-card.css):
     a photo, a title, a description and a "Learn More →" link.
     It returns its HTML instead of printing it: use it as a string with `str(ApplicationCard(...))`,
     or print it in a Jinja template with `{{ card }}`.

@@ -6,7 +6,7 @@ from eko_design_system.design_system import DesignSystem
 
 class Button(Component):
     """
-    `Button` renders a design-system button (`.btn`, see css/components/button.css).
+    `Button` renders a design-system button (`.btn`, see assets/css/components/button.css).
     It returns its HTML instead of printing it: use it as a string with `str(Button(...))`,
     or print it in a Jinja template with `{{ button }}`.
     Import it with `from eko_design_system import Button`.

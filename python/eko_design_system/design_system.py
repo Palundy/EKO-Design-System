@@ -5,10 +5,10 @@ from pathlib import Path
 class DesignSystem:
     """
     `DesignSystem` holds the settings that all components share: where the design system's static files
-    (`css/`, `js/` and `assets/`) are served from. Every URL the components build to those files goes through it,
+    (the `assets/` folder with the CSS, JavaScript, fonts and icons) are served from. Every URL the components build to those files goes through it,
     so an app can serve the design system from any folder, such as `/design-system/`.
 
-    By default the files are expected at the web root (`/css/main.css`, `/assets/icons/...`).
+    By default the files are expected at the web root (`/assets/css/main.css`, `/assets/icons/...`).
     Set the base URL once, before any component is rendered:
     ```python
     from eko_design_system import DesignSystem
@@ -52,7 +52,7 @@ class DesignSystem:
     def set_base_url(base_url: str)-> None:
         """
         Set the URL the design system's folder is served from.
-        This is the folder that contains `css/`, `js/` and `assets/`.
+        This is the folder that contains `assets/`.
 
         ### Parameters
         - base_url (`str`): A root-relative path (e.g., "/design-system") or a full URL
@@ -81,10 +81,10 @@ class DesignSystem:
         Build the URL of a file inside the design system's folder.
 
         ### Parameters
-        - path (`str`): The file's path inside the design system's folder (e.g., "css/main.css").
+        - path (`str`): The file's path inside the design system's folder (e.g., "assets/css/main.css").
 
         ### Returns
-        - `str`: The file's URL (e.g., "/design-system/css/main.css"). It is not HTML-escaped.
+        - `str`: The file's URL (e.g., "/design-system/assets/css/main.css"). It is not HTML-escaped.
         """
         return DesignSystem._base_url + str(path).lstrip("/")
 
@@ -139,20 +139,20 @@ class DesignSystem:
         Build the `<link>` tag for the design system's stylesheet.
 
         ### Returns
-        - `str`: The tag's HTML (e.g., `<link rel="stylesheet" href="/css/main.css">`).
+        - `str`: The tag's HTML (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
         """
-        return "<link rel=\"stylesheet\" href=\"" + DesignSystem._escape(DesignSystem.url("css/main.css")) + "\">"
+        return "<link rel=\"stylesheet\" href=\"" + DesignSystem._escape(DesignSystem.url("assets/css/main.css")) + "\">"
 
 
     @staticmethod
     def scripts()-> str:
         """
-        Build the `<script>` tags the components need (currently `js/dropdowns.js`, for `fields.Dropdown`).
+        Build the `<script>` tags the components need (currently `assets/js/dropdowns.js`, for `fields.Dropdown`).
 
         ### Returns
         - `str`: The tags' HTML.
         """
-        return "<script src=\"" + DesignSystem._escape(DesignSystem.url("js/dropdowns.js")) + "\" defer></script>"
+        return "<script src=\"" + DesignSystem._escape(DesignSystem.url("assets/js/dropdowns.js")) + "\" defer></script>"
 
 
     @staticmethod

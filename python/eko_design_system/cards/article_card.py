@@ -5,7 +5,7 @@ from .image_card import ImageCard
 
 class ArticleCard(ImageCard):
     """
-    `ArticleCard` renders a blog or news card (`.article-card`, see css/components/image-card.css):
+    `ArticleCard` renders a blog or news card (`.article-card`, see assets/css/components/image-card.css):
     a photo, a category tag, a title, a description, and a footer with the reading time and share buttons.
     It returns its HTML instead of printing it: use it as a string with `str(ArticleCard(...))`,
     or print it in a Jinja template with `{{ card }}`.

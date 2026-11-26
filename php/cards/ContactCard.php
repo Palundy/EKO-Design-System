@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `ContactCard` renders a contact card (`.contact-card`, see css/components/contact-card.css).
+ * `ContactCard` renders a contact card (`.contact-card`, see assets/css/components/contact-card.css).
  * It returns its HTML instead of printing it: print it with `<?= new ContactCard(...) ?>` or `echo`,
  * or keep the string with `(string) new ContactCard(...)`.
  * Import it with `use EKO\DesignSystem\Cards\ContactCard;` after requiring Composer's `vendor/autoload.php`.

@@ -7,7 +7,7 @@ from eko_design_system.design_system import DesignSystem
 class Card(Component):
     """
     `Card` is the shared base of the card components `ProductCard`, `ContactCard` and, through `ImageCard`,
-    the image cards (see css/components/product-card.css, contact-card.css and image-card.css). It is not used directly.
+    the image cards (see assets/css/components/product-card.css, contact-card.css and image-card.css). It is not used directly.
     The cards live in the `eko_design_system.cards` package (e.g., `from eko_design_system.cards import ProductCard`).
 
     It holds what every card has in common: the escaping, icon and attribute helpers.
@@ -19,7 +19,7 @@ class Card(Component):
     @staticmethod
     def _render_icon(icon: str)-> str:
         """
-        Build a decorative icon (see css/components/icon.css). It is hidden from screen readers.
+        Build a decorative icon (see assets/css/components/icon.css). It is hidden from screen readers.
 
         ### Parameters
         - icon (`str`): A bundled icon's name (e.g., "envelope-outline") or the URL of an SVG icon.

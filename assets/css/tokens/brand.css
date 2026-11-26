@@ -22,14 +22,14 @@
     --brand-mid-grey: #6e7380;
     --brand-black: #000000;
 
-    /* Colours: dark neutrals for the dark theme (css/themes/dark.css).
+    /* Colours: dark neutrals for the dark theme (assets/css/themes/dark.css).
        DRAFT: not official EKO values yet, to be confirmed by design. */
     --brand-dark-900: #121418;
     --brand-dark-800: #1d1f24;
     --brand-dark-700: #2a2d34;
     --brand-dark-600: #3a3f48;
 
-    /* Colours: Sky palette for the experimental theme (css/themes/sky.css).
+    /* Colours: Sky palette for the experimental theme (assets/css/themes/sky.css).
        EXPERIMENT: not EKO brand colours. Glossy sky blues, aqua and fresh green on cloud white. */
     --brand-sky-deep: #0b4f8a;
     --brand-sky-blue: #0a74c9;

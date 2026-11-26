@@ -29,7 +29,7 @@ use EKO\DesignSystem\Navigation\NavItem;
 
 /**
  * The themes the theme button cycles through, in order: `data-theme` value => label.
- * An empty value is the default (light) theme, which needs no attribute. Each other value needs a file in css/themes/.
+ * An empty value is the default (light) theme, which needs no attribute. Each other value needs a file in assets/css/themes/.
  */
 const THEMES = [
     '' => 'Light',

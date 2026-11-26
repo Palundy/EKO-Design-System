@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `SpecTable` renders a titled specifications table (`.spec-table`, see css/components/spec-table.css).
+ * `SpecTable` renders a titled specifications table (`.spec-table`, see assets/css/components/spec-table.css).
  * It returns its HTML instead of printing it: print it with `<?= new SpecTable(...) ?>` or `echo`,
  * or keep the string with `(string) new SpecTable(...)`.
  * Import it with `use EKO\DesignSystem\SpecTable;` after requiring Composer's `vendor/autoload.php`.

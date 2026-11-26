@@ -6,11 +6,11 @@ use InvalidArgumentException;
 
 /**
  * `DesignSystem` holds the settings that all components share: where the design system's static files
- * (`css/`, `js/` and `assets/`) are served from. Every URL the components build to those files goes through it,
+ * (the `assets/` folder with the CSS, JavaScript, fonts and icons) are served from. Every URL the components build to those files goes through it,
  * so an app can serve the design system from any folder, such as `/design-system/`.
  * `AssetPublisher` copies the files from the Composer package into such a folder.
  *
- * By default the files are expected at the web root (`/css/main.css`, `/assets/icons/...`).
+ * By default the files are expected at the web root (`/assets/css/main.css`, `/assets/icons/...`).
  * Set the base URL once, before any component is rendered:
  * ```php
  * require_once __DIR__ . '/vendor/autoload.php';
@@ -52,7 +52,7 @@ class DesignSystem {
 
     /**
      * Sets the URL the design system's folder is served from.
-     * This is the folder that contains `css/`, `js/` and `assets/`.
+     * This is the folder that contains `assets/`.
      *
      * @param string $baseUrl
      * A root-relative path (e.g., "/vendor/eko/design-system") or a full URL
@@ -78,10 +78,10 @@ class DesignSystem {
      * Builds the URL of a file inside the design system's folder.
      *
      * @param string $path
-     * The file's path inside the design system's folder (e.g., "css/main.css").
+     * The file's path inside the design system's folder (e.g., "assets/css/main.css").
      *
      * @return string
-     * The file's URL (e.g., "/vendor/eko/design-system/css/main.css"). It is not HTML-escaped.
+     * The file's URL (e.g., "/design-system/assets/css/main.css"). It is not HTML-escaped.
      */
     public static function url($path) {
         return self::$_baseUrl . ltrim((string) $path, '/');
@@ -135,21 +135,21 @@ class DesignSystem {
      * Builds the `<link>` tag for the design system's stylesheet.
      *
      * @return string
-     * The tag's HTML (e.g., `<link rel="stylesheet" href="/css/main.css">`).
+     * The tag's HTML (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
      */
     public static function stylesheet() {
-        return '<link rel="stylesheet" href="' . self::escape(self::url('css/main.css')) . '">';
+        return '<link rel="stylesheet" href="' . self::escape(self::url('assets/css/main.css')) . '">';
     }
 
 
     /**
-     * Builds the `<script>` tags the components need (currently `js/dropdowns.js`, for `Fields\Dropdown`).
+     * Builds the `<script>` tags the components need (currently `assets/js/dropdowns.js`, for `Fields\Dropdown`).
      *
      * @return string
      * The tags' HTML.
      */
     public static function scripts() {
-        return '<script src="' . self::escape(self::url('js/dropdowns.js')) . '" defer></script>';
+        return '<script src="' . self::escape(self::url('assets/js/dropdowns.js')) . '" defer></script>';
     }
 
 

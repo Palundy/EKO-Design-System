@@ -5,7 +5,7 @@ from eko_design_system.component import Component
 
 class NavItem(Component):
     """
-    `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see css/components/nav-item.css).
+    `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see assets/css/components/nav-item.css).
     It returns its HTML instead of printing it: use it as a string with `str(NavItem(...))`,
     or print it in a Jinja template with `{{ item }}`.
     Import it with `from eko_design_system.navigation import NavItem`.

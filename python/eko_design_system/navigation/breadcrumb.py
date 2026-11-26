@@ -5,7 +5,7 @@ from eko_design_system.component import Component
 
 class Breadcrumb(Component):
     """
-    `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see css/components/breadcrumb.css).
+    `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see assets/css/components/breadcrumb.css).
     It returns its HTML instead of printing it: use it as a string with `str(Breadcrumb(...))`,
     or print it in a Jinja template with `{{ breadcrumb }}`.
     Import it with `from eko_design_system.navigation import Breadcrumb`.

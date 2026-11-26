@@ -1,6 +1,6 @@
 /*
  * Showcase: the magazine-style layout of showcase.php. This is page CSS, not part of the design system,
- * so it is not imported in css/main.css and sits outside the cascade layers.
+ * so it is not imported in assets/css/main.css and sits outside the cascade layers.
  * It only uses semantic tokens and the components' public tokens, so it follows the theme (e.g. dark mode).
  *
  * All class names start with `sc-` so they never clash with design system classes.

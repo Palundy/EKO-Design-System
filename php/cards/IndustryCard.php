@@ -5,7 +5,7 @@ use InvalidArgumentException;
 
 
 /**
- * `IndustryCard` renders a wide industry card (`.industry-card`, see css/components/image-card.css):
+ * `IndustryCard` renders a wide industry card (`.industry-card`, see assets/css/components/image-card.css):
  * a photo, a large title and a blue description.
  * It returns its HTML instead of printing it: print it with `<?= new IndustryCard(...) ?>` or `echo`,
  * or keep the string with `(string) new IndustryCard(...)`.

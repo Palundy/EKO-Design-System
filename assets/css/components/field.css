@@ -7,7 +7,7 @@
  *         <div class="field-info">…</div>
  *     </div>
  *
- * The `--field-*` tokens are declared on `.field`, so the dropdown (css/components/dropdown.css) inherits them too.
+ * The `--field-*` tokens are declared on `.field`, so the dropdown (assets/css/components/dropdown.css) inherits them too.
  */
 
 

@@ -5,7 +5,7 @@ from .card import Card
 
 class ProductCard(Card):
     """
-    `ProductCard` renders a product card (`.product-card`, see css/components/product-card.css).
+    `ProductCard` renders a product card (`.product-card`, see assets/css/components/product-card.css).
     It returns its HTML instead of printing it: use it as a string with `str(ProductCard(...))`,
     or print it in a Jinja template with `{{ card }}`.
     Import it with `from eko_design_system.cards import ProductCard`.

@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * `ImageCard` is the shared base of the image cards `ApplicationCard`, `IndustryCard` and `ArticleCard`
- * (see css/components/image-card.css). It is not used directly.
+ * (see assets/css/components/image-card.css). It is not used directly.
  *
  * It builds the parts these cards have in common: the photo across the top, the title and the description.
  * Every image card has the same outline:

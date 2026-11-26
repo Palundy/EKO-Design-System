@@ -5,7 +5,7 @@ from eko_design_system.component import Component
 
 class SpecTable(Component):
     """
-    `SpecTable` renders a titled specifications table (`.spec-table`, see css/components/spec-table.css).
+    `SpecTable` renders a titled specifications table (`.spec-table`, see assets/css/components/spec-table.css).
     It returns its HTML instead of printing it: use it as a string with `str(SpecTable(...))`,
     or print it in a Jinja template with `{{ table }}`.
     Import it with `from eko_design_system import SpecTable`.

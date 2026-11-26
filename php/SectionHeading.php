@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * `SectionHeading` renders the title above a page section, with an optional action link on the right
- * (`.section-heading`, see css/components/section-heading.css).
+ * (`.section-heading`, see assets/css/components/section-heading.css).
  * It returns its HTML instead of printing it: print it with `<?= new SectionHeading(...) ?>` or `echo`,
  * or keep the string with `(string) new SectionHeading(...)`.
  * Import it with `use EKO\DesignSystem\SectionHeading;` after requiring Composer's `vendor/autoload.php`.

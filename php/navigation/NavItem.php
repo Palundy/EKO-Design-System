@@ -6,7 +6,7 @@ use EKO\DesignSystem\Component;
 
 
 /**
- * `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see css/components/nav-item.css).
+ * `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see assets/css/components/nav-item.css).
  * It returns its HTML instead of printing it: print it with `<?= new NavItem(...) ?>` or `echo`,
  * or keep the string with `(string) new NavItem(...)`.
  * Import it with `use EKO\DesignSystem\Navigation\NavItem;` after requiring Composer's `vendor/autoload.php`.

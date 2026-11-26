@@ -6,7 +6,7 @@ use EKO\DesignSystem\Component;
 
 
 /**
- * `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see css/components/breadcrumb.css).
+ * `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see assets/css/components/breadcrumb.css).
  * It returns its HTML instead of printing it: print it with `<?= new Breadcrumb(...) ?>` or `echo`,
  * or keep the string with `(string) new Breadcrumb(...)`.
  * Import it with `use EKO\DesignSystem\Navigation\Breadcrumb;` after requiring Composer's `vendor/autoload.php`.

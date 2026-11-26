@@ -3,7 +3,7 @@
  * They only point at brand tokens, and they are the only global tokens components may use.
  *
  * This file is the default (light) theme. A theme or sub-brand overrides these tokens and nothing else,
- * for example in css/themes/dark.css:
+ * for example in assets/css/themes/dark.css:
  *
  *     [data-theme="dark"] {
  *         --color-text: var(--brand-white);
