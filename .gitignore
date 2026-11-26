@@ -1,4 +1,10 @@
+# Claude files
 /.claude
 /CLAUDE.md
 
+# Composer vendor directory
 /vendor/
+
+# Python cache
+__pycache__/
+*.py[cod]
