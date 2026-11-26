@@ -7,7 +7,8 @@ use InvalidArgumentException;
 /**
  * `DesignSystem` holds the settings that all components share: where the design system's static files
  * (`css/`, `js/` and `assets/`) are served from. Every URL the components build to those files goes through it,
- * so an app can serve the design system from any folder, such as `/vendor/eko-instruments/design-system/`.
+ * so an app can serve the design system from any folder, such as `/design-system/`.
+ * `AssetPublisher` copies the files from the Composer package into such a folder.
  *
  * By default the files are expected at the web root (`/css/main.css`, `/assets/icons/...`).
  * Set the base URL once, before any component is rendered:
@@ -17,7 +18,7 @@ use InvalidArgumentException;
  * use EKO\DesignSystem\DesignSystem;
  * use EKO\DesignSystem\Button;
  *
- * DesignSystem::setBaseUrl('/vendor/eko-instruments/design-system');
+ * DesignSystem::setBaseUrl('/design-system');
  * ```
  *
  * Then use the helpers in the page head, and pass icon names to the components:

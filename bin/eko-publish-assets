@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Publishes the design system's static files into a folder of the app (see `EKO\DesignSystem\AssetPublisher`).
+ *
+ * Usage, from the app's root:
+ *     vendor/bin/eko-publish-assets public/design-system
+ */
+
+use EKO\DesignSystem\AssetPublisher;
+
+
+// Load Composer's autoloader: the path Composer's bin proxy passes, the app's vendor folder, or this repository's own
+$autoloaders = [
+    $GLOBALS['_composer_autoload_path'] ?? null,
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+];
+foreach ($autoloaders as $autoloader) {
+    if ($autoloader !== null && is_file($autoloader)) {
+        require_once $autoloader;
+        break;
+    }
+}
+if (!class_exists(AssetPublisher::class)) {
+    fwrite(STDERR, "Cannot find Composer's autoloader. Run `composer install` first.\n");
+    exit(1);
+}
+
+if ($argc !== 2) {
+    fwrite(STDERR, "Usage: eko-publish-assets <destination folder>\nExample: eko-publish-assets public/design-system\n");
+    exit(1);
+}
+
+
+// Publish and report
+try {
+    $count = AssetPublisher::publish($argv[1]);
+    echo "EKO design system: published $count files to {$argv[1]}\n";
+} catch (RuntimeException $exception) {
+    fwrite(STDERR, "EKO design system: " . $exception->getMessage() . "\n");
+    exit(1);
+}

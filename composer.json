@@ -6,6 +6,9 @@
     "require": {
         "php": ">=8.0"
     },
+    "bin": [
+        "bin/eko-publish-assets"
+    ],
     "autoload": {
         "psr-4": {
             "EKO\\DesignSystem\\": "php/"
