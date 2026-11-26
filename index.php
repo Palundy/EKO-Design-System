@@ -219,7 +219,7 @@ require 'php/section-heading.php';
             phone: "+31 (0)6 24175606",
             website: "vhelden.nl",
             button: "Ask Palau",
-            buttonIcon: "/assets/icons/typing-outline.svg",
+            buttonIcon: "typing-outline",
             buttonAttributes: [
                 "onclick" => "alert('eventListeners also work here');"
             ]
@@ -233,7 +233,7 @@ require 'php/section-heading.php';
             phone: "+31 (0)6 12345678",
             website: "example.com",
             button: "Contact John",
-            buttonIcon: "/assets/icons/envelope-outline.svg",
+            buttonIcon: "envelope-outline",
             image: "assets/images/user-silhouette-" . str_pad(rand(1, 5), 2, "0", STR_PAD_LEFT) . ".svg"
         ); ?>
 

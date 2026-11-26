@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/design-system.php';
+
+
 /**
  * `Button` renders a design-system button (`.btn`, see css/components/button.css).
  * The button is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
@@ -52,8 +55,8 @@ class Button {
      * One of `VALID_STYLES`, or `null` for the primary button.
      *
      * @param string|null $icon [optional]
-     * The URL of an SVG icon (e.g., "/assets/icons/envelope-outline.svg").
-     * It is shown before the label and left out while loading.
+     * A bundled icon's name (e.g., "envelope-outline") or the URL of your own SVG icon.
+     * It is shown before the label and left out while loading. See `DesignSystem::resolveIcon()`.
      *
      * @param string|null $state [optional]
      * One of `VALID_STATES`, or `null` for the default state.
@@ -66,7 +69,7 @@ class Button {
      * `true` writes a bare attribute, `false` or `null` leaves it out.
      * Keys that match a state name are ignored, so use `$state` for those.
      *
-     * @throws InvalidArgumentException if `$style` or `$state` is not an accepted value.
+     * @throws InvalidArgumentException if `$style` or `$state` is not an accepted value, or `$icon` names an unknown icon.
      */
     public function __construct(
         $label,
@@ -109,7 +112,7 @@ class Button {
         // Build the content: the escaped label, with the icon before it (not possible while loading)
         $content = self::escape($label);
         if ($icon && $state !== 'loading') {
-            $iconStyle = "--icon-url: url('" . self::escapeCssString($icon) . "')";
+            $iconStyle = "--icon-url: url('" . self::escapeCssString(DesignSystem::resolveIcon($icon)) . "')";
             $content = "<span class=\"icon\" style=\"" . self::escape($iconStyle) . "\" aria-hidden=\"true\"></span> $content";
         }
 

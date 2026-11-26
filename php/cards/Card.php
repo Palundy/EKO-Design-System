@@ -31,14 +31,16 @@ abstract class Card {
     /**
      * Builds a decorative icon (see css/components/icon.css). It is hidden from screen readers.
      *
-     * @param string $url
-     * The URL of the SVG icon (e.g., "/assets/icons/envelope-outline.svg").
+     * @param string $icon
+     * A bundled icon's name (e.g., "envelope-outline") or the URL of an SVG icon. See `DesignSystem::resolveIcon()`.
      *
      * @return string
      * The icon's HTML.
+     *
+     * @throws InvalidArgumentException if `$icon` names an unknown icon.
      */
-    protected static function renderIcon($url) {
-        $style = "--icon-url: url('" . self::escapeCssString($url) . "')";
+    protected static function renderIcon($icon) {
+        $style = "--icon-url: url('" . self::escapeCssString(\DesignSystem::resolveIcon($icon)) . "')";
         return "<span class=\"icon\" style=\"" . self::escape($style) . "\" aria-hidden=\"true\"></span>";
     }
 

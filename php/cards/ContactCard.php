@@ -33,7 +33,7 @@ use InvalidArgumentException;
  * Examples:
  * - `new ContactCard("Palau van Helden");`
  * - `new ContactCard("Palau van Helden", second: "EKO Instruments B.V.", email: "info@eko-instruments.com");`
- * - `new ContactCard("Sales", phone: "+31 70 3050117", button: "Call us", buttonIcon: "/assets/icons/call-outline.svg");`
+ * - `new ContactCard("Sales", phone: "+31 70 3050117", button: "Call us", buttonIcon: "call-outline");`
  *
  * All text and attribute values are HTML-escaped. The generated class names must stay in sync
  * with the hand-written contact card in index.html.
@@ -42,13 +42,13 @@ class ContactCard extends Card {
 
 
     /** The icon shown before the email address. */
-    private const EMAIL_ICON = '/assets/icons/envelope-outline.svg';
+    private const EMAIL_ICON = 'envelope-outline';
 
     /** The icon shown before the phone number. */
-    private const PHONE_ICON = '/assets/icons/call-outline.svg';
+    private const PHONE_ICON = 'call-outline';
 
     /** The icon shown before the website. */
-    private const WEBSITE_ICON = '/assets/icons/internet-outline.svg';
+    private const WEBSITE_ICON = 'internet-outline';
 
 
     /**
@@ -83,7 +83,7 @@ class ContactCard extends Card {
      * The label of the outlined button at the bottom of the card. Without it, the card has no button.
      *
      * @param string|null $buttonIcon [optional]
-     * The URL of an SVG icon shown before the button label (e.g., "/assets/icons/envelope-outline.svg").
+     * The icon shown before the button label: a bundled icon's name (e.g., "envelope-outline") or the URL of your own SVG icon.
      * Only used when `$button` is given.
      *
      * @param array $buttonAttributes [optional]

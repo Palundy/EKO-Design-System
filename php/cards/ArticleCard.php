@@ -34,10 +34,10 @@ class ArticleCard extends ImageCard {
      * In the pattern, `{url}` is replaced by the article URL and `{title}` by the title, both URL-encoded.
      */
     private const SHARE_TARGETS = [
-        'LinkedIn' => ['https://www.linkedin.com/sharing/share-offsite/?url={url}', '/assets/icons/linkedin-alt-monochrome.svg'],
-        'X' => ['https://twitter.com/intent/tweet?url={url}&text={title}', '/assets/icons/twitter-monochrome.svg'],
-        'Facebook' => ['https://www.facebook.com/sharer/sharer.php?u={url}', '/assets/icons/facebook-f-monochrome.svg'],
-        'email' => ['mailto:?subject={title}&body={url}', '/assets/icons/envelope-outline.svg'],
+        'LinkedIn' => ['https://www.linkedin.com/sharing/share-offsite/?url={url}', 'linkedin-alt-monochrome'],
+        'X' => ['https://twitter.com/intent/tweet?url={url}&text={title}', 'twitter-monochrome'],
+        'Facebook' => ['https://www.facebook.com/sharer/sharer.php?u={url}', 'facebook-f-monochrome'],
+        'email' => ['mailto:?subject={title}&body={url}', 'envelope-outline'],
     ];
 
 

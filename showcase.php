@@ -183,9 +183,9 @@ function escapeHtml($value) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EKO Design System</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <?= DesignSystem::stylesheet() ?>
     <link rel="stylesheet" href="/showcase/showcase.css">
-    <script src="/js/dropdowns.js" defer></script>
+    <?= DesignSystem::scripts() ?>
 </head>
 <body class="sc-page">
 
@@ -199,7 +199,7 @@ function escapeHtml($value) {
                 <a class="nav-item" href="#product-card">Cards</a>
                 <a class="nav-item" href="#spec-table">Tables</a>
             </nav>
-            <?php new Button("Theme: Light", state: "negative", icon: "/assets/icons/color-palette-outline.svg", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
+            <?php new Button("Theme: Light", state: "negative", icon: "color-palette-outline", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
         </div>
         <div class="sc-progress" aria-hidden="true"></div>
     </header>
@@ -355,9 +355,9 @@ function escapeHtml($value) {
                         }); ?>
 
                         <?php printFigure('2.2', 'With an icon. The icon follows the text colour, also when the button is outlined or hovered.', function () {
-                            new Button("Send enquiry", style: "enquiry", icon: "/assets/icons/envelope-outline.svg");
-                            new Button("Download datasheet", icon: "/assets/icons/download-outline.svg");
-                            new Button("Contact sales", state: "negative", icon: "/assets/icons/call-outline.svg");
+                            new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
+                            new Button("Download datasheet", icon: "download-outline");
+                            new Button("Contact sales", state: "negative", icon: "call-outline");
                         }); ?>
 
                         <?php printCode('
@@ -368,9 +368,9 @@ new Button("Label", style: "destructive", state: "loading");
 new Button("Label", style: "positive", state: "negative");
 
 // 2.2
-new Button("Send enquiry", style: "enquiry", icon: "/assets/icons/envelope-outline.svg");
-new Button("Download datasheet", icon: "/assets/icons/download-outline.svg");
-new Button("Contact sales", state: "negative", icon: "/assets/icons/call-outline.svg");
+new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
+new Button("Download datasheet", icon: "download-outline");
+new Button("Contact sales", state: "negative", icon: "call-outline");
                         '); ?>
                     </div>
                     <?php printStates([
@@ -731,7 +731,7 @@ new ProductCard(
                                 website: "www.eko-instruments.com",
                                 image: "/assets/images/user-silhouette-02.svg",
                                 button: "Contact Jane",
-                                buttonIcon: "/assets/icons/envelope-outline.svg"
+                                buttonIcon: "envelope-outline"
                             );
                             new ContactCard(
                                 first: "Customer service",
@@ -749,7 +749,7 @@ new ContactCard(
     website: "www.eko-instruments.com",
     image: "/assets/images/user-silhouette-02.svg",
     button: "Contact Jane",
-    buttonIcon: "/assets/icons/envelope-outline.svg"
+    buttonIcon: "envelope-outline"
 );
 
 new ContactCard(
@@ -929,7 +929,7 @@ new SpecTable(
         <div class="sc-wrap">
             <div>
                 <h2>Using the system</h2>
-                <p>Link <code>css/main.css</code>, require the PHP components you need, and create them where they should appear. The README explains every argument.</p>
+                <p>Require the PHP components you need, tell <code>DesignSystem::setBaseUrl()</code> where the design system's files are served from, and print <code>DesignSystem::stylesheet()</code> and <code>DesignSystem::scripts()</code> in the page head. Then create the components where they should appear, passing icons by name (e.g., <code>"envelope-outline"</code>). The README explains every argument.</p>
             </div>
             <div>
                 <h2>Changing the look</h2>

@@ -18,7 +18,7 @@
     --button-border-radius: var(--radius-medium);
     --button-font-family: var(--font-family);
     --button-font-size: var(--font-size-default);
-    --button-font-weight: var(--font-weight-bold);
+    --button-font-weight: var(--font-weight-regular);
     --button-line-height: 24px;
     --button-icon-size: var(--icon-size-small);
     --button-spinner-width: var(--border-width-thick);

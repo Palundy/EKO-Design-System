@@ -10,6 +10,7 @@
  * use Cards\ArticleCard;
  * ```
  */
+require_once __DIR__ . '/design-system.php';
 require_once __DIR__ . '/cards/Card.php';
 require_once __DIR__ . '/cards/ProductCard.php';
 require_once __DIR__ . '/cards/ContactCard.php';
