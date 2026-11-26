@@ -1,11 +1,12 @@
 [build-system]
-requires = ["hatchling>=1.21"]
+requires = ["hatchling>=1.21", "hatch-vcs>=0.4"]
 build-backend = "hatchling.build"
 
 
 [project]
 name = "eko-design-system"
-version = "0.0.0"
+# The version comes from the git tag (hatch-vcs, see [tool.hatch.version])
+dynamic = ["version"]
 description = "The design system for alignment with EKO Instruments branding and visual identity."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,6 +22,13 @@ authors = [
 [project.optional-dependencies]
 # The Flask integration (eko_design_system.flask); the components themselves need nothing
 flask = ["Flask>=2.3"]
+
+
+# A build on tag v1.2.0 gets version 1.2.0; a build after it gets a dev version such as 1.2.1.dev3+g5487053.
+# The fallback is only used when there is no git history at all (e.g. a ZIP download of the repository).
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.0.0-dev"
 
 
 # The package lives in python/, the assets in the repository root (shared with the PHP package).

@@ -26,8 +26,10 @@ The package is installed straight from GitHub. In your project folder, run:
 
 ```bash
 composer config repositories.eko-design-system vcs https://github.com/Palundy/EKO-Design-System
-composer require eko-instruments/design-system:dev-main
+composer require eko-instruments/design-system:^0.1.0
 ```
+
+`^0.1.0` installs version 0.1.0 or a newer 0.1.x bug-fix release.
 
 ### 2. Publish the CSS, JavaScript, fonts and icons
 
@@ -106,7 +108,8 @@ Open <http://localhost:8000>. You now have an EKO input field and button.
 composer update eko-instruments/design-system
 ```
 
-The published files are refreshed automatically.
+This picks up new 0.1.x releases, and the published files are refreshed automatically.
+To move to a new minor version such as 0.2, run `composer require eko-instruments/design-system:^0.2.0`.
 
 </details>
 
@@ -123,14 +126,16 @@ The published files are refreshed automatically.
 The package is installed straight from GitHub, with the CSS, JavaScript, fonts and icons included. In your project's virtual environment, run:
 
 ```bash
-pip install "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System"
+pip install "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@v0.1.0"
 ```
 
 Or add this line to your `requirements.txt`:
 
 ```
-eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System
+eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@v0.1.0
 ```
+
+The `@v0.1.0` at the end is the release tag.
 
 ### 2. Connect it to your app
 
@@ -199,8 +204,10 @@ return render_template("contact.html", card = ContactCard("Sales", phone = "+31 
 ### Updating
 
 ```bash
-pip install --upgrade "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System"
+pip install --upgrade "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z"
 ```
+
+pip can't pick the newest release from GitHub by itself, so replace `vX.Y.Z` with the release you want. Update the tag in your `requirements.txt` as well.
 
 </details>
 
