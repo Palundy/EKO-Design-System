@@ -1,5 +1,8 @@
 <?php
-namespace Cards;
+namespace EKO\DesignSystem\Cards;
+
+use InvalidArgumentException;
+use EKO\DesignSystem\DesignSystem;
 
 
 /**
@@ -40,7 +43,7 @@ abstract class Card {
      * @throws InvalidArgumentException if `$icon` names an unknown icon.
      */
     protected static function renderIcon($icon) {
-        $style = "--icon-url: url('" . self::escapeCssString(\DesignSystem::resolveIcon($icon)) . "')";
+        $style = "--icon-url: url('" . self::escapeCssString(DesignSystem::resolveIcon($icon)) . "')";
         return "<span class=\"icon\" style=\"" . self::escape($style) . "\" aria-hidden=\"true\"></span>";
     }
 

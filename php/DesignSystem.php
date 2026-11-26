@@ -1,4 +1,9 @@
 <?php
+namespace EKO\DesignSystem;
+
+use InvalidArgumentException;
+
+
 /**
  * `DesignSystem` holds the settings that all components share: where the design system's static files
  * (`css/`, `js/` and `assets/`) are served from. Every URL the components build to those files goes through it,

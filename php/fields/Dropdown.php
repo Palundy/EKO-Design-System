@@ -1,5 +1,5 @@
 <?php
-namespace Fields;
+namespace EKO\DesignSystem\Fields;
 
 use InvalidArgumentException;
 

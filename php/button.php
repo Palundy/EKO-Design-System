@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/design-system.php';
+namespace EKO\DesignSystem;
+
+use InvalidArgumentException;
 
 
 /**

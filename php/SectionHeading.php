@@ -1,4 +1,9 @@
 <?php
+namespace EKO\DesignSystem;
+
+use InvalidArgumentException;
+
+
 /**
  * `SectionHeading` renders the title above a page section, with an optional action link on the right
  * (`.section-heading`, see css/components/section-heading.css).

@@ -1,5 +1,5 @@
 <?php
-namespace Cards;
+namespace EKO\DesignSystem\Cards;
 
 use InvalidArgumentException;
 

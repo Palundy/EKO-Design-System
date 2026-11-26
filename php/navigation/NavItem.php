@@ -1,5 +1,5 @@
 <?php
-namespace Navigation;
+namespace EKO\DesignSystem\Navigation;
 
 use InvalidArgumentException;
 

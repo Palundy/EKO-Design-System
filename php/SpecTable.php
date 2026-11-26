@@ -1,4 +1,9 @@
 <?php
+namespace EKO\DesignSystem;
+
+use InvalidArgumentException;
+
+
 /**
  * `SpecTable` renders a titled specifications table (`.spec-table`, see css/components/spec-table.css).
  * The table is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
