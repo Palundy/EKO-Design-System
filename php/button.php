@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `Button` renders a design-system button (`.btn`, see css/components/button.css).
  * The button is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Button;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
  * - `new Button("Save");`

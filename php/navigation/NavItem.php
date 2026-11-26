@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `NavItem` renders one link of the main menu, followed by a yellow chevron (`.nav-item`, see css/components/nav-item.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Navigation\NavItem;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
  * - `new NavItem("Products", "/products");`

@@ -7,13 +7,17 @@ use InvalidArgumentException;
 /**
  * `DesignSystem` holds the settings that all components share: where the design system's static files
  * (`css/`, `js/` and `assets/`) are served from. Every URL the components build to those files goes through it,
- * so an app can serve the design system from any folder, such as `/vendor/eko/design-system/`.
+ * so an app can serve the design system from any folder, such as `/vendor/eko-instruments/design-system/`.
  *
  * By default the files are expected at the web root (`/css/main.css`, `/assets/icons/...`).
  * Set the base URL once, before any component is rendered:
  * ```php
- * require 'php/design-system.php';
- * DesignSystem::setBaseUrl('/vendor/eko/design-system');
+ * require_once __DIR__ . '/vendor/autoload.php';
+ *
+ * use EKO\DesignSystem\DesignSystem;
+ * use EKO\DesignSystem\Button;
+ *
+ * DesignSystem::setBaseUrl('/vendor/eko-instruments/design-system');
  * ```
  *
  * Then use the helpers in the page head, and pass icon names to the components:
@@ -26,7 +30,7 @@ use InvalidArgumentException;
  * new Button("Send", icon: "envelope-outline");
  * ```
  *
- * The component loaders (`php/button.php`, `php/cards.php`) load this file themselves.
+ * Composer's autoloader loads this class, and the components use it through the same namespace.
  */
 class DesignSystem {
 

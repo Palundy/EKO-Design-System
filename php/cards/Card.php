@@ -6,8 +6,9 @@ use EKO\DesignSystem\DesignSystem;
 
 
 /**
- * `Card` is the shared base of the card components `ProductCard` and `ContactCard`
- * (see css/components/product-card.css and contact-card.css). It is not used directly.
+ * `Card` is the shared base of the card components `ProductCard`, `ContactCard` and, through `ImageCard`,
+ * the image cards (see css/components/product-card.css, contact-card.css and image-card.css). It is not used directly.
+ * The cards live in the `EKO\DesignSystem\Cards` namespace (e.g., `use EKO\DesignSystem\Cards\ProductCard;`).
  *
  * It holds what every card has in common: the generated HTML and the escaping helpers.
  * Like the other components, a card is echoed straight away from its constructor,

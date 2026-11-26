@@ -6,23 +6,25 @@
  * Serve it from the repository root (`php -S localhost:8000`, then open /showcase.php),
  * because the icon URLs are root-absolute.
  */
-require 'php/button.php';
-require 'php/fields.php';
-require 'php/cards.php';
-require 'php/spec-table.php';
-require 'php/navigation.php';
-require 'php/section-heading.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-use Fields\Input;
-use Fields\Textarea;
-use Fields\Dropdown;
-use Cards\ProductCard;
-use Cards\ContactCard;
-use Cards\ApplicationCard;
-use Cards\IndustryCard;
-use Cards\ArticleCard;
-use Navigation\Breadcrumb;
-use Navigation\NavItem;
+use EKO\DesignSystem\DesignSystem;
+use EKO\DesignSystem\Button;
+use EKO\DesignSystem\SectionHeading;
+use EKO\DesignSystem\SpecTable;
+
+use EKO\DesignSystem\Fields\Input;
+use EKO\DesignSystem\Fields\Textarea;
+use EKO\DesignSystem\Fields\Dropdown;
+
+use EKO\DesignSystem\Cards\ProductCard;
+use EKO\DesignSystem\Cards\ContactCard;
+use EKO\DesignSystem\Cards\ApplicationCard;
+use EKO\DesignSystem\Cards\IndustryCard;
+use EKO\DesignSystem\Cards\ArticleCard;
+
+use EKO\DesignSystem\Navigation\Breadcrumb;
+use EKO\DesignSystem\Navigation\NavItem;
 
 
 /**

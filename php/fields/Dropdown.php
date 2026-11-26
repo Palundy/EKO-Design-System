@@ -6,8 +6,9 @@ use InvalidArgumentException;
 
 /**
  * `Dropdown` renders a dropdown field: a native `<select>` inside `.dropdown`,
- * which js/dropdowns.js turns into the styled dropdown. Include that script on the page.
+ * which js/dropdowns.js turns into the styled dropdown. Include that script on the page (see `DesignSystem::scripts()`).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Fields\Dropdown;` after requiring Composer's `vendor/autoload.php`.
  *
  * Example:
  * - `new Dropdown("Product of interest", name: "product", options: ["ms-80sh" => "MS-80SH", "ms-80" => "MS-80"], value: "ms-80", required: true);`

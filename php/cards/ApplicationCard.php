@@ -8,6 +8,7 @@ use InvalidArgumentException;
  * `ApplicationCard` renders an application card (`.application-card`, see css/components/image-card.css):
  * a photo, a title, a description and a "Learn More →" link.
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Cards\ApplicationCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * Example:
  * ```php

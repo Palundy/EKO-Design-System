@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `ContactCard` renders a contact card (`.contact-card`, see css/components/contact-card.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Cards\ContactCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * Every part except the first line is optional and is left out when not given:
  * ```html

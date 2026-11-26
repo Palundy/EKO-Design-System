@@ -1,10 +1,23 @@
 <?php
-require 'php/button.php';
-require 'php/fields.php';
-require 'php/cards.php';
-require 'php/spec-table.php';
-require 'php/navigation.php';
-require 'php/section-heading.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+use EKO\DesignSystem\DesignSystem;
+use EKO\DesignSystem\Button;
+use EKO\DesignSystem\SectionHeading;
+use EKO\DesignSystem\SpecTable;
+
+use EKO\DesignSystem\Fields\Input;
+use EKO\DesignSystem\Fields\Textarea;
+use EKO\DesignSystem\Fields\Dropdown;
+
+use EKO\DesignSystem\Cards\ProductCard;
+use EKO\DesignSystem\Cards\ContactCard;
+use EKO\DesignSystem\Cards\ApplicationCard;
+use EKO\DesignSystem\Cards\IndustryCard;
+use EKO\DesignSystem\Cards\ArticleCard;
+
+use EKO\DesignSystem\Navigation\Breadcrumb;
+use EKO\DesignSystem\Navigation\NavItem;
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +70,7 @@ require 'php/section-heading.php';
     </table>
 
     <div style="display:flex;gap:20px;margin-bottom: 24px;">
-        <? new Fields\Input(
+        <? new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -65,7 +78,7 @@ require 'php/section-heading.php';
             required: true
         ); ?>
 
-        <? new Fields\Input(
+        <? new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -74,7 +87,7 @@ require 'php/section-heading.php';
             state: "disabled"
         ); ?>
 
-        <? new Fields\Input(
+        <? new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -83,7 +96,7 @@ require 'php/section-heading.php';
             state: "error"
         ); ?>
 
-        <? new Fields\Input(
+        <? new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -94,7 +107,7 @@ require 'php/section-heading.php';
     </div>
     
     <div style="display:flex;gap:20px;margin-bottom: 24px;">
-        <? new Fields\Textarea(
+        <? new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -102,7 +115,7 @@ require 'php/section-heading.php';
             required: true
         ); ?>
 
-        <? new Fields\Textarea(
+        <? new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -111,7 +124,7 @@ require 'php/section-heading.php';
             state: "disabled"
         ); ?>
 
-        <? new Fields\Textarea(
+        <? new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -120,7 +133,7 @@ require 'php/section-heading.php';
             state: "error"
         ); ?>
 
-        <? new Fields\Textarea(
+        <? new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -137,7 +150,7 @@ require 'php/section-heading.php';
             "ms-60" => "MS-60",
             "ms-40" => "MS-40"
         ]; ?>
-        <? new Fields\Dropdown(
+        <? new Dropdown(
             label: "Product of interest",
             info: "Please select a product.",
             id: "product",
@@ -145,7 +158,7 @@ require 'php/section-heading.php';
             required: true
         ); ?>
 
-        <? new Fields\Dropdown(
+        <? new Dropdown(
             label: "Product of interest",
             info: "This field is disabled.",
             id: "product-disabled",
@@ -154,7 +167,7 @@ require 'php/section-heading.php';
             state: "disabled"
         ); ?>
 
-        <? new Fields\Dropdown(
+        <? new Dropdown(
             label: "Product of interest",
             info: "Please select a product.",
             id: "product-error",
@@ -163,7 +176,7 @@ require 'php/section-heading.php';
             state: "error"
         ); ?>
 
-        <? new Fields\Dropdown(
+        <? new Dropdown(
             label: "Product of interest",
             info: "Successfully selected!",
             value: "ms-80sh",
@@ -175,7 +188,7 @@ require 'php/section-heading.php';
     </div>
 
     <div style="margin-bottom: 24px;display: flex; gap: 24px;">
-        <? new Cards\ProductCard(
+        <? new ProductCard(
             title: "MS-80SH",
             label: "Class A",
             description: "Class A pyranometer with ventilator and heater for utility-scale PV",
@@ -190,7 +203,7 @@ require 'php/section-heading.php';
             cta: "Call to action"
         ); ?>
 
-        <? new Cards\ProductCard(
+        <? new ProductCard(
             title: "ICF-02",
             label: "New!",
             description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
@@ -203,7 +216,7 @@ require 'php/section-heading.php';
             cta: "Request Quote"
         ); ?>
 
-        <? new Cards\ProductCard(
+        <? new ProductCard(
             title: "Product Card",
             description: "This is a card without an image, without a table and without a label.",
             cta: "Call to action"
@@ -211,7 +224,7 @@ require 'php/section-heading.php';
     </div>
 
     <div style="margin-bottom: 24px;display: flex; gap: 24px;">
-        <? new Cards\ContactCard(
+        <? new ContactCard(
             first: "Palau van Helden",
             second: "EKO Instruments B.V.",
             third: "Project Development Engineer",
@@ -225,7 +238,7 @@ require 'php/section-heading.php';
             ]
         ); ?>
 
-        <? new Cards\ContactCard(
+        <? new ContactCard(
             first: "John Doe",
             second: "Example Corp.",
             third: "Sales Manager",
@@ -237,7 +250,7 @@ require 'php/section-heading.php';
             image: "assets/images/user-silhouette-" . str_pad(rand(1, 5), 2, "0", STR_PAD_LEFT) . ".svg"
         ); ?>
 
-        <? new Cards\ContactCard(
+        <? new ContactCard(
             first: "Contact Card",
             third: "This contact card has minimal information.",
             email: "contact@example.com",
@@ -268,7 +281,7 @@ require 'php/section-heading.php';
         ); ?>
     </div>
     <div style="display: flex; flex-direction: column; gap: 32px; margin: 48px 0;">
-        <? new Navigation\Breadcrumb([
+        <? new Breadcrumb([
             "Home" => "/",
             "Pyranometers" => "/pyranometers",
             "MS-80SH" => "/products/ms-80sh",
@@ -276,22 +289,22 @@ require 'php/section-heading.php';
         ]); ?>
 
         <div style="display: flex; gap: 32px;">
-            <? new Navigation\NavItem("Products", "/products"); ?>
-            <? new Navigation\NavItem("Industries", "/industries", active: true); ?>
-            <? new Navigation\NavItem("About EKO", "/about"); ?>
+            <? new NavItem("Products", "/products"); ?>
+            <? new NavItem("Industries", "/industries", active: true); ?>
+            <? new NavItem("About EKO", "/about"); ?>
         </div>
 
         <? new SectionHeading("Popular Products", link: "View all", linkUrl: "/products"); ?>
 
         <div style="display: flex; gap: 24px; align-items: flex-start;">
-            <? new Cards\ApplicationCard(
+            <? new ApplicationCard(
                 title: "Solar Energy",
                 description: "Resource assessment, performance monitoring and plant optimization.",
                 cta: "Learn More",
                 ctaUrl: "/applications/solar-energy"
             ); ?>
 
-            <? new Cards\ArticleCard(
+            <? new ArticleCard(
                 title: "Headline placeholder for new about everything, maximum three lines here.",
                 url: "https://www.eko-instruments.com/blog/example",
                 tag: "Instruments",
@@ -301,7 +314,7 @@ require 'php/section-heading.php';
             ); ?>
         </div>
 
-        <? new Cards\IndustryCard(
+        <? new IndustryCard(
             title: "Solar Energy",
             description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration",
             url: "/industries/solar-energy"

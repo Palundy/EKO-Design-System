@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `Breadcrumb` renders the trail to the current page (`.breadcrumb`, see css/components/breadcrumb.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Navigation\Breadcrumb;` after requiring Composer's `vendor/autoload.php`.
  *
  * Pass the trail from the home page to the current page as label => URL pairs. The last item is the current page;
  * give it without a URL:

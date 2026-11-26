@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `Input` renders a single-line `<input>` field.
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Fields\Input;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
  * - `new Input("Full Name", name: "name", placeholder: "John Doe", required: true);`

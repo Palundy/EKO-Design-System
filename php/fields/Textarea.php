@@ -7,6 +7,7 @@ use InvalidArgumentException;
 /**
  * `Textarea` renders a multi-line `<textarea>` field. Its height comes from `--field-textarea-height`.
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Fields\Textarea;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
  * - `new Textarea("Message", name: "message", placeholder: "Your question", info: "Max. 500 characters.");`

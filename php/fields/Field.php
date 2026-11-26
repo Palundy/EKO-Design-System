@@ -17,6 +17,7 @@ use InvalidArgumentException;
  * </div>
  * ```
  *
+ * The fields live in the `EKO\DesignSystem\Fields` namespace (e.g., `use EKO\DesignSystem\Fields\Input;`).
  * Like `Button`, a field is echoed straight away from its constructor, so creating one inside a template prints it at that spot.
  * All text and attribute values are HTML-escaped.
  */

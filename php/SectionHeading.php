@@ -8,6 +8,7 @@ use InvalidArgumentException;
  * `SectionHeading` renders the title above a page section, with an optional action link on the right
  * (`.section-heading`, see css/components/section-heading.css).
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\SectionHeading;` after requiring Composer's `vendor/autoload.php`.
  *
  * Examples:
  * - `new SectionHeading("Popular Products");`

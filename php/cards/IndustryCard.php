@@ -8,6 +8,7 @@ use InvalidArgumentException;
  * `IndustryCard` renders a wide industry card (`.industry-card`, see css/components/image-card.css):
  * a photo, a large title and a blue description.
  * It is echoed straight away from the constructor, so creating it inside a template prints it at that spot.
+ * Import it with `use EKO\DesignSystem\Cards\IndustryCard;` after requiring Composer's `vendor/autoload.php`.
  *
  * With a `$url`, the whole card is a link (`<a class="industry-card">`), otherwise it is an `<article>`.
  *
