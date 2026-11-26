@@ -8,3 +8,9 @@
 # Python cache
 __pycache__/
 *.py[cod]
+
+# Python build output and virtual environments
+/build/
+/dist/
+*.egg-info/
+.venv/

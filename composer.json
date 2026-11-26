@@ -1,6 +1,13 @@
 {
     "name": "eko-instruments/design-system",
     "description": "The design system for alignment with EKO Instruments branding and visual identity.",
+    "authors": [
+        {
+            "name": "Palau van Helden",
+            "email": "palau@vhelden.nl",
+            "homepage": "https://eko-instruments.com"
+        }
+    ],
     "type": "library",
     "license": "proprietary",
     "require": {

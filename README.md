@@ -1,14 +1,26 @@
 # EKO Instruments Design System
 
-Buttons, form fields, cards and other components in the EKO house style, ready to use in your PHP application.
-This guide gets you from an empty project to a styled page in about five minutes.
+Buttons, form fields, cards and other components in the EKO house style, ready to use in your **PHP** or **Python (Flask)** application.
+Both versions have the same components, the same options and produce exactly the same HTML.
+Each quick start gets you from an empty project to a styled page in about five minutes: open the one for your language below.
 
-## Requirements
+- [Quick start (PHP and Python)](#quick-start)
+- [The basics in four rules](#the-basics-in-four-rules)
+- [Available components](#available-components)
+
+---
+
+## Quick Start
+
+<details>
+<summary><strong>Show the PHP quick start</strong> (Composer, about five minutes)</summary>
+
+### Requirements
 
 - PHP 8.0 or newer
 - [Composer](https://getcomposer.org/)
 
-## 1. Install the package
+### 1. Install the package
 
 The package is installed straight from GitHub. In your project folder, run:
 
@@ -17,7 +29,7 @@ composer config repositories.eko-design-system vcs https://github.com/Palundy/EK
 composer require eko-instruments/design-system:dev-main
 ```
 
-## 2. Publish the CSS, JavaScript, fonts and icons
+### 2. Publish the CSS, JavaScript, fonts and icons
 
 Your web server can't serve files from `vendor/`, so the design system copies its files into a folder of your website.
 Add this to your project's `composer.json`, so it happens automatically after every install and update:
@@ -47,7 +59,7 @@ composer install
 You should see `EKO design system: published … files to public/design-system`.
 Add `public/design-system/` to your `.gitignore`, just like `vendor/`.
 
-## 3. Build your first page
+### 3. Build your first page
 
 Create `public/index.php`:
 
@@ -80,7 +92,7 @@ DesignSystem::setBaseUrl('/design-system');
 </html>
 ```
 
-## 4. Run it
+### 4. Run it
 
 ```bash
 php -S localhost:8000 -t public
@@ -88,40 +100,143 @@ php -S localhost:8000 -t public
 
 Open <http://localhost:8000>. You now have an EKO input field and button.
 
-## The basics in four rules
-
-1. **A component is its HTML.** Creating one doesn't print anything; print it where you want it, or keep it as a string:
-   ```php
-   <?= new Button("Save") ?>                // in a template
-   echo new Button("Save");                 // in PHP code
-   $html = (string) new Button("Save");     // as a string, e.g. for a template engine
-   ```
-2. **Pass options by name.** `new Button("Delete", style: "destructive", state: "loading")`. Everything except the first argument is optional.
-3. **Pass plain text.** All text, URLs and attributes are escaped for you, so user input is safe and you don't need to escape it yourself.
-4. **Icons go by name.** `icon: "envelope-outline"` uses one of the ~1,600 bundled icons (see `public/design-system/assets/icons/` for the names). A misspelled name throws an exception instead of showing an empty square.
-
-## Available components
-
-Import each one with its `use` line:
-
-| Component | Import |
-|---|---|
-| Button | `use EKO\DesignSystem\Button;` |
-| Section heading | `use EKO\DesignSystem\SectionHeading;` |
-| Spec table | `use EKO\DesignSystem\SpecTable;` |
-| Input, Textarea, Dropdown | `use EKO\DesignSystem\Fields\Input;` (and `Textarea`, `Dropdown`) |
-| Product, contact, application, industry and article cards | `use EKO\DesignSystem\Cards\ProductCard;` (and `ContactCard`, `ApplicationCard`, `IndustryCard`, `ArticleCard`) |
-| Breadcrumb, navigation item | `use EKO\DesignSystem\Navigation\Breadcrumb;` (and `NavItem`) |
-
-Every argument is documented in the class's docblock, so your editor shows it as you type.
-
-## Updating
+### Updating
 
 ```bash
 composer update eko-instruments/design-system
 ```
 
 The published files are refreshed automatically.
+
+</details>
+
+<details>
+<summary><strong>Show the Python (Flask) quick start</strong> (pip, about five minutes)</summary>
+
+### Requirements
+
+- Python 3.11 or newer
+- Flask
+
+### 1. Install the package
+
+The package is installed straight from GitHub, with the CSS, JavaScript, fonts and icons included. In your project's virtual environment, run:
+
+```bash
+pip install "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System"
+```
+
+Or add this line to your `requirements.txt`:
+
+```
+eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System
+```
+
+### 2. Connect it to your app
+
+There is nothing to copy or publish: the extension serves the design system's files straight from the installed package.
+Create `app.py`:
+
+```python
+from flask import Flask
+from eko_design_system.flask import EkoDesignSystem
+
+app = Flask(__name__)
+EkoDesignSystem(app)
+```
+
+Using an application factory? Create `design_system = EkoDesignSystem()` at module level and call `design_system.init_app(app)` inside the factory.
+
+### 3. Build your first page
+
+Every template now knows `eko`. Create `templates/index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello EKO</title>
+    {{ eko.stylesheet() }}
+    {{ eko.scripts() }}
+</head>
+<body>
+    <form method="post">
+        {{ eko.Input("Email address", name = "email", type = "email", required = True) }}
+        {{ eko.Button("Send", type = "submit", icon = "envelope-outline") }}
+    </form>
+</body>
+</html>
+```
+
+And render it from a route:
+
+```python
+from flask import render_template
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+```
+
+### 4. Run it
+
+```bash
+flask --app app run
+```
+
+Open <http://localhost:5000>. You now have an EKO input field and button.
+
+You can also build components in your Python code and pass them to the template, where `{{ card }}` prints it:
+
+```python
+from eko_design_system.cards import ContactCard
+
+return render_template("contact.html", card = ContactCard("Sales", phone = "+31 70 3050117"))
+```
+
+### Updating
+
+```bash
+pip install --upgrade "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System"
+```
+
+</details>
+
+---
+
+## The basics in four rules
+
+1. **A component is its HTML.** Creating one doesn't print anything; print it where you want it, or keep it as a string:
+   ```php
+   <?= new Button("Save") ?>                // PHP template
+   $html = (string) new Button("Save");     // PHP string
+   ```
+   ```python
+   {{ eko.Button("Save") }}                 {# Jinja template #}
+   html = str(Button("Save"))               # Python string
+   ```
+2. **Pass options by name.** `new Button("Delete", style: "destructive", state: "loading")` in PHP, `Button("Delete", style = "destructive", state = "loading")` in Python.
+   Everything except the first argument is optional. Python uses snake_case for names of more than one word (`imageAlt:` in PHP is `image_alt =` in Python).
+3. **Pass plain text.** All text, URLs and attributes are escaped for you, so user input is safe and you don't need to escape it yourself.
+   In Jinja, components are not escaped a second time.
+4. **Icons go by name.** `icon: "envelope-outline"` uses one of the ~1,600 bundled icons (see `assets/icons/` in this repository for the names).
+   A misspelled name throws an error instead of showing an empty square.
+
+## Available components
+
+| Component | PHP | Python |
+|---|---|---|
+| Button | `use EKO\DesignSystem\Button;` | `from eko_design_system import Button` |
+| Section heading | `use EKO\DesignSystem\SectionHeading;` | `from eko_design_system import SectionHeading` |
+| Spec table | `use EKO\DesignSystem\SpecTable;` | `from eko_design_system import SpecTable` |
+| Input, Textarea, Dropdown | `use EKO\DesignSystem\Fields\Input;` | `from eko_design_system.fields import Input` |
+| Product, contact, application, industry and article cards | `use EKO\DesignSystem\Cards\ProductCard;` | `from eko_design_system.cards import ProductCard` |
+| Breadcrumb, navigation item | `use EKO\DesignSystem\Navigation\Breadcrumb;` | `from eko_design_system.navigation import Breadcrumb` |
+
+In Jinja templates, every component is also available as `eko.<Name>`, such as `{{ eko.ProductCard(title = "MS-80SH") }}`.
+Every argument is documented in the class's docblock or docstring, so your editor shows it as you type.
 
 ## See every component
 
