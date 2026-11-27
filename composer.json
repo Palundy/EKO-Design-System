@@ -20,5 +20,10 @@
         "psr-4": {
             "EKO\\DesignSystem\\": "php/"
         }
-    }
+    },
+    "repositories": [{
+        "name": "eko-design-system",
+        "type": "vcs",
+        "url": "https://github.com/Palundy/EKO-Design-System"
+    }]
 }
