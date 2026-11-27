@@ -30,7 +30,6 @@ composer require eko-instruments/design-system
 ```
 
 Composer installs the newest release and adds a matching version constraint to your `composer.json` (e.g. `^0.2`).
-The releases and what changed in each are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ### 2. Publish the CSS, JavaScript, fonts and icons
 
@@ -111,7 +110,7 @@ composer update eko-instruments/design-system
 
 This picks up the bug-fix releases your version constraint allows, and the published files are refreshed automatically.
 Below version 1.0, Composer treats every new minor version (e.g. 0.2 to 0.3) as a major one, so `composer update` doesn't install it.
-To move to the newest release, run `composer require eko-instruments/design-system` again; check [CHANGELOG.md](CHANGELOG.md) for what changed first.
+To move to the newest release, run `composer require eko-instruments/design-system` again.
 
 </details>
 
@@ -137,7 +136,7 @@ Or add this line to your `requirements.txt`:
 eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z
 ```
 
-The `@vX.Y.Z` at the end is the release tag: replace it with the release you want, usually the newest one in [CHANGELOG.md](CHANGELOG.md) (e.g. `@v0.2.0`).
+The `@vX.Y.Z` at the end is the release tag: replace it with the release you want (e.g. `@v0.2.0`).
 pip can't look up the newest release on GitHub by itself, and the fixed tag keeps every install of your app on the same version.
 
 ### 2. Connect it to your app
@@ -210,7 +209,7 @@ return render_template("contact.html", card = ContactCard("Sales", phone = "+31 
 pip install --upgrade "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z"
 ```
 
-Replace `vX.Y.Z` with the release you want, check [CHANGELOG.md](CHANGELOG.md) for what changed, and update the tag in your `requirements.txt` as well.
+Replace `vX.Y.Z` with the release you want and update the tag in your `requirements.txt` as well.
 
 </details>
 
