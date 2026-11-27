@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+
 use EKO\DesignSystem\DesignSystem;
 use EKO\DesignSystem\Button;
 use EKO\DesignSystem\SectionHeading;
@@ -18,6 +19,13 @@ use EKO\DesignSystem\Cards\ArticleCard;
 
 use EKO\DesignSystem\Navigation\Breadcrumb;
 use EKO\DesignSystem\Navigation\NavItem;
+
+// Use EKO Data addon
+use EKO\DesignSystem\Addons\EkoData\EkoData;
+use EKO\DesignSystem\Addons\EkoData\StatusTracker;
+
+// Use EKO Data addon components in the page
+DesignSystem::enableAddon(EkoData::class);
 ?>
 
 <!DOCTYPE html>
@@ -26,10 +34,26 @@ use EKO\DesignSystem\Navigation\NavItem;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <script src="assets/js/dropdowns.js" defer></script>
+    <?= DesignSystem::stylesheet() ?>
+    <?= DesignSystem::scripts() ?>
 </head>
 <body>
+    <div style="margin-bottom: 24px;">
+        <?php echo new StatusTracker(
+            title: "Order Status",
+            steps: [
+                ["label" => "Order Placed", "status" => "done", "detail" => "Your order has been placed successfully."],
+                ["label" => "Order Shipped", "status" => "done", "detail" => "Your order has been shipped."],
+                ["label" => "Order Delivered", "status" => "error", "detail" => "Your order has been delivered."],
+                ["label" => "Order Completed", "status" => "active", "detail" => "Your order has been completed."],
+                ["label" => "Order Cancelled", "status" => "pending", "detail" => "Your order has been cancelled."]
+            ],
+            description: "Track the status of your order.",
+            icon: "envelope-outline",
+            action: new Button(label: "View Details", state: "negative")
+        ); ?> 
+    </div>
+
     <table>
         <tr><th colspan="7">Buttons</th></tr>
         <tr>
@@ -41,36 +65,36 @@ use EKO\DesignSystem\Navigation\NavItem;
         </tr>
         <tr>
             <td>Primary</td>
-            <td><?  echo new Button("Label"); ?></td>
-            <td><?  echo new Button("Label", state: "disabled"); ?></td>
-            <td><?  echo new Button("Label", state: "loading"); ?></td>
-            <td><?  echo new Button("Label", state: "negative"); ?></td>
+            <td><?php echo new Button("Label"); ?></td>
+            <td><?php echo new Button("Label", state: "disabled"); ?></td>
+            <td><?php echo new Button("Label", state: "loading"); ?></td>
+            <td><?php echo new Button("Label", state: "negative"); ?></td>
         </tr>
         <tr>
             <td>Destructive</td>
-            <td><?  echo new Button("Label", style: "destructive"); ?></td>
-            <td><?  echo new Button("Label", style: "destructive", state: "disabled"); ?></td>
-            <td><?  echo new Button("Label", style: "destructive", state: "loading"); ?></td>
-            <td><?  echo new Button("Label", style: "destructive", state: "negative"); ?></td>
+            <td><?php echo new Button("Label", style: "destructive"); ?></td>
+            <td><?php echo new Button("Label", style: "destructive", state: "disabled"); ?></td>
+            <td><?php echo new Button("Label", style: "destructive", state: "loading"); ?></td>
+            <td><?php echo new Button("Label", style: "destructive", state: "negative"); ?></td>
         </tr>
         <tr>
             <td>Positive</td>
-            <td><?  echo new Button("Label", style: "positive"); ?></td>
-            <td><?  echo new Button("Label", style: "positive", state: "disabled"); ?></td>
-            <td><?  echo new Button("Label", style: "positive", state: "loading"); ?></td>
-            <td><?  echo new Button("Label", style: "positive", state: "negative"); ?></td>
+            <td><?php echo new Button("Label", style: "positive"); ?></td>
+            <td><?php echo new Button("Label", style: "positive", state: "disabled"); ?></td>
+            <td><?php echo new Button("Label", style: "positive", state: "loading"); ?></td>
+            <td><?php echo new Button("Label", style: "positive", state: "negative"); ?></td>
         </tr>
         <tr>
             <td>Enquiry</td>
-            <td><?  echo new Button("Label", style: "enquiry"); ?></td>
-            <td><?  echo new Button("Label", style: "enquiry", state: "disabled"); ?></td>
-            <td><?  echo new Button("Label", style: "enquiry", state: "loading"); ?></td>
-            <td><?  echo new Button("Label", style: "enquiry", state: "negative"); ?></td>
+            <td><?php echo new Button("Label", style: "enquiry"); ?></td>
+            <td><?php echo new Button("Label", style: "enquiry", state: "disabled"); ?></td>
+            <td><?php echo new Button("Label", style: "enquiry", state: "loading"); ?></td>
+            <td><?php echo new Button("Label", style: "enquiry", state: "negative"); ?></td>
         </tr>
     </table>
 
     <div style="display:flex;gap:20px;margin-bottom: 24px;">
-        <? echo new Input(
+        <?php echo new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -78,7 +102,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             required: true
         ); ?>
 
-        <? echo new Input(
+        <?php echo new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -87,7 +111,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "disabled"
         ); ?>
 
-        <? echo new Input(
+        <?php echo new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -96,7 +120,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "error"
         ); ?>
 
-        <? echo new Input(
+        <?php echo new Input(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -107,7 +131,7 @@ use EKO\DesignSystem\Navigation\NavItem;
     </div>
     
     <div style="display:flex;gap:20px;margin-bottom: 24px;">
-        <? echo new Textarea(
+        <?php echo new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -115,7 +139,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             required: true
         ); ?>
 
-        <? echo new Textarea(
+        <?php echo new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -124,7 +148,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "disabled"
         ); ?>
 
-        <? echo new Textarea(
+        <?php echo new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -133,7 +157,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "error"
         ); ?>
 
-        <? echo new Textarea(
+        <?php echo new Textarea(
             label: "Full Name",
             info: "Your complete name.",
             id: "full-name",
@@ -150,7 +174,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             "ms-60" => "MS-60",
             "ms-40" => "MS-40"
         ]; ?>
-        <? echo new Dropdown(
+        <?php echo new Dropdown(
             label: "Product of interest",
             info: "Please select a product.",
             id: "product",
@@ -158,7 +182,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             required: true
         ); ?>
 
-        <? echo new Dropdown(
+        <?php echo new Dropdown(
             label: "Product of interest",
             info: "This field is disabled.",
             id: "product-disabled",
@@ -167,7 +191,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "disabled"
         ); ?>
 
-        <? echo new Dropdown(
+        <?php echo new Dropdown(
             label: "Product of interest",
             info: "Please select a product.",
             id: "product-error",
@@ -176,7 +200,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             state: "error"
         ); ?>
 
-        <? echo new Dropdown(
+        <?php echo new Dropdown(
             label: "Product of interest",
             info: "Successfully selected!",
             value: "ms-80sh",
@@ -188,7 +212,7 @@ use EKO\DesignSystem\Navigation\NavItem;
     </div>
 
     <div style="margin-bottom: 24px;display: flex; gap: 24px;">
-        <? echo new ProductCard(
+        <?php echo new ProductCard(
             title: "MS-80SH",
             label: "Class A",
             description: "Class A pyranometer with ventilator and heater for utility-scale PV",
@@ -203,7 +227,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             cta: "Call to action"
         ); ?>
 
-        <? echo new ProductCard(
+        <?php echo new ProductCard(
             title: "ICF-02",
             label: "New!",
             description: "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
@@ -216,7 +240,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             cta: "Request Quote"
         ); ?>
 
-        <? echo new ProductCard(
+        <?php echo new ProductCard(
             title: "Product Card",
             description: "This is a card without an image, without a table and without a label.",
             cta: "Call to action"
@@ -224,7 +248,7 @@ use EKO\DesignSystem\Navigation\NavItem;
     </div>
 
     <div style="margin-bottom: 24px;display: flex; gap: 24px;">
-        <? echo new ContactCard(
+        <?php echo new ContactCard(
             first: "Palau van Helden",
             second: "EKO Instruments B.V.",
             third: "Project Development Engineer",
@@ -238,7 +262,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             ]
         ); ?>
 
-        <? echo new ContactCard(
+        <?php echo new ContactCard(
             first: "John Doe",
             second: "Example Corp.",
             third: "Sales Manager",
@@ -250,7 +274,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             image: "assets/images/user-silhouette-" . str_pad(rand(1, 5), 2, "0", STR_PAD_LEFT) . ".svg"
         ); ?>
 
-        <? echo new ContactCard(
+        <?php echo new ContactCard(
             first: "Contact Card",
             third: "This contact card has minimal information.",
             email: "contact@example.com",
@@ -258,7 +282,7 @@ use EKO\DesignSystem\Navigation\NavItem;
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 48px; width: 1024px; margin: 48px 0;">
-        <? echo new SpecTable(
+        <?php echo new SpecTable(
             title: "Specifications",
             rows: [
                 "Wavelength Range (nm)" => "285 to 3000",
@@ -269,7 +293,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             ]
         ); ?>
 
-        <? echo new SpecTable(
+        <?php echo new SpecTable(
             title: "ISO Specifications",
             header: ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
             rows: [
@@ -281,7 +305,7 @@ use EKO\DesignSystem\Navigation\NavItem;
         ); ?>
     </div>
     <div style="display: flex; flex-direction: column; gap: 32px; margin: 48px 0;">
-        <? echo new Breadcrumb([
+        <?php echo new Breadcrumb([
             "Home" => "/",
             "Pyranometers" => "/pyranometers",
             "MS-80SH" => "/products/ms-80sh",
@@ -289,22 +313,22 @@ use EKO\DesignSystem\Navigation\NavItem;
         ]); ?>
 
         <div style="display: flex; gap: 32px;">
-            <? echo new NavItem("Products", "/products"); ?>
-            <? echo new NavItem("Industries", "/industries", active: true); ?>
-            <? echo new NavItem("About EKO", "/about"); ?>
+            <?php echo new NavItem("Products", "/products"); ?>
+            <?php echo new NavItem("Industries", "/industries", active: true); ?>
+            <?php echo new NavItem("About EKO", "/about"); ?>
         </div>
 
-        <? echo new SectionHeading("Popular Products", link: "View all", linkUrl: "/products"); ?>
+        <?php echo new SectionHeading("Popular Products", link: "View all", linkUrl: "/products"); ?>
 
         <div style="display: flex; gap: 24px; align-items: flex-start;">
-            <? echo new ApplicationCard(
+            <?php echo new ApplicationCard(
                 title: "Solar Energy",
                 description: "Resource assessment, performance monitoring and plant optimization.",
                 cta: "Learn More",
                 ctaUrl: "/applications/solar-energy"
             ); ?>
 
-            <? echo new ArticleCard(
+            <?php echo new ArticleCard(
                 title: "Headline placeholder for new about everything, maximum three lines here.",
                 url: "https://www.eko-instruments.com/blog/example",
                 tag: "Instruments",
@@ -314,7 +338,7 @@ use EKO\DesignSystem\Navigation\NavItem;
             ); ?>
         </div>
 
-        <? echo new IndustryCard(
+        <?php echo new IndustryCard(
             title: "Solar Energy",
             description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration",
             url: "/industries/solar-energy"

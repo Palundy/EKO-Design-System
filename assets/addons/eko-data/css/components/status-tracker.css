@@ -42,6 +42,7 @@
     --ekodata-status-tracker-border-width: var(--border-width-thin);
     --ekodata-status-tracker-border-color: var(--color-border);
     --ekodata-status-tracker-border-radius: var(--radius-large);
+    --ekodata-status-tracker-width: 445px;
 
     /* Tokens: header */
     --ekodata-status-tracker-header-padding-x: var(--space-xlarge);
@@ -60,7 +61,7 @@
     --ekodata-status-tracker-action-height: 32px;
     --ekodata-status-tracker-action-padding-x: var(--space-medium);
     --ekodata-status-tracker-action-font-size: var(--font-size-medium);
-    --ekodata-status-tracker-action-font-weight: var(--font-weight-bold);
+    --ekodata-status-tracker-action-font-weight: var(--font-weight-regular);
 
     /* Tokens: body and description */
     --ekodata-status-tracker-body-padding: var(--space-xlarge);
@@ -112,6 +113,7 @@
     background-color: var(--ekodata-status-tracker-bg);
     border: var(--ekodata-status-tracker-border-width) solid var(--ekodata-status-tracker-border-color);
     border-radius: var(--ekodata-status-tracker-border-radius);
+    width: var(--ekodata-status-tracker-width);
 }
 
 
