@@ -16,7 +16,7 @@ classifiers = [
 ]
 dependencies = []
 authors = [
-    {name = "Palau van Helden", email = "palau@vhelden.nl"}
+    {name = "Palau van Helden", email = "palau.vanhelden@eko-instruments.com"}
 ]
 
 [project.optional-dependencies]

@@ -155,15 +155,41 @@ function printFootnotes($notes) {
 
 /**
  * Prints a block of example code.
+ * Given one code sample, it prints a single block with the language label in the upper left corner.
+ * Given several (e.g., PHP and Jinja), it prints one block with a tab per language. Choosing a language
+ * switches every block on the page to it, and the choice is remembered in this browser.
  *
- * @param string $code
- * The code, shown exactly as written (it is escaped).
+ * @param string|array $code
+ * The code, shown exactly as written (it is escaped), or the samples as language label => code.
  *
  * @param string $language [optional]
- * The language label shown in the upper left corner of the block. Defaults to "PHP".
+ * The language label of a single code sample. Defaults to "PHP". Ignored when `$code` is an array.
  */
 function printCode($code, $language = 'PHP') {
-    echo "<pre class=\"sc-code\" data-language=\"" . escapeHtml($language) . "\"><code>" . escapeHtml(trim($code)) . "</code></pre>";
+    static $blockCount = 0;
+    $samples = is_array($code) ? $code : [$language => $code];
+
+    if (count($samples) === 1) {
+        echo "<pre class=\"sc-code\" data-language=\"" . escapeHtml(array_key_first($samples)) . "\"><code>"
+            . escapeHtml(trim(reset($samples))) . "</code></pre>";
+        return;
+    }
+
+    // One tab and one panel per language; the first language is shown until the script restores a saved choice
+    $blockCount++;
+    $tabs = '';
+    $panels = '';
+    $first = true;
+    foreach ($samples as $label => $sample) {
+        $id = "sc-code-$blockCount-" . strtolower(preg_replace('/[^a-z0-9]+/i', '-', $label));
+        $tabs .= "<button type=\"button\" class=\"sc-code-tab\" role=\"tab\" id=\"$id-tab\" aria-controls=\"$id\""
+            . " aria-selected=\"" . ($first ? 'true' : 'false') . "\" tabindex=\"" . ($first ? '0' : '-1') . "\""
+            . " data-language=\"" . escapeHtml($label) . "\">" . escapeHtml($label) . "</button>";
+        $panels .= "<pre class=\"sc-code\" role=\"tabpanel\" id=\"$id\" aria-labelledby=\"$id-tab\" data-language=\"" . escapeHtml($label) . "\""
+            . ($first ? '' : ' hidden') . "><code>" . escapeHtml(trim($sample)) . "</code></pre>";
+        $first = false;
+    }
+    echo "<div class=\"sc-code-tabs\"><div class=\"sc-code-tablist\" role=\"tablist\" aria-label=\"Language\">$tabs</div>$panels</div>";
 }
 
 /**
@@ -362,7 +388,8 @@ function escapeHtml($value) {
                             echo new Button("Contact sales", state: "negative", icon: "call-outline");
                         }); ?>
 
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 // 2.1: style is "destructive", "positive" or "enquiry" (none for primary),
 // state is "disabled", "loading" or "negative"
 echo new Button("Label");
@@ -373,7 +400,20 @@ echo new Button("Label", style: "positive", state: "negative");
 echo new Button("Send enquiry", style: "enquiry", icon: "envelope-outline");
 echo new Button("Download datasheet", icon: "download-outline");
 echo new Button("Contact sales", state: "negative", icon: "call-outline");
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{# 2.1: style is "destructive", "positive" or "enquiry" (none for primary),
+   state is "disabled", "loading" or "negative" #}
+{{ eko.Button("Label") }}
+{{ eko.Button("Label", style = "destructive", state = "loading") }}
+{{ eko.Button("Label", style = "positive", state = "negative") }}
+
+{# 2.2 #}
+{{ eko.Button("Send enquiry", style = "enquiry", icon = "envelope-outline") }}
+{{ eko.Button("Download datasheet", icon = "download-outline") }}
+{{ eko.Button("Contact sales", state = "negative", icon = "call-outline") }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Default' => 'The resting state, filled with the variant colour.',
@@ -420,7 +460,8 @@ echo new Button("Contact sales", state: "negative", icon: "call-outline");
                             echo new Textarea("Message", name: "sc-message", placeholder: "How can we help?", info: "We usually answer within one working day.");
                         }); ?>
 
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 // 3.1
 echo new Input("Full name", name: "name", placeholder: "John Doe", info: "Your complete name.", required: true);
 echo new Input("Email address", name: "email", type: "email", value: "john@", required: true,
@@ -437,7 +478,26 @@ echo new Dropdown("Product of interest", id: "product", options: $products, valu
              state: "success", info: "Successfully selected!");
 echo new Textarea("Message", name: "message", placeholder: "How can we help?",
              info: "We usually answer within one working day.");
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{# 3.1 #}
+{{ eko.Input("Full name", name = "name", placeholder = "John Doe", info = "Your complete name.", required = True) }}
+{{ eko.Input("Email address", name = "email", type = "email", value = "john@", required = True,
+             state = "error", info = "Please enter a valid email address.") }}
+{{ eko.Input("Email address", name = "email", type = "email", value = "john.doe@example.com", required = True,
+             state = "success", info = "Looks good!") }}
+{{ eko.Input("Full name", name = "name", value = "John Doe", state = "disabled", info = "This field is disabled.") }}
+
+{# 3.2 #}
+{% set products = {"ms-80sh": "MS-80SH Pyranometer", "ms-80": "MS-80 Pyranometer",
+                   "ms-60": "MS-60 Pyranometer", "ms-40": "MS-40 Pyranometer"} %}
+{{ eko.Dropdown("Product of interest", id = "product", options = products, info = "Choose an instrument.", required = True) }}
+{{ eko.Dropdown("Product of interest", id = "product", options = products, value = "ms-80sh",
+                state = "success", info = "Successfully selected!") }}
+{{ eko.Textarea("Message", name = "message", placeholder = "How can we help?",
+                info = "We usually answer within one working day.") }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Default' => 'Light grey border. The label gets an asterisk when the field is required.',
@@ -570,7 +630,8 @@ echo new Textarea("Message", name: "message", placeholder: "How can we help?",
                             echo "</div>";
                         }, 'sc-stage-flush'); ?>
 
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 // 6.1
 echo new NavItem("Products", "/products");
 echo new NavItem("Industries", "/industries", active: true);
@@ -582,7 +643,21 @@ echo new Breadcrumb([
     "Home" => "/", "Pyranometers" => "/pyranometers", "MS-80SH" => "/products/ms-80sh",
     "Talk to an Expert",
 ]);
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{# 6.1 #}
+{{ eko.NavItem("Products", "/products") }}
+{{ eko.NavItem("Industries", "/industries", active = True) }}
+{{ eko.NavItem("Calibration", "/calibration") }}
+{{ eko.NavItem("About EKO", "/about") }}
+
+{# 6.2: the current page has no URL #}
+{{ eko.Breadcrumb({
+    "Home": "/", "Pyranometers": "/pyranometers", "MS-80SH": "/products/ms-80sh",
+    "Talk to an Expert": None,
+}) }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Navigation item' => 'Regular blue text with a chevron.',
@@ -609,10 +684,16 @@ echo new Breadcrumb([
                             echo new SectionHeading("About EKO");
                             echo "</div>";
                         }); ?>
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 echo new SectionHeading("Popular Products", link: "View all", linkUrl: "/products");
 echo new SectionHeading("About EKO");
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{{ eko.SectionHeading("Popular Products", link = "View all", link_url = "/products") }}
+{{ eko.SectionHeading("About EKO") }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Title only' => 'For sections without an overview page.',
@@ -666,7 +747,8 @@ echo new SectionHeading("About EKO");
                                 cta: "Call to action"
                             );
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 echo new ProductCard(
     title: "MS-80SH",
     label: "Class A",
@@ -702,7 +784,45 @@ echo new ProductCard(
     description: "This is a card without an image, without a table and without a label.",
     cta: "Call to action"
 );
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{{ eko.ProductCard(
+    title = "MS-80SH",
+    label = "Class A",
+    description = "Class A pyranometer with ventilator and heater for utility-scale PV",
+    image = "/assets/images/ms80sh.png",
+    image_alt = "MS-80SH Pyranometer",
+    table = {
+        "ISO 9060:2018": "spectrally flat, Class A",
+        "IEC 61724-1:2021": "Class A system compliant",
+        "Warranty": "5 years",
+        "Recalibration": "5 years",
+    },
+    cta = "View product",
+    cta_url = "/products/ms-80sh"
+) }}
+
+{# Repeat a name by writing the rows as lists; without cta_url the call to action is not a link #}
+{{ eko.ProductCard(
+    title = "ICF-02",
+    label = "New!",
+    description = "From ISO standards and uncertainty budgets to fully automated indoor calibration, everything your lab needs to know, in one place.",
+    image = "/assets/images/icf-02.png",
+    image_alt = "EKO Instruments ICF-02 - Indoor Calibration Facility",
+    table = [
+        ["Standard", "IS0 9847:2023"],
+        ["Light Source", "300 LED or 150W Metal Halide"],
+    ],
+    cta = "Request Quote"
+) }}
+
+{{ eko.ProductCard(
+    title = "Product Card",
+    description = "This is a card without an image, without a table and without a label.",
+    cta = "Call to action"
+) }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Image' => 'Optional. Product photos are shown at 67% width, centred.',
@@ -741,7 +861,8 @@ echo new ProductCard(
                                 email: "service@example.com"
                             );
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 echo new ContactCard(
     first: "Jane Doe",
     second: "EKO Instruments B.V.",
@@ -759,7 +880,27 @@ echo new ContactCard(
     third: "Questions about your order",
     email: "service@example.com"
 );
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{{ eko.ContactCard(
+    first = "Jane Doe",
+    second = "EKO Instruments B.V.",
+    third = "Sales Engineer",
+    email = "jane.doe@example.com",
+    phone = "+31 (0)70 123 4567",
+    website = "www.eko-instruments.com",
+    image = "/assets/images/user-silhouette-02.svg",
+    button = "Contact Jane",
+    button_icon = "envelope-outline"
+) }}
+
+{{ eko.ContactCard(
+    first = "Customer service",
+    third = "Questions about your order",
+    email = "service@example.com"
+) }}
+                            ',
+                        ]); ?>
                     </div>
                     <?php printStates([
                         'Details' => 'Only the first line is required. Each of the three lines and each contact row appears only when given.',
@@ -823,7 +964,8 @@ echo new ContactCard(
                             echo "</div>";
                         }, 'sc-stage-raised', 'background:var(--color-surface);'); ?>
 
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 // 10.1
 echo new ApplicationCard(
     title: "Solar Energy",
@@ -847,7 +989,33 @@ echo new IndustryCard(
     description: "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration.",
     url: "/industries/solar"
 );
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{# 10.1 #}
+{{ eko.ApplicationCard(
+    title = "Solar Energy",
+    description = "Resource assessment, performance monitoring and plant optimization.",
+    cta = "Learn More",
+    cta_url = "/applications/solar"
+) }}
+
+{{ eko.ArticleCard(
+    title = "How to choose the right pyranometer for a utility-scale PV plant",
+    url = "https://www.eko-instruments.com/",
+    tag = "Instruments",
+    description = "A short introduction to the ISO 9060 classes, what they mean for your yield assessment and when a heated, ventilated instrument pays off.",
+    read_time = "6 minutes read",
+    share = True
+) }}
+
+{# 10.2 #}
+{{ eko.IndustryCard(
+    title = "Solar Energy",
+    description = "Precision instruments for solar resource assessment, PV performance monitoring, and weather station integration.",
+    url = "/industries/solar"
+) }}
+                            ',
+                        ]); ?>
                     </div>
                 </div>
             </div>
@@ -893,7 +1061,8 @@ echo new IndustryCard(
                             echo "</div>";
                         }); ?>
 
-                        <?php printCode('
+                        <?php printCode([
+                            'PHP' => '
 // 11.1
 echo new SpecTable(
     title: "ISO Specifications",
@@ -918,7 +1087,34 @@ echo new SpecTable(
         "Ingress Protection" => "IP 67",
     ]
 );
-                        '); ?>
+                            ',
+                            'Jinja' => '
+{# 11.1 #}
+{{ eko.SpecTable(
+    title = "ISO Specifications",
+    header = ["ISO 9060:2018 Parameters", "CLASS A", "MS-80SH"],
+    rows = {
+        "Response time 95%": ["< 10s", "< 0.5s"],
+        "Zero offset A, Thermal Radiation (200W/m²)": ["± 7W/m²", "± 1W/m²"],
+        "Zero offset B, Temperature change (5K/hr)": ["± 2W/m²", "± 1W/m²"],
+        "Non-stability (change/year)": ["± 0.8%", "< 0.5% / 5 years"],
+        "Non-linearity (100 to 1000W/m²)": ["± 0.5%", "± 0.2%"],
+        "Spectral Error": ["± 0.5%", "± 0.2%"],
+    }
+) }}
+
+{# 11.2 #}
+{{ eko.SpecTable(
+    title = "Specifications",
+    rows = {
+        "Wavelength Range (nm)": "285 to 3000",
+        "Signal Output": "Modbus 485 RTU / SDI-12",
+        "Operating temperature": "-40 to 80°C",
+        "Ingress Protection": "IP 67",
+    }
+) }}
+                            ',
+                        ]); ?>
                     </div>
                 </div>
             </div>
@@ -931,7 +1127,7 @@ echo new SpecTable(
         <div class="sc-wrap">
             <div>
                 <h2>Using the system</h2>
-                <p>Require the PHP components you need, tell <code>DesignSystem::setBaseUrl()</code> where the design system's files are served from, and print <code>DesignSystem::stylesheet()</code> and <code>DesignSystem::scripts()</code> in the page head. Then create the components where they should appear, passing icons by name (e.g., <code>"envelope-outline"</code>). The README explains every argument.</p>
+                <p>In PHP, require Composer's <code>vendor/autoload.php</code> and import the components you need, tell <code>DesignSystem::setBaseUrl()</code> where the design system's files are served from, and print <code>DesignSystem::stylesheet()</code> and <code>DesignSystem::scripts()</code> in the page head. In Flask, call <code>EkoDesignSystem(app)</code> once and use <code>{{ eko.stylesheet() }}</code>, <code>{{ eko.scripts() }}</code> and <code>{{ eko.Button(...) }}</code> in your templates. Then create the components where they should appear, passing icons by name (e.g., <code>"envelope-outline"</code>). The README explains every argument.</p>
             </div>
             <div>
                 <h2>Changing the look</h2>
@@ -997,6 +1193,57 @@ echo new SpecTable(
             }
             window.addEventListener('scroll', updateProgress, { passive: true });
             updateProgress();
+
+            // Code language tabs: choosing a language shows it in every code block and remembers it in this browser
+            function showLanguage(language) {
+                document.querySelectorAll('.sc-code-tabs').forEach(function (block) {
+                    const tabs = block.querySelectorAll('.sc-code-tab');
+                    const match = Array.prototype.some.call(tabs, function (tab) { return tab.dataset.language === language; });
+                    if (!match) {
+                        return;
+                    }
+                    tabs.forEach(function (tab) {
+                        const selected = tab.dataset.language === language;
+                        tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+                        tab.tabIndex = selected ? 0 : -1;
+                        document.getElementById(tab.getAttribute('aria-controls')).hidden = !selected;
+                    });
+                });
+            }
+
+            document.querySelectorAll('.sc-code-tablist').forEach(function (tablist) {
+                const tabs = Array.prototype.slice.call(tablist.querySelectorAll('.sc-code-tab'));
+
+                tablist.addEventListener('click', function (event) {
+                    const tab = event.target.closest('.sc-code-tab');
+                    if (!tab) {
+                        return;
+                    }
+                    try { localStorage.setItem('eko-showcase-language', tab.dataset.language); } catch (e) {}
+                    // Keep the clicked block in place while the blocks above it change height
+                    const top = tab.getBoundingClientRect().top;
+                    showLanguage(tab.dataset.language);
+                    window.scrollBy(0, tab.getBoundingClientRect().top - top);
+                });
+
+                // Arrow keys move between the tabs, as in any tab list
+                tablist.addEventListener('keydown', function (event) {
+                    const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+                    if (!step) {
+                        return;
+                    }
+                    event.preventDefault();
+                    const next = tabs[(tabs.indexOf(document.activeElement) + step + tabs.length) % tabs.length];
+                    next.focus();
+                    next.click();
+                });
+            });
+
+            let savedLanguage = null;
+            try { savedLanguage = localStorage.getItem('eko-showcase-language'); } catch (e) {}
+            if (savedLanguage) {
+                showLanguage(savedLanguage);
+            }
         })();
     </script>
 </body>

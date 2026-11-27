@@ -482,6 +482,57 @@
     color: var(--color-text);
 }
 
+/* A code block in several languages: the tabs take the place of the language label */
+.sc-code-tabs {
+    background-color: var(--color-surface-highlight);
+    border-radius: var(--radius-small);
+}
+
+.sc-code-tablist {
+    display: flex;
+    gap: var(--space-xlarge);
+    padding: var(--space-xlarge) var(--space-2xlarge) 0;
+}
+
+.sc-code-tab {
+    margin: 0;
+    padding: 0 0 var(--space-2xsmall);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xsmall);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--sc-kicker-tracking);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    background: none;
+    border: 0;
+    border-bottom: var(--border-width-thick) solid transparent;
+    cursor: pointer;
+}
+
+.sc-code-tab:hover,
+.sc-code-tab[aria-selected="true"] {
+    color: var(--color-text);
+}
+
+.sc-code-tab[aria-selected="true"] {
+    border-bottom-color: var(--color-primary);
+}
+
+.sc-code-tab:focus-visible {
+    outline: var(--border-width-thick) solid var(--color-primary);
+    outline-offset: var(--space-2xsmall);
+}
+
+.sc-code-tabs .sc-code {
+    padding-top: var(--space-medium);
+    background: none;
+    border-radius: 0;
+}
+
+.sc-code-tabs .sc-code::before {
+    content: none;
+}
+
 
 /* Pull quote */
 .sc-quote {
@@ -736,5 +787,81 @@
 @media (prefers-reduced-motion: reduce) {
     .sc-progress {
         display: none;
+    }
+}
+
+
+/* Print (and PDF): portrait A4 pages, scaled down to fit more on each page. The cover, contents, every chapter and the colophon each start on a new page */
+@page {
+    size: A4;
+    margin: 12mm 0;
+}
+
+@media print {
+    .sc-page {
+        --sc-chapter-padding-y: var(--space-4xlarge);
+
+        /* Scale everything down so more fits on each page, as in a wider window */
+        --sc-print-zoom: 0.7;
+        zoom: var(--sc-print-zoom);
+
+        /* Keep the coloured cover, chapter bands and stages instead of printing them white */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .sc-topbar,
+    .sc-progress {
+        display: none;
+    }
+
+    .sc-contents,
+    .sc-chapter,
+    .sc-colophon {
+        break-before: page;
+    }
+
+    /* The next chapter starts on a new page anyway; bottom padding would only spill onto an empty page */
+    .sc-chapter {
+        padding-bottom: 0;
+    }
+
+    /* The brand rule under the cover belongs to the cover page */
+    .sc-brand-rule {
+        break-before: avoid;
+    }
+
+    /* Never split a figure, a code sample, a state index entry or a chapter heading */
+    .sc-chapter-head,
+    .sc-figure,
+    .sc-code,
+    .sc-quote,
+    .sc-states dt,
+    .sc-states dd,
+    .sc-type-row,
+    .sc-space-row,
+    .sc-contents-list li {
+        break-inside: avoid;
+    }
+
+    .sc-chapter-title,
+    .sc-states-title,
+    .sc-contents-head {
+        break-after: avoid;
+    }
+
+    .sc-states {
+        position: static;
+    }
+
+    /* Scrollbars don't print: wrap long code and show wide stages in full */
+    .sc-stage,
+    .sc-code {
+        overflow: visible;
+    }
+
+    .sc-code {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
     }
 }
