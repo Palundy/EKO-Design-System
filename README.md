@@ -26,10 +26,11 @@ The package is installed straight from GitHub. In your project folder, run:
 
 ```bash
 composer config repositories.eko-design-system vcs https://github.com/Palundy/EKO-Design-System
-composer require eko-instruments/design-system:^0.1.0
+composer require eko-instruments/design-system
 ```
 
-`^0.1.0` installs version 0.1.0 or a newer 0.1.x bug-fix release.
+Composer installs the newest release and adds a matching version constraint to your `composer.json` (e.g. `^0.2`).
+The releases and what changed in each are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ### 2. Publish the CSS, JavaScript, fonts and icons
 
@@ -108,8 +109,9 @@ Open <http://localhost:8000>. You now have an EKO input field and button.
 composer update eko-instruments/design-system
 ```
 
-This picks up new 0.1.x releases, and the published files are refreshed automatically.
-To move to a new minor version such as 0.2, run `composer require eko-instruments/design-system:^0.2.0`.
+This picks up the bug-fix releases your version constraint allows, and the published files are refreshed automatically.
+Below version 1.0, Composer treats every new minor version (e.g. 0.2 to 0.3) as a major one, so `composer update` doesn't install it.
+To move to the newest release, run `composer require eko-instruments/design-system` again; check [CHANGELOG.md](CHANGELOG.md) for what changed first.
 
 </details>
 
@@ -126,16 +128,17 @@ To move to a new minor version such as 0.2, run `composer require eko-instrument
 The package is installed straight from GitHub, with the CSS, JavaScript, fonts and icons included. In your project's virtual environment, run:
 
 ```bash
-pip install "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@v0.1.0"
+pip install "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z"
 ```
 
 Or add this line to your `requirements.txt`:
 
 ```
-eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@v0.1.0
+eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z
 ```
 
-The `@v0.1.0` at the end is the release tag.
+The `@vX.Y.Z` at the end is the release tag: replace it with the release you want, usually the newest one in [CHANGELOG.md](CHANGELOG.md) (e.g. `@v0.2.0`).
+pip can't look up the newest release on GitHub by itself, and the fixed tag keeps every install of your app on the same version.
 
 ### 2. Connect it to your app
 
@@ -207,7 +210,7 @@ return render_template("contact.html", card = ContactCard("Sales", phone = "+31 
 pip install --upgrade "eko-design-system[flask] @ git+https://github.com/Palundy/EKO-Design-System@vX.Y.Z"
 ```
 
-pip can't pick the newest release from GitHub by itself, so replace `vX.Y.Z` with the release you want. Update the tag in your `requirements.txt` as well.
+Replace `vX.Y.Z` with the release you want, check [CHANGELOG.md](CHANGELOG.md) for what changed, and update the tag in your `requirements.txt` as well.
 
 </details>
 
