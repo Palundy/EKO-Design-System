@@ -245,6 +245,33 @@ pip can't pick the newest release from GitHub by itself, so replace `vX.Y.Z` wit
 In Jinja templates, every component is also available as `eko.<Name>`, such as `{{ eko.ProductCard(title = "MS-80SH") }}`.
 Every argument is documented in the class's docblock or docstring, so your editor shows it as you type.
 
+## Addons
+
+Components that only one application needs live in an **addon**, next to the core. Each addon is switched on separately, so other apps don't get its CSS.
+
+| Addon | Components | PHP | Python |
+|---|---|---|---|
+| EKO Data | Status tracker | `use EKO\DesignSystem\Addons\EkoData\StatusTracker;` | `from eko_design_system.addons.eko_data import StatusTracker` |
+
+Switch an addon on once, before the page head. `DesignSystem::stylesheet()` and `scripts()` then also print the addon's tags:
+
+```php
+use EKO\DesignSystem\DesignSystem;
+use EKO\DesignSystem\Addons\EkoData\EkoData;
+
+DesignSystem::enableAddon(EkoData::class);
+```
+
+```python
+from eko_design_system.addons.eko_data import EkoData
+
+EkoDesignSystem(app, addons = [EkoData])    # Flask: templates use {{ eko.eko_data.StatusTracker(...) }}
+DesignSystem.enable_addon(EkoData)          # without Flask
+```
+
+The addon files are published and installed with the rest of the package, so you don't need to do anything extra.
+An addon's own icons go by name with its prefix, such as `icon: "eko-data:gauge-outline"`.
+
 ## See every component
 
 Clone this repository, run `composer install` and `php -S localhost:8000` in it, and open <http://localhost:8000/showcase.php>.

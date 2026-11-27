@@ -26,6 +26,13 @@ use EKO\DesignSystem\Cards\ArticleCard;
 use EKO\DesignSystem\Navigation\Breadcrumb;
 use EKO\DesignSystem\Navigation\NavItem;
 
+use EKO\DesignSystem\Addons\EkoData\EkoData;
+use EKO\DesignSystem\Addons\EkoData\StatusTracker;
+
+
+// The showcase shows every addon too, so their stylesheets are linked in the head
+DesignSystem::enableAddon(EkoData::class);
+
 
 /**
  * The themes the theme button cycles through, in order: `data-theme` value => label.
@@ -51,6 +58,7 @@ const CHAPTERS = [
     'contact-card' => ['Contact card', 'A person behind the product, one click away.'],
     'image-cards' => ['Image cards', 'Applications, industries and stories, led by a photo.'],
     'spec-table' => ['Spec table', 'The full specifications, readable at a glance.'],
+    'eko-data' => ['EKO Data addon', 'Status trackers that follow a deployment step by step.'],
 ];
 
 
@@ -226,6 +234,7 @@ function escapeHtml($value) {
                 <a class="nav-item" href="#buttons">Components</a>
                 <a class="nav-item" href="#product-card">Cards</a>
                 <a class="nav-item" href="#spec-table">Tables</a>
+                <a class="nav-item" href="#eko-data">Addons</a>
             </nav>
             <?php echo new Button("Theme: Light", state: "negative", icon: "color-palette-outline", attributes: ["id" => "sc-theme-toggle", "data-themes" => json_encode(THEMES), "title" => "Switch to the next theme"]); ?>
         </div>
@@ -244,7 +253,7 @@ function escapeHtml($value) {
                     and every state they can be in. Everything you see on this page is rendered live by the design system.
                 </p>
                 <ol class="sc-cover-lines">
-                    <li><strong>11 chapters</strong>From foundations to full specification tables.</li>
+                    <li><strong><?= count(CHAPTERS) ?> chapters</strong>From foundations to full specification tables and application addons.</li>
                     <li><strong>3 token layers</strong>Brand, semantic and component: change once, update everywhere.</li>
                     <li><strong><?= count(THEMES) ?> themes</strong>Switch the theme in the top bar to see every page change.</li>
                     <li><strong>PHP &amp; HTML</strong>Each component comes with a class and plain markup.</li>
@@ -258,7 +267,7 @@ function escapeHtml($value) {
             <div class="sc-wrap">
                 <div class="sc-contents-head">
                     <h2 id="contents-title">On this page</h2>
-                    <p class="sc-kicker">11 chapters</p>
+                    <p class="sc-kicker"><?= count(CHAPTERS) ?> chapters</p>
                 </div>
                 <ol class="sc-contents-list">
                     <?php $number = 1; foreach (CHAPTERS as $anchor => [$title, $summary]) { ?>
@@ -1116,6 +1125,98 @@ echo new SpecTable(
                             ',
                         ]); ?>
                     </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 12 EKO Data addon -->
+        <section class="sc-chapter" id="eko-data">
+            <div class="sc-wrap">
+                <?php printChapterHead('eko-data', 'Addons',
+                    'Components that only one application needs live in an addon, next to the core. The EKO Data addon adds a status tracker:
+                    the steps of a deployment, what is done, what is running and how far it has come. Switch it on with
+                    <code>DesignSystem::enableAddon(EkoData::class)</code>; its classes and tokens start with <code>ekodata-</code>.'); ?>
+                <div class="sc-chapter-body">
+                    <div class="sc-stack">
+                        <?php printFigure('12.1', 'A deployment in progress: three steps done, the image build running, two steps to go.', function () {
+                            echo "<div style=\"width: 100%; max-width: 640px\">";
+                            echo new StatusTracker(
+                                title: "Deployment status",
+                                description: "Track the deployment pipeline for this release.",
+                                icon: "list-ul-solid",
+                                action: new Button("Verify", state: "negative"),
+                                steps: [
+                                    ["label" => "Release published", "status" => "done", "detail" => "2026-11-27, 11:47:27"],
+                                    ["label" => "Release registered on EKO Data", "status" => "done", "detail" => "2026-11-27, 11:47:37"],
+                                    ["label" => "Workflow: Image build started", "status" => "done", "detail" => "2026-11-27, 11:47:32"],
+                                    ["label" => "Workflow: Image build done", "status" => "active"],
+                                    ["label" => "Workflow: Pushed image to Docker Hub"],
+                                    ["label" => "Deployment done!"],
+                                ]
+                            );
+                            echo "</div>";
+                        }); ?>
+
+                        <?php printFigure('12.2', 'A failed step turns its marker and the progress bar red, and its detail line explains why.', function () {
+                            echo "<div style=\"width: 100%; max-width: 640px\">";
+                            echo new StatusTracker(
+                                title: "Deployment status",
+                                icon: "list-ul-solid",
+                                action: new Button("Retry", state: "negative"),
+                                steps: [
+                                    ["label" => "Release published", "status" => "done", "detail" => "2026-11-27, 11:47:27"],
+                                    ["label" => "Workflow: Image build", "status" => "error", "detail" => "Build failed after 2 min 14 s"],
+                                    ["label" => "Deployment done!"],
+                                ]
+                            );
+                            echo "</div>";
+                        }); ?>
+
+                        <?php printCode([
+                            'PHP' => '
+use EKO\DesignSystem\DesignSystem;
+use EKO\DesignSystem\Button;
+use EKO\DesignSystem\Addons\EkoData\EkoData;
+use EKO\DesignSystem\Addons\EkoData\StatusTracker;
+
+DesignSystem::enableAddon(EkoData::class);   // once, before DesignSystem::stylesheet()
+
+echo new StatusTracker(
+    title: "Deployment status",
+    description: "Track the deployment pipeline for this release.",
+    icon: "list-ul-solid",
+    action: new Button("Verify", state: "negative"),
+    steps: [
+        ["label" => "Release published", "status" => "done", "detail" => "2026-11-27, 11:47:27"],
+        ["label" => "status" => "error", "detail" => "Build failed after 2 min 14 s"],
+        ["label" => "Deployment done!"],
+    ]
+);
+                            ',
+                            'Jinja' => '
+{# In the app: EkoDesignSystem(app, addons = [EkoData]) #}
+{{ eko.eko_data.StatusTracker(
+    title = "Deployment status",
+    description = "Track the deployment pipeline for this release.",
+    icon = "list-ul-solid",
+    action = eko.Button("Verify", state = "negative"),
+    steps = [
+        {"label": "Release published", "status": "done", "detail": "2026-11-27, 11:47:27"},
+        {"label": "Workflow: Image build done", "status": "error", "detail": "Build failed after 2 min 14 s"},
+        {"label": "Deployment done!"},
+    ]
+) }}
+                            ',
+                        ]); ?>
+                    </div>
+                    <?php printStates([
+                        'Done' => 'A filled marker. Done steps fill the progress bar.',
+                        'In progress' => 'A spinning ring, and <code>aria-current="step"</code>. The spin stops when reduced motion is preferred.',
+                        'Pending' => 'An empty ring. The default when a step has no status.',
+                        'Failed' => 'A red marker with an exclamation mark; the progress bar turns red.',
+                        'Screen readers' => 'Each label is read after its state ("Done: Release published"), and the bar reports "3 of 6 steps done".',
+                    ], 'Step states'); ?>
                 </div>
             </div>
         </section>

@@ -1,0 +1,295 @@
+/*
+ * Status tracker (EKO Data addon): the steps of a process, such as a software deployment, and how far it has come.
+ *
+ *     <section class="ekodata-status-tracker [error]">
+ *         <div class="ekodata-status-tracker-header">
+ *             <span class="icon" style="--icon-url: url('…')" aria-hidden="true"></span>
+ *             <h2 class="ekodata-status-tracker-title">Deployment status</h2>
+ *             <div class="ekodata-status-tracker-action"><button class="btn negative">Verify</button></div>
+ *         </div>
+ *         <div class="ekodata-status-tracker-body">
+ *             <p class="ekodata-status-tracker-description">Track the deployment pipeline for this release.</p>
+ *             <ol class="ekodata-status-tracker-steps">
+ *                 <li class="ekodata-status-tracker-step done">
+ *                     <span class="ekodata-status-tracker-marker" aria-hidden="true"></span>
+ *                     <span class="ekodata-status-tracker-text">
+ *                         <span class="ekodata-status-tracker-label"><span class="ekodata-status-tracker-status">Done: </span>Release published</span>
+ *                         <span class="ekodata-status-tracker-detail">2026-11-27, 11:47:27</span>
+ *                     </span>
+ *                 </li>
+ *                 <li class="ekodata-status-tracker-step" aria-current="step">…</li>
+ *                 <li class="ekodata-status-tracker-step">…</li>
+ *             </ol>
+ *             <div class="ekodata-status-tracker-progress" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="3"
+ *                  style="--ekodata-status-tracker-done: 3; --ekodata-status-tracker-total: 6">
+ *                 <div class="ekodata-status-tracker-progress-bar"></div>
+ *             </div>
+ *         </div>
+ *     </section>
+ *
+ * The icon, description, action and step details are optional.
+ * Step states: `.done` (filled marker), `aria-current="step"` (in progress, spinning ring), no class (pending, empty ring)
+ * and `.error` (failed, filled marker with "!"). Each step also names its state in a visually hidden `.ekodata-status-tracker-status`,
+ * so the state never depends on colour alone. A tracker with a failed step gets `.error`, which colours the progress bar.
+ * The progress bar's width comes from the done and total counts on `.ekodata-status-tracker-progress`.
+ */
+
+
+/* Base */
+.ekodata-status-tracker {
+    /* Tokens: card */
+    --ekodata-status-tracker-bg: var(--color-surface);
+    --ekodata-status-tracker-border-width: var(--border-width-thin);
+    --ekodata-status-tracker-border-color: var(--color-border);
+    --ekodata-status-tracker-border-radius: var(--radius-large);
+
+    /* Tokens: header */
+    --ekodata-status-tracker-header-padding-x: var(--space-xlarge);
+    --ekodata-status-tracker-header-padding-y: var(--space-medium);
+    --ekodata-status-tracker-header-gap: var(--space-medium);
+    --ekodata-status-tracker-header-bg: var(--color-surface-raised);
+    --ekodata-status-tracker-header-border-color: var(--color-border);
+    --ekodata-status-tracker-icon-size: 24px;
+    --ekodata-status-tracker-title-font-size: var(--font-size-xlarge);
+    --ekodata-status-tracker-title-font-weight: var(--font-weight-bold);
+    --ekodata-status-tracker-title-line-height: var(--line-height-heading);
+    --ekodata-status-tracker-title-letter-spacing: var(--letter-spacing-heading);
+    --ekodata-status-tracker-title-color: var(--color-text-brand);
+
+    /* Tokens: action (a small button in the header) */
+    --ekodata-status-tracker-action-height: 32px;
+    --ekodata-status-tracker-action-padding-x: var(--space-medium);
+    --ekodata-status-tracker-action-font-size: var(--font-size-medium);
+    --ekodata-status-tracker-action-font-weight: var(--font-weight-bold);
+
+    /* Tokens: body and description */
+    --ekodata-status-tracker-body-padding: var(--space-xlarge);
+    --ekodata-status-tracker-body-gap: var(--space-xlarge);
+    --ekodata-status-tracker-description-font-size: var(--font-size-small);
+    --ekodata-status-tracker-description-color: var(--color-text);
+
+    /* Tokens: steps panel */
+    --ekodata-status-tracker-steps-padding: var(--space-2xlarge);
+    --ekodata-status-tracker-steps-gap: var(--space-2xlarge);
+    --ekodata-status-tracker-steps-bg: var(--color-surface-raised);
+    --ekodata-status-tracker-steps-border-color: var(--color-border);
+    --ekodata-status-tracker-steps-border-radius: var(--radius-large);
+
+    /* Tokens: steps */
+    --ekodata-status-tracker-step-gap: var(--space-large);
+    --ekodata-status-tracker-label-font-size: var(--font-size-default);
+    --ekodata-status-tracker-label-color: var(--color-text-brand);
+    --ekodata-status-tracker-label-line-height: var(--line-height-heading);
+    --ekodata-status-tracker-detail-font-size: var(--font-size-xsmall);
+    --ekodata-status-tracker-detail-color: var(--color-text-placeholder);
+    --ekodata-status-tracker-detail-gap: var(--space-2xsmall);
+
+    /* Tokens: markers, per state */
+    --ekodata-status-tracker-marker-size: var(--icon-size-medium);
+    --ekodata-status-tracker-marker-border-width: var(--border-width-thick);
+    --ekodata-status-tracker-marker-radius: var(--radius-round);
+    --ekodata-status-tracker-marker-bg: var(--color-surface);
+    --ekodata-status-tracker-marker-border-color: var(--color-border);
+    --ekodata-status-tracker-marker-done-color: var(--color-accent);
+    --ekodata-status-tracker-marker-active-color: var(--color-primary);
+    --ekodata-status-tracker-marker-error-color: var(--color-destructive);
+    --ekodata-status-tracker-marker-symbol-color: var(--color-text-on-color);
+    --ekodata-status-tracker-marker-symbol-font-size: var(--font-size-xsmall);
+    --ekodata-status-tracker-marker-symbol-font-weight: var(--font-weight-bold);
+    --ekodata-status-tracker-spin-duration: var(--duration-spin);
+
+    /* Tokens: progress bar */
+    --ekodata-status-tracker-progress-height: 8px;
+    --ekodata-status-tracker-progress-radius: var(--radius-small);
+    --ekodata-status-tracker-progress-track-color: var(--color-surface-raised);
+    --ekodata-status-tracker-progress-fill: linear-gradient(to right, var(--color-accent), var(--color-primary));
+    --ekodata-status-tracker-progress-error-fill: var(--color-destructive);
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--ekodata-status-tracker-bg);
+    border: var(--ekodata-status-tracker-border-width) solid var(--ekodata-status-tracker-border-color);
+    border-radius: var(--ekodata-status-tracker-border-radius);
+}
+
+
+/* Child elements: header with icon, title and action */
+.ekodata-status-tracker .ekodata-status-tracker-header {
+    display: flex;
+    align-items: center;
+    gap: var(--ekodata-status-tracker-header-gap);
+    padding: var(--ekodata-status-tracker-header-padding-y) var(--ekodata-status-tracker-header-padding-x);
+    color: var(--ekodata-status-tracker-title-color);
+    background-color: var(--ekodata-status-tracker-header-bg);
+    border-bottom: var(--ekodata-status-tracker-border-width) solid var(--ekodata-status-tracker-header-border-color);
+}
+
+.ekodata-status-tracker .icon {
+    --icon-width: var(--ekodata-status-tracker-icon-size);
+    --icon-height: var(--ekodata-status-tracker-icon-size);
+    flex-shrink: 0;
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-title {
+    margin: 0;
+    font-size: var(--ekodata-status-tracker-title-font-size);
+    font-weight: var(--ekodata-status-tracker-title-font-weight);
+    line-height: var(--ekodata-status-tracker-title-line-height);
+    letter-spacing: var(--ekodata-status-tracker-title-letter-spacing);
+    color: var(--ekodata-status-tracker-title-color);
+}
+
+/* The action sits on the right. A core button in it is made smaller through its own tokens */
+.ekodata-status-tracker .ekodata-status-tracker-action {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-action .btn {
+    --button-height: var(--ekodata-status-tracker-action-height);
+    --button-padding-x: var(--ekodata-status-tracker-action-padding-x);
+    --button-font-size: var(--ekodata-status-tracker-action-font-size);
+    --button-font-weight: var(--ekodata-status-tracker-action-font-weight);
+}
+
+/* Child elements: body and description */
+.ekodata-status-tracker .ekodata-status-tracker-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ekodata-status-tracker-body-gap);
+    padding: var(--ekodata-status-tracker-body-padding);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-description {
+    margin: 0;
+    font-size: var(--ekodata-status-tracker-description-font-size);
+    color: var(--ekodata-status-tracker-description-color);
+}
+
+/* Child elements: steps panel */
+.ekodata-status-tracker .ekodata-status-tracker-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ekodata-status-tracker-steps-gap);
+    margin: 0;
+    padding: var(--ekodata-status-tracker-steps-padding);
+    list-style: none;
+    background-color: var(--ekodata-status-tracker-steps-bg);
+    border: var(--ekodata-status-tracker-border-width) solid var(--ekodata-status-tracker-steps-border-color);
+    border-radius: var(--ekodata-status-tracker-steps-border-radius);
+}
+
+/* Child elements: a step. The marker sits centred next to the label and detail */
+.ekodata-status-tracker .ekodata-status-tracker-step {
+    display: flex;
+    align-items: center;
+    gap: var(--ekodata-status-tracker-step-gap);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-marker {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ekodata-status-tracker-marker-size);
+    height: var(--ekodata-status-tracker-marker-size);
+    background-color: var(--ekodata-status-tracker-marker-bg);
+    border: var(--ekodata-status-tracker-marker-border-width) solid var(--ekodata-status-tracker-marker-border-color);
+    border-radius: var(--ekodata-status-tracker-marker-radius);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ekodata-status-tracker-detail-gap);
+    min-width: 0;
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-label {
+    font-size: var(--ekodata-status-tracker-label-font-size);
+    line-height: var(--ekodata-status-tracker-label-line-height);
+    color: var(--ekodata-status-tracker-label-color);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-detail {
+    font-size: var(--ekodata-status-tracker-detail-font-size);
+    color: var(--ekodata-status-tracker-detail-color);
+}
+
+/* The state in words, for screen readers only */
+.ekodata-status-tracker .ekodata-status-tracker-status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Child elements: progress bar */
+.ekodata-status-tracker .ekodata-status-tracker-progress {
+    height: var(--ekodata-status-tracker-progress-height);
+    overflow: hidden;
+    background-color: var(--ekodata-status-tracker-progress-track-color);
+    border-radius: var(--ekodata-status-tracker-progress-radius);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-progress-bar {
+    width: calc(var(--ekodata-status-tracker-done, 0) / var(--ekodata-status-tracker-total, 1) * 100%);
+    height: 100%;
+    background: var(--ekodata-status-tracker-progress-fill);
+    border-radius: inherit;
+}
+
+
+/* States: done */
+.ekodata-status-tracker .ekodata-status-tracker-step.done {
+    --ekodata-status-tracker-marker-bg: var(--ekodata-status-tracker-marker-done-color);
+    --ekodata-status-tracker-marker-border-color: var(--ekodata-status-tracker-marker-done-color);
+}
+
+/* States: in progress (the current step), a spinning ring */
+.ekodata-status-tracker .ekodata-status-tracker-step[aria-current="step"] .ekodata-status-tracker-marker {
+    border-left-color: var(--ekodata-status-tracker-marker-active-color);
+    border-bottom-color: var(--ekodata-status-tracker-marker-active-color);
+    animation: ekodata-status-tracker-spin var(--ekodata-status-tracker-spin-duration) linear infinite;
+}
+
+/* States: error (failed step), a filled marker with an exclamation mark */
+.ekodata-status-tracker .ekodata-status-tracker-step.error {
+    --ekodata-status-tracker-marker-bg: var(--ekodata-status-tracker-marker-error-color);
+    --ekodata-status-tracker-marker-border-color: var(--ekodata-status-tracker-marker-error-color);
+}
+
+.ekodata-status-tracker .ekodata-status-tracker-step.error .ekodata-status-tracker-marker::after {
+    content: "!";
+    font-size: var(--ekodata-status-tracker-marker-symbol-font-size);
+    font-weight: var(--ekodata-status-tracker-marker-symbol-font-weight);
+    line-height: 1;
+    color: var(--ekodata-status-tracker-marker-symbol-color);
+}
+
+/* States: a tracker with a failed step colours its progress bar */
+.ekodata-status-tracker.error {
+    --ekodata-status-tracker-progress-fill: var(--ekodata-status-tracker-progress-error-fill);
+}
+
+
+/* Animations and media queries */
+@keyframes ekodata-status-tracker-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ekodata-status-tracker .ekodata-status-tracker-step[aria-current="step"] .ekodata-status-tracker-marker {
+        animation: none;
+    }
+}

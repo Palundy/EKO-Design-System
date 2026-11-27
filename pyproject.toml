@@ -41,6 +41,7 @@ packages = ["python/eko_design_system"]
 "assets/js" = "eko_design_system/static/assets/js"
 "assets/fonts" = "eko_design_system/static/assets/fonts"
 "assets/icons" = "eko_design_system/static/assets/icons"
+"assets/addons" = "eko_design_system/static/assets/addons"
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -49,6 +50,7 @@ include = [
     "assets/js",
     "assets/fonts",
     "assets/icons",
+    "assets/addons",
     "README.md",
     "pyproject.toml",
 ]

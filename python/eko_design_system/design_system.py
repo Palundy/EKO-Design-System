@@ -1,6 +1,8 @@
 import re
 from pathlib import Path
 
+from eko_design_system.addon import Addon
+
 
 class DesignSystem:
     """
@@ -24,23 +26,37 @@ class DesignSystem:
     </head>
     ```
 
+    Addons (application-specific components, see `Addon`) are switched on here too, before the page head is rendered.
+    `stylesheet()` and `scripts()` then also render the tags of every enabled addon:
+    ```python
+    from eko_design_system.addons.eko_data import EkoData
+
+    DesignSystem.enable_addon(EkoData)
+    ```
+
     The Python counterpart of the PHP `EKO\\DesignSystem\\DesignSystem`, with the same URLs and checks.
     """
 
 
-    _ICON_FOLDERS: tuple[Path, ...] = (
-        Path(__file__).resolve().parent / "static" / "assets" / "icons",
-        Path(__file__).resolve().parents[2] / "assets" / "icons",
+    _PACKAGE_ROOTS: tuple[Path, ...] = (
+        Path(__file__).resolve().parent / "static",
+        Path(__file__).resolve().parents[2],
     )
     """
-    The folders that may hold the bundled icons on disk, used to check icon names: the copy inside an installed
-    package first, then the repository's own `assets/icons/` (when running from a checkout).
+    The folders that may hold `assets/` on disk, used to check that icons exist: the copy inside an installed
+    package first, then the repository root (when running from a checkout).
     """
 
     _ICON_NAME_PATTERN: re.Pattern = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
     """
     The pattern of an icon name (e.g., "envelope-outline"): lowercase letters and digits, separated by single hyphens.
-    Icon arguments that do not match it are treated as URLs.
+    Icon arguments that match neither this nor `_ADDON_ICON_NAME_PATTERN` are treated as URLs.
+    """
+
+    _ADDON_ICON_NAME_PATTERN: re.Pattern = re.compile(r"^([a-z0-9]+(-[a-z0-9]+)*):([a-z0-9]+(-[a-z0-9]+)*)$")
+    """
+    The pattern of an addon's icon name: the addon's name, a colon and the icon name (e.g., "eko-data:gauge-outline").
+    Group 1 is the addon, group 3 the icon.
     """
 
     _ABSOLUTE_URL_PATTERN: re.Pattern = re.compile(r"^([a-z][a-z0-9+.-]*:)?//", re.IGNORECASE)
@@ -49,6 +65,9 @@ class DesignSystem:
 
     _base_url: str = "/"
     """The URL the design system's folder is served from. It always ends with a slash."""
+
+    _addons: dict[str, type[Addon]] = {}
+    """The enabled addons, as name: descriptor class, in the order they were enabled."""
 
 
     @staticmethod
@@ -106,12 +125,47 @@ class DesignSystem:
 
 
     @staticmethod
-    def icon(name: str)-> str:
+    def enable_addon(addon: type[Addon])-> None:
         """
-        Build the URL of a bundled icon.
+        Switch an addon on: `stylesheet()` and `scripts()` then also render its tags.
+        Enabling the same addon twice has no further effect.
 
         ### Parameters
-        - name (`str`): The icon's file name without `.svg` (e.g., "envelope-outline"). See `assets/icons/` for the available icons.
+        - addon (`type[Addon]`): The addon's descriptor class, a subclass of `Addon` (e.g., `EkoData`).
+
+        ### Returns
+        - `None`
+
+        ### Raises
+        - `ValueError`: If `addon` is not a subclass of `Addon` or has no valid `NAME`.
+        """
+        if not isinstance(addon, type) or not issubclass(addon, Addon) or addon is Addon:
+            raise ValueError(f"Not a design system addon: {getattr(addon, '__name__', type(addon).__name__)}")
+        if not DesignSystem._ICON_NAME_PATTERN.match(str(addon.NAME)):
+            raise ValueError(f"Invalid addon name: {addon.NAME}")
+        DesignSystem._addons[addon.NAME] = addon
+
+
+    @staticmethod
+    def get_addons()-> list[type[Addon]]:
+        """
+        Return the enabled addons.
+
+        ### Returns
+        - `list[type[Addon]]`: The descriptor classes, in the order they were enabled.
+        """
+        return list(DesignSystem._addons.values())
+
+
+    @staticmethod
+    def icon(name: str)-> str:
+        """
+        Build the URL of a bundled icon: a core icon (e.g., "envelope-outline", from `assets/icons/`)
+        or an addon's icon, prefixed with the addon's name (e.g., "eko-data:gauge-outline", from `assets/addons/eko-data/icons/`).
+        An addon's icons can be used without enabling the addon.
+
+        ### Parameters
+        - name (`str`): The icon's file name without `.svg`, with an addon prefix for an addon's icon.
 
         ### Returns
         - `str`: The icon's URL (e.g., "/assets/icons/envelope-outline.svg"). It is not HTML-escaped.
@@ -119,11 +173,17 @@ class DesignSystem:
         ### Raises
         - `ValueError`: If `name` is not a valid icon name or the icon does not exist.
         """
-        if not DesignSystem._ICON_NAME_PATTERN.match(str(name)):
+        name = str(name)
+        addon_match = DesignSystem._ADDON_ICON_NAME_PATTERN.match(name)
+        if addon_match:
+            path = f"assets/addons/{addon_match.group(1)}/icons/{addon_match.group(3)}.svg"
+        elif DesignSystem._ICON_NAME_PATTERN.match(name):
+            path = f"assets/icons/{name}.svg"
+        else:
             raise ValueError(f"Invalid icon name: {name}")
-        if not any((folder / f"{name}.svg").is_file() for folder in DesignSystem._ICON_FOLDERS):
+        if not any((root / path).is_file() for root in DesignSystem._PACKAGE_ROOTS):
             raise ValueError(f"Unknown icon: {name}")
-        return DesignSystem.url(f"assets/icons/{name}.svg")
+        return DesignSystem.url(path)
 
 
     @staticmethod
@@ -131,8 +191,8 @@ class DesignSystem:
         """
         Turn a component's icon argument into a URL.
 
-        An icon name (e.g., "envelope-outline") becomes the bundled icon's URL, anything else is returned unchanged,
-        so components accept both names and URLs of your own icons (e.g., "/images/my-icon.svg").
+        An icon name (e.g., "envelope-outline" or "eko-data:gauge-outline") becomes the bundled icon's URL,
+        anything else is returned unchanged, so components accept both names and URLs of your own icons (e.g., "/images/my-icon.svg").
 
         ### Parameters
         - icon (`str`): An icon name or a URL.
@@ -143,7 +203,7 @@ class DesignSystem:
         ### Raises
         - `ValueError`: If `icon` looks like an icon name but the icon does not exist.
         """
-        if DesignSystem._ICON_NAME_PATTERN.match(str(icon)):
+        if DesignSystem._ICON_NAME_PATTERN.match(str(icon)) or DesignSystem._ADDON_ICON_NAME_PATTERN.match(str(icon)):
             return DesignSystem.icon(icon)
             # Raises a ValueError on an unknown icon
         return str(icon)
@@ -152,23 +212,38 @@ class DesignSystem:
     @staticmethod
     def stylesheet()-> str:
         """
-        Build the `<link>` tag for the design system's stylesheet.
+        Build the `<link>` tags for the design system's stylesheet, followed by those of every enabled addon.
 
         ### Returns
-        - `str`: The tag's HTML (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
+        - `str`: The tags' HTML, one per line (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
         """
-        return "<link rel=\"stylesheet\" href=\"" + DesignSystem._escape(DesignSystem.url("assets/css/main.css")) + "\">"
+        paths = ["assets/css/main.css"]
+        for addon in DesignSystem._addons.values():
+            paths += [addon.path(file) for file in addon.STYLESHEETS]
+
+        return "\n".join(
+            "<link rel=\"stylesheet\" href=\"" + DesignSystem._escape(DesignSystem.url(path)) + "\">"
+            for path in paths
+        )
 
 
     @staticmethod
     def scripts()-> str:
         """
-        Build the `<script>` tags the components need (currently `assets/js/dropdowns.js`, for `fields.Dropdown`).
+        Build the `<script>` tags the components need (`assets/js/dropdowns.js`, for `fields.Dropdown`),
+        followed by those of every enabled addon.
 
         ### Returns
-        - `str`: The tags' HTML.
+        - `str`: The tags' HTML, one per line.
         """
-        return "<script src=\"" + DesignSystem._escape(DesignSystem.url("assets/js/dropdowns.js")) + "\" defer></script>"
+        paths = ["assets/js/dropdowns.js"]
+        for addon in DesignSystem._addons.values():
+            paths += [addon.path(file) for file in addon.SCRIPTS]
+
+        return "\n".join(
+            "<script src=\"" + DesignSystem._escape(DesignSystem.url(path)) + "\" defer></script>"
+            for path in paths
+        )
 
 
     @staticmethod

@@ -4,8 +4,11 @@
  * Everything is placed in a cascade layer. Layers listed later win over earlier ones,
  * whatever the selector specificity. CSS that an application writes outside a layer
  * wins over all of them, so apps can override the design system without `!important`.
+ *
+ * The `addons` layer is empty here: each addon (assets/addons/<name>/) has its own stylesheet, linked after this one,
+ * that imports into a sub-layer of it (e.g. `addons.eko-data`). Addons win over the core components, utilities win over addons.
  */
-@layer tokens, base, components, utilities;
+@layer tokens, base, components, addons, utilities;
 
 /* Tokens: brand values first, then the semantic roles that point at them */
 @import url("tokens/brand.css") layer(tokens);

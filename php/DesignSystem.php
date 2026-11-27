@@ -31,19 +31,33 @@ use InvalidArgumentException;
  * echo new Button("Send", icon: "envelope-outline");
  * ```
  *
+ * Addons (application-specific components, see `Addon`) are switched on here too, before the page head is printed.
+ * `stylesheet()` and `scripts()` then also print the tags of every enabled addon:
+ * ```php
+ * use EKO\DesignSystem\Addons\EkoData\EkoData;
+ *
+ * DesignSystem::enableAddon(EkoData::class);
+ * ```
+ *
  * Composer's autoloader loads this class, and the components use it through the same namespace.
  */
 class DesignSystem {
 
 
-    /** The folder that holds the bundled icons on disk, used to check icon names. */
-    private const ICON_FOLDER = __DIR__ . '/../assets/icons';
+    /** The package root on disk (the folder that contains `assets/`), used to check that icons exist. */
+    private const PACKAGE_ROOT = __DIR__ . '/..';
 
     /**
      * The pattern of an icon name (e.g., "envelope-outline"): lowercase letters and digits, separated by single hyphens.
-     * Icon arguments that do not match it are treated as URLs.
+     * Icon arguments that match neither this nor `ADDON_ICON_NAME_PATTERN` are treated as URLs.
      */
     private const ICON_NAME_PATTERN = '/^[a-z0-9]+(-[a-z0-9]+)*$/';
+
+    /**
+     * The pattern of an addon's icon name: the addon's name, a colon and the icon name (e.g., "eko-data:gauge-outline").
+     * Group 1 is the addon, group 3 the icon.
+     */
+    private const ADDON_ICON_NAME_PATTERN = '/^([a-z0-9]+(-[a-z0-9]+)*):([a-z0-9]+(-[a-z0-9]+)*)$/';
 
     /** The pattern of a full URL with a scheme (e.g., "https://") or a protocol-relative URL ("//"). */
     private const ABSOLUTE_URL_PATTERN = '#^([a-z][a-z0-9+.-]*:)?//#i';
@@ -51,6 +65,9 @@ class DesignSystem {
 
     /** The URL the design system's folder is served from. It always ends with a slash. */
     private static $_baseUrl = '/';
+
+    /** The enabled addons, as name => descriptor class name, in the order they were enabled. */
+    private static $_addons = [];
 
 
     /**
@@ -106,10 +123,43 @@ class DesignSystem {
 
 
     /**
-     * Builds the URL of a bundled icon.
+     * Switches an addon on: `stylesheet()` and `scripts()` then also print its tags.
+     * Enabling the same addon twice has no further effect.
+     *
+     * @param string $addon
+     * The addon's descriptor class, a subclass of `Addon` (e.g., `EkoData::class`).
+     *
+     * @throws InvalidArgumentException if `$addon` is not a subclass of `Addon` or has no valid `NAME`.
+     */
+    public static function enableAddon($addon) {
+        if (!is_string($addon) || !is_subclass_of($addon, Addon::class)) {
+            throw new InvalidArgumentException("Not a design system addon: " . (is_string($addon) ? $addon : gettype($addon)));
+        }
+        if (!preg_match(self::ICON_NAME_PATTERN, (string) $addon::NAME)) {
+            throw new InvalidArgumentException("Invalid addon name: " . $addon::NAME);
+        }
+        self::$_addons[$addon::NAME] = $addon;
+    }
+
+
+    /**
+     * Returns the enabled addons.
+     *
+     * @return array
+     * The descriptor class names, in the order they were enabled.
+     */
+    public static function getAddons() {
+        return array_values(self::$_addons);
+    }
+
+
+    /**
+     * Builds the URL of a bundled icon: a core icon (e.g., "envelope-outline", from `assets/icons/`)
+     * or an addon's icon, prefixed with the addon's name (e.g., "eko-data:gauge-outline", from `assets/addons/eko-data/icons/`).
+     * An addon's icons can be used without enabling the addon.
      *
      * @param string $name
-     * The icon's file name without `.svg` (e.g., "envelope-outline"). See `assets/icons/` for the available icons.
+     * The icon's file name without `.svg`, with an addon prefix for an addon's icon.
      *
      * @return string
      * The icon's URL (e.g., "/assets/icons/envelope-outline.svg"). It is not HTML-escaped.
@@ -117,20 +167,25 @@ class DesignSystem {
      * @throws InvalidArgumentException if `$name` is not a valid icon name or the icon does not exist.
      */
     public static function icon($name) {
-        if (!preg_match(self::ICON_NAME_PATTERN, (string) $name)) {
+        $name = (string) $name;
+        if (preg_match(self::ADDON_ICON_NAME_PATTERN, $name, $matches)) {
+            $path = "assets/addons/{$matches[1]}/icons/{$matches[3]}.svg";
+        } elseif (preg_match(self::ICON_NAME_PATTERN, $name)) {
+            $path = "assets/icons/$name.svg";
+        } else {
             throw new InvalidArgumentException("Invalid icon name: $name");
         }
-        if (!is_file(self::ICON_FOLDER . "/$name.svg")) {
+        if (!is_file(self::PACKAGE_ROOT . "/$path")) {
             throw new InvalidArgumentException("Unknown icon: $name");
         }
-        return self::url("assets/icons/$name.svg");
+        return self::url($path);
     }
 
 
     /**
      * Turns a component's icon argument into a URL.
-     * An icon name (e.g., "envelope-outline") becomes the bundled icon's URL, anything else is returned unchanged,
-     * so components accept both names and URLs of your own icons (e.g., "/images/my-icon.svg").
+     * An icon name (e.g., "envelope-outline" or "eko-data:gauge-outline") becomes the bundled icon's URL,
+     * anything else is returned unchanged, so components accept both names and URLs of your own icons (e.g., "/images/my-icon.svg").
      *
      * @param string $icon
      * An icon name or a URL.
@@ -141,7 +196,7 @@ class DesignSystem {
      * @throws InvalidArgumentException if `$icon` looks like an icon name but the icon does not exist.
      */
     public static function resolveIcon($icon) {
-        if (preg_match(self::ICON_NAME_PATTERN, (string) $icon)) {
+        if (preg_match(self::ICON_NAME_PATTERN, (string) $icon) || preg_match(self::ADDON_ICON_NAME_PATTERN, (string) $icon)) {
             return self::icon($icon);
         }
         return (string) $icon;
@@ -149,24 +204,47 @@ class DesignSystem {
 
 
     /**
-     * Builds the `<link>` tag for the design system's stylesheet.
+     * Builds the `<link>` tags for the design system's stylesheet, followed by those of every enabled addon.
      *
      * @return string
-     * The tag's HTML (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
+     * The tags' HTML, one per line (e.g., `<link rel="stylesheet" href="/assets/css/main.css">`).
      */
     public static function stylesheet() {
-        return '<link rel="stylesheet" href="' . self::escape(self::url('assets/css/main.css')) . '">';
+        $paths = ['assets/css/main.css'];
+        foreach (self::$_addons as $addon) {
+            foreach ($addon::STYLESHEETS as $file) {
+                $paths[] = $addon::path($file);
+            }
+        }
+
+        $tags = [];
+        foreach ($paths as $path) {
+            $tags[] = '<link rel="stylesheet" href="' . self::escape(self::url($path)) . '">';
+        }
+        return implode("\n", $tags);
     }
 
 
     /**
-     * Builds the `<script>` tags the components need (currently `assets/js/dropdowns.js`, for `Fields\Dropdown`).
+     * Builds the `<script>` tags the components need (`assets/js/dropdowns.js`, for `Fields\Dropdown`),
+     * followed by those of every enabled addon.
      *
      * @return string
-     * The tags' HTML.
+     * The tags' HTML, one per line.
      */
     public static function scripts() {
-        return '<script src="' . self::escape(self::url('assets/js/dropdowns.js')) . '" defer></script>';
+        $paths = ['assets/js/dropdowns.js'];
+        foreach (self::$_addons as $addon) {
+            foreach ($addon::SCRIPTS as $file) {
+                $paths[] = $addon::path($file);
+            }
+        }
+
+        $tags = [];
+        foreach ($paths as $path) {
+            $tags[] = '<script src="' . self::escape(self::url($path)) . '" defer></script>';
+        }
+        return implode("\n", $tags);
     }
 
 

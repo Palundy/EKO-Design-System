@@ -8,7 +8,7 @@ use RuntimeException;
 
 
 /**
- * `AssetPublisher` copies the design system's static files (`assets/css/`, `assets/js/`, `assets/fonts/` and `assets/icons/`)
+ * `AssetPublisher` copies the design system's static files (`assets/css/`, `assets/js/`, `assets/fonts/`, `assets/icons/` and `assets/addons/`)
  * from the Composer package into a folder of the app that the web server serves, such as `public/design-system`.
  * The files are copied, not linked, so the app also works offline and on Windows.
  *
@@ -42,12 +42,16 @@ use RuntimeException;
 class AssetPublisher {
 
 
-    /** The folders that are published, relative to the package root. The demo images in assets/images are left out. */
+    /**
+     * The folders that are published, relative to the package root. The demo images in assets/images are left out.
+     * Every addon's files (assets/addons/) are published, enabled or not, so switching an addon on needs no new publish.
+     */
     public const FOLDERS = [
         'assets/css',
         'assets/js',
         'assets/fonts',
         'assets/icons',
+        'assets/addons',
     ];
 
 
