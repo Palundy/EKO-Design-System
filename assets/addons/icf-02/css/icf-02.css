@@ -1,0 +1,17 @@
+/*
+ * ICF-02 addon: the components that only the ICF-02 application needs. It contains imports only, never rules.
+ *
+ * Link it after the core stylesheet (assets/css/main.css), or let the PHP and Python helpers do it:
+ * `DesignSystem::enableAddon(Icf02::class)`, then `DesignSystem::stylesheet()` prints both links.
+ *
+ * Everything goes into the `addons.icf-02` sub-layer, so these components win over the core components,
+ * the core utilities still win over them, and an app's own unlayered CSS wins over everything.
+ * Class names and tokens use the `icf02-` prefix, so they cannot collide with the core or with other addons.
+ */
+
+/* The same layer order as main.css, so the order holds even if this file happens to load first */
+@layer tokens, base, components, addons, utilities;
+
+/* Components: one file per component, each starting with its own tokens */
+@import url("components/sidebar.css") layer(addons.icf-02);
+@import url("components/pincode.css") layer(addons.icf-02);

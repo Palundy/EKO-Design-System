@@ -28,10 +28,22 @@ use EKO\DesignSystem\Navigation\NavItem;
 
 use EKO\DesignSystem\Addons\EkoData\EkoData;
 use EKO\DesignSystem\Addons\EkoData\StatusTracker;
+use EKO\DesignSystem\Addons\Icf02\Icf02;
+use EKO\DesignSystem\Addons\Icf02\Pincode;
+use EKO\DesignSystem\Addons\Icf02\Sidebar;
 
 
 // The showcase shows every addon too, so their stylesheets are linked in the head
 DesignSystem::enableAddon(EkoData::class);
+DesignSystem::enableAddon(Icf02::class);
+
+
+/** The EKO logo for the ICF-02 sidebar example. The addon ships no logo (apps pass their own URL), so the showcase inlines one. */
+const SHOWCASE_LOGO = 'data:image/svg+xml,' . '%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 124.236 48"%3E%3Cg fill="%2300559e"%3E'
+    . '%3Cpath d="M464.97 270.236a24 24 0 1 0 24.032 24 23.906 23.906 0 0 0-24.032-24zm.032 35.88a11.88 11.88 0 1 1 11.881-11.88A11.88 11.88 0 0 1 465 306.116z" transform="translate(-364.766 -270.236)"/%3E'
+    . '%3Cpath d="M437.829 316.506h-6.213l-16.69-21.03-9.543 9.907v11.123h-4.957v-43.931h4.957v26.233l25.229-26.233h6.4l-18.688 19.384z" transform="translate(-359.441 -270.543)"/%3E'
+    . '%3Cpath d="M387.157 277.1h-28.945v15h22.68v4.519h-22.68v15.376h28.976v4.518h-33.934v-43.93h33.9z" transform="translate(-353.254 -270.543)"/%3E'
+    . '%3C/g%3E%3C/svg%3E';
 
 
 /**
@@ -59,6 +71,7 @@ const CHAPTERS = [
     'image-cards' => ['Image cards', 'Applications, industries and stories, led by a photo.'],
     'spec-table' => ['Spec table', 'The full specifications, readable at a glance.'],
     'eko-data' => ['EKO Data addon', 'Status trackers that follow a deployment step by step.'],
+    'icf-02' => ['ICF-02 addon', 'The calibration facility\'s main menu and its pincode sign-in.'],
 ];
 
 
@@ -1220,6 +1233,172 @@ echo new StatusTracker(
                 </div>
             </div>
         </section>
+
+
+        <!-- 13 ICF-02 addon -->
+        <section class="sc-chapter" id="icf-02">
+            <div class="sc-wrap">
+                <?php printChapterHead('icf-02', 'Addons',
+                    'The ICF-02 addon holds the components of the indoor calibration facility\'s web app. Its sidebar is the main menu:
+                    the logo, the menu in labelled groups with the current page highlighted, and the unit\'s details with a few icon actions.
+                    The pincode card signs an operator in, with a keypad that also follows the keyboard and a padlock that opens.
+                    Switch it on with <code>DesignSystem::enableAddon(Icf02::class)</code>; its classes and tokens start with <code>icf02-</code>.'); ?>
+                <div class="sc-chapter-body">
+                    <div class="sc-stack">
+                        <?php printFigure('13.1', 'The ICF-02 menu with "Calibrate" as the current page. Here it is 720px tall; in the app it fills the height of the window.', function () {
+                            echo new Sidebar(
+                                logo: SHOWCASE_LOGO,
+                                groups: [
+                                    "Work" => [
+                                        ["label" => "Home", "url" => "#icf-02", "icon" => "house-outline"],
+                                        ["label" => "Calibrate", "url" => "#icf-02", "icon" => "target-outline", "active" => true],
+                                        ["label" => "Calibration history", "url" => "#icf-02", "icon" => "history-outline"],
+                                        ["label" => "Orders", "url" => "#icf-02", "icon" => "clipboard-outline"],
+                                    ],
+                                    "People" => [
+                                        ["label" => "Contacts", "url" => "#icf-02", "icon" => "users-outline"],
+                                        ["label" => "Operators", "url" => "#icf-02", "icon" => "add-account-outline"],
+                                    ],
+                                    "Sensors" => [
+                                        ["label" => "Test sensors", "url" => "#icf-02", "icon" => "chip-outline"],
+                                        ["label" => "Reference sensors", "url" => "#icf-02", "icon" => "circle-layer-outline"],
+                                        ["label" => "Sensor models", "url" => "#icf-02", "icon" => "list-outline"],
+                                    ],
+                                    "System" => [
+                                        ["label" => "Settings", "url" => "#icf-02", "icon" => "setting-outline"],
+                                        ["label" => "Documentation", "url" => "#icf-02", "icon" => "book-outline"],
+                                    ],
+                                ],
+                                url: "#icf-02",
+                                footerTitle: "Unit 005",
+                                footerDetail: "v5.6.0",
+                                footerStatus: "Developer Mode",
+                                actions: [
+                                    ["label" => "Send feedback", "icon" => "feedback-outline"],
+                                    ["label" => "Shut down", "icon" => "power-button-outline", "url" => "#icf-02"],
+                                ],
+                                attributes: ["style" => "--icf02-sidebar-height: 720px"]
+                            );
+                        }); ?>
+
+                        <?php printCode([
+                            'PHP' => '
+use EKO\DesignSystem\DesignSystem;
+use EKO\DesignSystem\Addons\Icf02\Icf02;
+use EKO\DesignSystem\Addons\Icf02\Sidebar;
+
+DesignSystem::enableAddon(Icf02::class);   // once, before DesignSystem::stylesheet()
+
+echo new Sidebar(
+    logo: "/static/images/eko-logo.svg",
+    groups: [
+        "Work" => [
+            ["label" => "Home", "url" => "/", "icon" => "house-outline"],
+            ["label" => "Calibrate", "url" => "/calibrate", "icon" => "target-outline", "active" => true],
+        ],
+        "System" => [
+            ["label" => "Settings", "url" => "/settings", "icon" => "setting-outline"],
+        ],
+    ],
+    footerTitle: "Unit 005",
+    footerDetail: "v5.6.0",
+    footerStatus: "Developer Mode",
+    actions: [
+        ["label" => "Send feedback", "icon" => "feedback-outline", "attributes" => ["onclick" => "showFeedbackElement()"]],
+        ["label" => "Shut down", "icon" => "power-button-outline", "url" => "/power"],
+    ]
+);
+                            ',
+                            'Jinja' => '
+{# In the app: EkoDesignSystem(app, addons = [Icf02]) #}
+{{ eko.icf_02.Sidebar(
+    logo = url_for("static", filename = "images/eko-logo.svg"),
+    groups = {
+        "Work": [
+            {"label": "Home", "url": "/", "icon": "house-outline"},
+            {"label": "Calibrate", "url": "/calibrate", "icon": "target-outline", "active": True},
+        ],
+        "System": [
+            {"label": "Settings", "url": "/settings", "icon": "setting-outline"},
+        ],
+    },
+    footer_title = "Unit 005",
+    footer_detail = "v5.6.0",
+    footer_status = "Developer Mode",
+    actions = [
+        {"label": "Send feedback", "icon": "feedback-outline", "attributes": {"onclick": "showFeedbackElement()"}},
+        {"label": "Shut down", "icon": "power-button-outline", "url": "/power"},
+    ]
+) }}
+                            ',
+                        ]); ?>
+
+                        <?php printFigure('13.2', 'The pincode card. Try it: click the keys or type on your keyboard, then press Enter. <code>1234</code> unlocks it; any other pincode is rejected.', function () {
+                            echo new Pincode(
+                                title: "ICF-02 · Unit 005",
+                                logo: SHOWCASE_LOGO,
+                                link: "Change pincode",
+                                attributes: ["id" => "sc-pincode-demo"]
+                            );
+                        }, 'sc-stage-raised'); ?>
+
+                        <?php printFigure('13.3', 'The two answers: a wrong pincode shakes and turns red, a right one opens the shackle and turns green.', function () {
+                            echo new Pincode(title: "ICF-02 · Unit 005", state: "error");
+                            echo new Pincode(title: "ICF-02 · Unit 005", state: "unlocked", unlockedMessage: "Welcome back");
+                        }, 'sc-stage-raised'); ?>
+
+                        <?php printCode([
+                            'PHP' => '
+use EKO\DesignSystem\Addons\Icf02\Pincode;
+
+// DesignSystem::scripts() loads pincode.js once the ICF-02 addon is enabled
+echo new Pincode(
+    title: "ICF-02 · Unit 005",
+    logo: "/static/images/eko-logo.svg",
+    link: "Change pincode"
+);
+                            ',
+                            'Jinja' => '
+{{ eko.icf_02.Pincode(
+    title = "ICF-02 · Unit 005",
+    logo = url_for("static", filename = "images/eko-logo.svg"),
+    link = "Change pincode"
+) }}
+                            ',
+                            'JavaScript' => '
+// The app checks the pincode and answers with unlock() or reject()
+document.addEventListener("icf02-pincode-submit", async (event) => {
+    const response = await fetch("/api/system/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pincode: event.detail.pincode }),
+    });
+    const result = await response.json();
+    result.succes ? event.detail.unlock() : event.detail.reject();
+});
+
+// Fired when the unlock animation has finished
+document.addEventListener("icf02-pincode-unlocked", () => location.reload());
+                            ',
+                        ]); ?>
+                    </div>
+                    <?php printStates([
+                        'Current page' => 'The item with <code>"active" => true</code> gets <code>aria-current="page"</code>: a highlighted background, bold text and a bar on its left edge.',
+                        'Hover' => 'Links and footer actions darken slightly, with the same overlay as the buttons.',
+                        'Focus' => 'A visible outline on the logo link, every menu link and every action when reached with the keyboard.',
+                        'Groups' => 'A group label is shown above its links and names the list for screen readers. A group with a numeric key has no label.',
+                        'Footer' => 'Optional. The unit\'s details on the left, icon actions on the right; an action is a link with a <code>url</code>, otherwise a button.',
+                        'System state' => 'An optional last footer line (<code>footerStatus</code>), such as "Developer Mode" or "New Update Available", set off as a small bold label on a light tint.',
+                        'Layout' => 'The sidebar sticks to the top and is as tall as the window (<code>--icf02-sidebar-height</code>). Put it in the first column of the page.',
+                        'Pincode: pressed' => 'A key sinks in while the mouse holds it, or while its number key on the keyboard is held down.',
+                        'Pincode: checking' => 'After Enter, the dots pulse and the keys pause until the app calls <code>unlock()</code> or <code>reject()</code>.',
+                        'Pincode: error' => 'The lock and dots shake and turn red, and the message says the pincode was wrong. The next key starts over.',
+                        'Pincode: unlocked' => 'The shackle lifts and swings open, a ring pulses out, and the lock, dots and message turn green.',
+                        'Reduced motion' => 'No shaking, swinging or pulsing; the colours and the message still show every state.',
+                    ]); ?>
+                </div>
+            </div>
+        </section>
     </main>
 
 
@@ -1294,6 +1473,23 @@ echo new StatusTracker(
             }
             window.addEventListener('scroll', updateProgress, { passive: true });
             updateProgress();
+
+            // ICF-02 pincode demo (figure 13.2): 1234 unlocks it, any other pincode is rejected, as a server would answer.
+            // Once unlocked, the card locks again after a moment so it can be tried again
+            document.addEventListener('icf02-pincode-submit', function (event) {
+                setTimeout(function () {
+                    if (event.detail.pincode === '1234') {
+                        event.detail.unlock();
+                    } else {
+                        event.detail.reject();
+                    }
+                }, 600);
+            });
+            document.addEventListener('icf02-pincode-unlocked', function (event) {
+                if (event.target.id === 'sc-pincode-demo') {
+                    setTimeout(function () { event.target.icf02Pincode.reset(); }, 2000);
+                }
+            });
 
             // Code language tabs: choosing a language shows it in every code block and remembers it in this browser
             function showLanguage(language) {

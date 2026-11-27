@@ -252,6 +252,7 @@ Components that only one application needs live in an **addon**, next to the cor
 | Addon | Components | PHP | Python |
 |---|---|---|---|
 | EKO Data | Status tracker | `use EKO\DesignSystem\Addons\EkoData\StatusTracker;` | `from eko_design_system.addons.eko_data import StatusTracker` |
+| ICF-02 | Sidebar (main menu), pincode sign-in | `use EKO\DesignSystem\Addons\Icf02\Sidebar;`, `…\Pincode;` | `from eko_design_system.addons.icf_02 import Sidebar, Pincode` |
 
 Switch an addon on once, before the page head. `DesignSystem::stylesheet()` and `scripts()` then also print the addon's tags:
 

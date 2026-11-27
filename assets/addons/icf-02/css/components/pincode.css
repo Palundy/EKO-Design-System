@@ -1,0 +1,436 @@
+/*
+ * Pincode (ICF-02 addon): the sign-in card with a padlock, a dot per digit and a numeric keypad.
+ * assets/addons/icf-02/js/pincode.js makes it work: keypad clicks and the keyboard's number keys (also the numpad)
+ * enter digits, Backspace deletes one, Escape clears and Enter submits.
+ *
+ *     <div class="icf02-pincode [error|unlocked]" role="group" aria-label="Sign in" data-length="4"
+ *          data-message="Enter your 4-digit pincode" data-error-message="Wrong pincode. Try again." data-unlocked-message="Unlocked">
+ *         <img class="icf02-pincode-logo" src="/static/images/eko-logo.svg" alt="EKO">
+ *         <span class="icf02-pincode-title">ICF-02 · Unit 005</span>
+ *         <span class="icf02-pincode-lock" aria-hidden="true">
+ *             <svg viewBox="0 0 48 48"><path class="icf02-pincode-shackle" d="…"/><rect class="icf02-pincode-body" …/><path class="icf02-pincode-keyhole" d="…"/></svg>
+ *         </span>
+ *         <div class="icf02-pincode-dots" role="img" aria-label="0 of 4 digits entered">
+ *             <span class="icf02-pincode-dot" style="--icf02-pincode-dot-index: 0"></span>…
+ *         </div>
+ *         <p class="icf02-pincode-message" role="status">Enter your 4-digit pincode</p>
+ *         <div class="icf02-pincode-keys">
+ *             <button class="icf02-pincode-key" type="button" data-key="1">1</button> … (1–9)
+ *             <button class="icf02-pincode-key icf02-pincode-key-delete" type="button" data-key="delete" aria-label="Delete"><span class="icon" …></span></button>
+ *             <button class="icf02-pincode-key" type="button" data-key="0">0</button>
+ *             <button class="icf02-pincode-key icf02-pincode-key-submit" type="button" data-key="enter">Sign in</button>
+ *         </div>
+ *         <a class="link icf02-pincode-link" href="…">Change pincode</a>
+ *     </div>
+ *
+ * The logo and the link are optional. A dot is `.filled` for each digit entered.
+ * States:
+ * - pressed: a key looks pushed in while the mouse holds it (`:active`) or its number key is held down (`.pressed`).
+ * - `.checking`: the pincode was submitted and the app is checking it; the dots pulse and the keys are disabled.
+ * - `.error`: the pincode was wrong; the lock and dots shake and turn red, and the message says so. Typing again clears it.
+ * - `.unlocked`: the pincode was right; the shackle lifts and swings open, the lock and dots turn green and a ring pulses out.
+ * Every animation is switched off when reduced motion is preferred; the colours and the message still show the state.
+ */
+
+
+/* Base */
+.icf02-pincode {
+    /* Tokens: card */
+    --icf02-pincode-width: 380px;
+    --icf02-pincode-padding-x: var(--space-2xlarge);
+    --icf02-pincode-padding-top: var(--space-3xlarge);
+    --icf02-pincode-padding-bottom: var(--space-2xlarge);
+    --icf02-pincode-gap: var(--space-large);
+    --icf02-pincode-bg: var(--color-surface);
+    --icf02-pincode-border-width: var(--border-width-thin);
+    --icf02-pincode-border-color: var(--color-border);
+    --icf02-pincode-border-radius: var(--radius-large);
+    --icf02-pincode-shadow: var(--shadow-medium);
+
+    /* Tokens: logo, title and message */
+    --icf02-pincode-logo-height: 40px;
+    --icf02-pincode-title-font-size: var(--font-size-xlarge);
+    --icf02-pincode-title-font-weight: var(--font-weight-bold);
+    --icf02-pincode-title-color: var(--color-text-brand);
+    --icf02-pincode-message-font-size: var(--font-size-small);
+    --icf02-pincode-message-color: var(--color-text-placeholder);
+    --icf02-pincode-message-min-height: 1.4em;
+
+    /* Tokens: lock */
+    --icf02-pincode-lock-size: 64px;
+    --icf02-pincode-lock-icon-size: 36px;
+    --icf02-pincode-lock-color: var(--color-text-brand);
+    --icf02-pincode-lock-bg: var(--color-surface-highlight);
+    --icf02-pincode-lock-border-radius: var(--radius-round);
+
+    /* Tokens: dots */
+    --icf02-pincode-dots-gap: 18px;
+    --icf02-pincode-dot-size: 16px;
+    --icf02-pincode-dot-border-width: var(--border-width-thick);
+    --icf02-pincode-dot-color: var(--color-primary);
+    --icf02-pincode-dot-border-radius: var(--radius-round);
+
+    /* Tokens: keypad */
+    --icf02-pincode-keys-gap: var(--space-medium);
+    --icf02-pincode-key-width: 88px;
+    --icf02-pincode-key-height: 64px;
+    --icf02-pincode-key-font-size: var(--font-size-2xlarge);
+    --icf02-pincode-key-font-weight: var(--font-weight-regular);
+    --icf02-pincode-key-color: var(--color-text-brand);
+    --icf02-pincode-key-bg: var(--color-surface);
+    --icf02-pincode-key-border-color: var(--color-border);
+    --icf02-pincode-key-border-radius: var(--radius-large);
+    --icf02-pincode-key-icon-size: 26px;
+    --icf02-pincode-key-bg-hover: color-mix(
+        in srgb,
+        var(--icf02-pincode-key-bg),
+        var(--state-overlay-color) calc(var(--state-hover-overlay) / 2)
+    );
+    --icf02-pincode-key-bg-pressed: color-mix(
+        in srgb,
+        var(--icf02-pincode-key-bg),
+        var(--state-overlay-color) var(--state-hover-overlay)
+    );
+    --icf02-pincode-key-pressed-offset: var(--space-3xsmall);
+    --icf02-pincode-key-pressed-scale: 0.96;
+    --icf02-pincode-key-pressed-shadow: inset 0 var(--space-3xsmall) var(--space-xsmall) color-mix(in srgb, var(--state-overlay-color) 18%, transparent);
+    --icf02-pincode-key-function-font-size: var(--font-size-small);
+    --icf02-pincode-key-function-bg: var(--color-surface-raised);
+    --icf02-pincode-key-submit-font-size: var(--font-size-medium);
+    --icf02-pincode-key-submit-font-weight: var(--font-weight-bold);
+    --icf02-pincode-key-submit-color: var(--color-text-on-color);
+    --icf02-pincode-key-submit-bg: var(--color-primary);
+    --icf02-pincode-key-submit-bg-pressed: color-mix(
+        in srgb,
+        var(--icf02-pincode-key-submit-bg),
+        var(--state-overlay-color) var(--state-active-overlay)
+    );
+    --icf02-pincode-key-disabled-opacity: 0.5;
+    --icf02-pincode-focus-outline: var(--border-width-thick) solid var(--color-border-focus);
+    --icf02-pincode-focus-offset: var(--space-3xsmall);
+
+    /* Tokens: states */
+    --icf02-pincode-error-color: var(--color-error);
+    --icf02-pincode-error-bg: color-mix(in srgb, var(--color-error) 14%, var(--color-surface));
+    --icf02-pincode-unlocked-color: var(--color-success);
+    --icf02-pincode-unlocked-bg: color-mix(in srgb, var(--color-success) 16%, var(--color-surface));
+
+    /* Tokens: motion */
+    --icf02-pincode-press-duration: var(--duration-fast);
+    --icf02-pincode-shake-duration: 420ms;
+    --icf02-pincode-shake-distance: 10px;
+    --icf02-pincode-unlock-duration: 650ms;
+    --icf02-pincode-shackle-lift: -7px;
+    --icf02-pincode-shackle-swing: 24deg;
+    --icf02-pincode-ring-duration: 900ms;
+    --icf02-pincode-pulse-duration: 900ms;
+    --icf02-pincode-pulse-stagger: 150ms;
+    --icf02-pincode-pop-stagger: 60ms;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--icf02-pincode-gap);
+    box-sizing: border-box;
+    width: var(--icf02-pincode-width);
+    max-width: 100%;
+    padding: var(--icf02-pincode-padding-top) var(--icf02-pincode-padding-x) var(--icf02-pincode-padding-bottom);
+    background-color: var(--icf02-pincode-bg);
+    border: var(--icf02-pincode-border-width) solid var(--icf02-pincode-border-color);
+    border-radius: var(--icf02-pincode-border-radius);
+    box-shadow: var(--icf02-pincode-shadow);
+}
+
+
+/* Child elements: logo, title and message */
+.icf02-pincode .icf02-pincode-logo {
+    display: block;
+    width: auto;
+    height: var(--icf02-pincode-logo-height);
+}
+
+.icf02-pincode .icf02-pincode-title {
+    font-size: var(--icf02-pincode-title-font-size);
+    font-weight: var(--icf02-pincode-title-font-weight);
+    color: var(--icf02-pincode-title-color);
+    text-align: center;
+}
+
+.icf02-pincode .icf02-pincode-message {
+    min-height: var(--icf02-pincode-message-min-height);
+    margin: 0;
+    font-size: var(--icf02-pincode-message-font-size);
+    color: var(--icf02-pincode-message-color);
+    text-align: center;
+}
+
+/* Child elements: the padlock, whose shackle swings open when unlocked */
+.icf02-pincode .icf02-pincode-lock {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--icf02-pincode-lock-size);
+    height: var(--icf02-pincode-lock-size);
+    color: var(--icf02-pincode-lock-color);
+    background-color: var(--icf02-pincode-lock-bg);
+    border-radius: var(--icf02-pincode-lock-border-radius);
+    transition:
+        color var(--icf02-pincode-unlock-duration) ease,
+        background-color var(--icf02-pincode-unlock-duration) ease;
+}
+
+.icf02-pincode .icf02-pincode-lock svg {
+    display: block;
+    width: var(--icf02-pincode-lock-icon-size);
+    height: var(--icf02-pincode-lock-icon-size);
+    overflow: visible;
+}
+
+/* The ring that pulses out from the lock when it opens */
+.icf02-pincode .icf02-pincode-lock::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: var(--icf02-pincode-dot-border-width) solid currentColor;
+    border-radius: var(--icf02-pincode-lock-border-radius);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.icf02-pincode .icf02-pincode-shackle {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linecap: round;
+    transform-box: view-box;
+    transform-origin: 32px 22px;
+    transition: transform var(--icf02-pincode-unlock-duration) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.icf02-pincode .icf02-pincode-body {
+    fill: currentColor;
+}
+
+.icf02-pincode .icf02-pincode-keyhole {
+    fill: var(--icf02-pincode-lock-bg);
+    transition: fill var(--icf02-pincode-unlock-duration) ease;
+}
+
+/* Child elements: a dot per digit */
+.icf02-pincode .icf02-pincode-dots {
+    display: flex;
+    gap: var(--icf02-pincode-dots-gap);
+}
+
+.icf02-pincode .icf02-pincode-dot {
+    box-sizing: border-box;
+    width: var(--icf02-pincode-dot-size);
+    height: var(--icf02-pincode-dot-size);
+    border: var(--icf02-pincode-dot-border-width) solid var(--icf02-pincode-dot-color);
+    border-radius: var(--icf02-pincode-dot-border-radius);
+    transition:
+        background-color var(--icf02-pincode-press-duration) ease,
+        border-color var(--icf02-pincode-press-duration) ease,
+        transform var(--icf02-pincode-press-duration) ease;
+}
+
+.icf02-pincode .icf02-pincode-dot.filled {
+    background-color: var(--icf02-pincode-dot-color);
+}
+
+/* Child elements: keypad */
+.icf02-pincode .icf02-pincode-keys {
+    display: grid;
+    grid-template-columns: repeat(3, var(--icf02-pincode-key-width));
+    gap: var(--icf02-pincode-keys-gap);
+}
+
+.icf02-pincode .icf02-pincode-key {
+    display: grid;
+    place-items: center;
+    height: var(--icf02-pincode-key-height);
+    padding: 0;
+    font: inherit;
+    font-size: var(--icf02-pincode-key-font-size);
+    font-weight: var(--icf02-pincode-key-font-weight);
+    color: var(--icf02-pincode-key-color);
+    background-color: var(--icf02-pincode-key-bg);
+    border: var(--icf02-pincode-border-width) solid var(--icf02-pincode-key-border-color);
+    border-radius: var(--icf02-pincode-key-border-radius);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+        background-color var(--icf02-pincode-press-duration) ease,
+        transform var(--icf02-pincode-press-duration) ease,
+        box-shadow var(--icf02-pincode-press-duration) ease;
+}
+
+.icf02-pincode .icf02-pincode-key .icon {
+    --icon-width: var(--icf02-pincode-key-icon-size);
+    --icon-height: var(--icf02-pincode-key-icon-size);
+}
+
+/* Child elements: the optional link under the keypad */
+.icf02-pincode .icf02-pincode-link {
+    padding: 0;
+    font: inherit;
+    font-size: var(--icf02-pincode-message-font-size);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+
+/* Variants: the delete and submit keys */
+.icf02-pincode .icf02-pincode-key-delete {
+    --icf02-pincode-key-bg: var(--icf02-pincode-key-function-bg);
+    font-size: var(--icf02-pincode-key-function-font-size);
+}
+
+.icf02-pincode .icf02-pincode-key-submit {
+    --icf02-pincode-key-bg: var(--icf02-pincode-key-submit-bg);
+    --icf02-pincode-key-color: var(--icf02-pincode-key-submit-color);
+    --icf02-pincode-key-border-color: var(--icf02-pincode-key-submit-bg);
+    --icf02-pincode-key-bg-pressed: var(--icf02-pincode-key-submit-bg-pressed);
+    --icf02-pincode-key-bg-hover: var(--icf02-pincode-key-submit-bg-pressed);
+    font-size: var(--icf02-pincode-key-submit-font-size);
+    font-weight: var(--icf02-pincode-key-submit-font-weight);
+}
+
+
+/* States: hover */
+.icf02-pincode .icf02-pincode-key:not(:disabled):hover {
+    background-color: var(--icf02-pincode-key-bg-hover);
+}
+
+/* States: pressed, by the mouse or a finger (:active) or by the keyboard (.pressed) */
+.icf02-pincode .icf02-pincode-key:not(:disabled):is(:active, .pressed) {
+    background-color: var(--icf02-pincode-key-bg-pressed);
+    box-shadow: var(--icf02-pincode-key-pressed-shadow);
+    transform: translateY(var(--icf02-pincode-key-pressed-offset)) scale(var(--icf02-pincode-key-pressed-scale));
+}
+
+/* States: focus */
+.icf02-pincode .icf02-pincode-key:focus-visible {
+    outline: var(--icf02-pincode-focus-outline);
+    outline-offset: var(--icf02-pincode-focus-offset);
+}
+
+/* States: disabled, while checking and once unlocked */
+.icf02-pincode .icf02-pincode-key:disabled {
+    cursor: not-allowed;
+    opacity: var(--icf02-pincode-key-disabled-opacity);
+}
+
+/* States: checking, the dots pulse while the app checks the pincode */
+.icf02-pincode.checking .icf02-pincode-dot.filled {
+    animation: icf02-pincode-pulse var(--icf02-pincode-pulse-duration) ease-in-out infinite;
+}
+
+/* Each dot starts a little later than the one before it (each dot has style="--icf02-pincode-dot-index: 0", 1, 2, …) */
+.icf02-pincode.checking .icf02-pincode-dot {
+    animation-delay: calc(var(--icf02-pincode-dot-index, 0) * var(--icf02-pincode-pulse-stagger));
+}
+
+/* States: error, a wrong pincode */
+.icf02-pincode.error {
+    --icf02-pincode-dot-color: var(--icf02-pincode-error-color);
+    --icf02-pincode-lock-color: var(--icf02-pincode-error-color);
+    --icf02-pincode-lock-bg: var(--icf02-pincode-error-bg);
+    --icf02-pincode-message-color: var(--icf02-pincode-error-color);
+}
+
+.icf02-pincode.error :is(.icf02-pincode-lock, .icf02-pincode-dots) {
+    animation: icf02-pincode-shake var(--icf02-pincode-shake-duration) ease-in-out;
+}
+
+/* States: unlocked, the shackle lifts and swings open and everything turns green */
+.icf02-pincode.unlocked {
+    --icf02-pincode-dot-color: var(--icf02-pincode-unlocked-color);
+    --icf02-pincode-lock-color: var(--icf02-pincode-unlocked-color);
+    --icf02-pincode-lock-bg: var(--icf02-pincode-unlocked-bg);
+    --icf02-pincode-message-color: var(--icf02-pincode-unlocked-color);
+}
+
+.icf02-pincode.unlocked .icf02-pincode-shackle {
+    transform: translateY(var(--icf02-pincode-shackle-lift)) rotate(var(--icf02-pincode-shackle-swing));
+}
+
+.icf02-pincode.unlocked .icf02-pincode-lock::after {
+    animation: icf02-pincode-ring var(--icf02-pincode-ring-duration) ease-out var(--icf02-pincode-press-duration);
+}
+
+.icf02-pincode.unlocked .icf02-pincode-dot {
+    animation: icf02-pincode-pop var(--icf02-pincode-unlock-duration) ease-out both;
+    animation-delay: calc(var(--icf02-pincode-dot-index, 0) * var(--icf02-pincode-pop-stagger));
+}
+
+
+/* Animations */
+@keyframes icf02-pincode-shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(calc(-1 * var(--icf02-pincode-shake-distance)));
+    }
+
+    40%,
+    80% {
+        transform: translateX(var(--icf02-pincode-shake-distance));
+    }
+}
+
+@keyframes icf02-pincode-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@keyframes icf02-pincode-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.35);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes icf02-pincode-ring {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.6);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .icf02-pincode :is(.icf02-pincode-lock, .icf02-pincode-shackle, .icf02-pincode-keyhole, .icf02-pincode-dot, .icf02-pincode-key) {
+        transition: none;
+    }
+
+    .icf02-pincode.checking .icf02-pincode-dot.filled,
+    .icf02-pincode.error :is(.icf02-pincode-lock, .icf02-pincode-dots),
+    .icf02-pincode.unlocked .icf02-pincode-lock::after,
+    .icf02-pincode.unlocked .icf02-pincode-dot {
+        animation: none;
+    }
+}

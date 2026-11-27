@@ -1,0 +1,280 @@
+/*
+ * Sidebar (ICF-02 addon): the application's main menu, a full-height column on the left of every page.
+ * It holds the logo and product name, the menu links in labelled groups, and a footer with the unit's details
+ * and a few icon actions (e.g. feedback and shut down).
+ *
+ *     <aside class="icf02-sidebar">
+ *         <a class="icf02-sidebar-brand" href="/">
+ *             <img class="icf02-sidebar-logo" src="/static/images/eko-logo.svg" alt="EKO">
+ *             <span class="icf02-sidebar-title">ICF-02</span>
+ *         </a>
+ *         <nav class="icf02-sidebar-nav" aria-label="Main">
+ *             <div class="icf02-sidebar-group">
+ *                 <span class="icf02-sidebar-group-label" aria-hidden="true">Work</span>
+ *                 <ul class="icf02-sidebar-list" aria-label="Work">
+ *                     <li><a class="icf02-sidebar-link" href="/" aria-current="page"><span class="icon" style="--icon-url: url('…')" aria-hidden="true"></span>Home</a></li>
+ *                 </ul>
+ *             </div>
+ *         </nav>
+ *         <div class="icf02-sidebar-footer">
+ *             <div class="icf02-sidebar-meta"><span class="icf02-sidebar-meta-title">Unit 005</span><span class="icf02-sidebar-meta-detail">v5.6.0</span></div>
+ *             <div class="icf02-sidebar-actions">
+ *                 <button class="icf02-sidebar-action" type="button" aria-label="Shut down" title="Shut down"><span class="icon" style="--icon-url: url('…')" aria-hidden="true"></span></button>
+ *             </div>
+ *             <span class="icf02-sidebar-status">Developer Mode</span>
+ *         </div>
+ *     </aside>
+ *
+ * The logo is the app's own image (any URL), shown at a fixed height with its own colours.
+ * The group label, the footer and its parts are optional. The status line names a state of the system
+ * (e.g. "Developer Mode", "New Update Available") and is set off as a small tinted label on its own row
+ * at the bottom of the footer, so a long state fits on one line. A footer action is an `<a>` when it has a URL, otherwise a `<button>`.
+ * States: the link of the current page has `aria-current="page"` (highlighted, bold, with a bar on its left edge).
+ * The sidebar sticks to the top of the viewport and is as tall as it, so put it in the first column of the page layout.
+ */
+
+
+/* Base */
+.icf02-sidebar {
+    /* Tokens: column */
+    --icf02-sidebar-width: 248px;
+    --icf02-sidebar-height: 100vh;
+    --icf02-sidebar-padding-x: var(--space-large);
+    --icf02-sidebar-padding-y: var(--space-xlarge);
+    --icf02-sidebar-gap: var(--space-xlarge);
+    --icf02-sidebar-bg: var(--color-surface);
+    --icf02-sidebar-border-width: var(--border-width-thin);
+    --icf02-sidebar-border-color: var(--color-border);
+
+    /* Tokens: brand */
+    --icf02-sidebar-brand-gap: var(--space-medium);
+    --icf02-sidebar-logo-width: auto;
+    --icf02-sidebar-logo-height: 30px;
+    --icf02-sidebar-title-font-size: var(--font-size-large);
+    --icf02-sidebar-title-font-weight: var(--font-weight-bold);
+    --icf02-sidebar-title-color: var(--color-text-brand);
+
+    /* Tokens: groups */
+    --icf02-sidebar-group-gap: var(--space-large);
+    --icf02-sidebar-group-label-font-size: var(--font-size-xsmall);
+    --icf02-sidebar-group-label-font-weight: var(--font-weight-bold);
+    --icf02-sidebar-group-label-letter-spacing: 0.08em;
+    --icf02-sidebar-group-label-color: var(--color-text-placeholder);
+    --icf02-sidebar-group-label-padding-bottom: var(--space-xsmall);
+
+    /* Tokens: list (items) */
+    --icf02-sidebar-item-gap: var(--space-3xsmall);
+
+    /* Tokens: links */
+    --icf02-sidebar-link-height: 40px;
+    --icf02-sidebar-link-padding-x: var(--space-small);
+    --icf02-sidebar-link-gap: var(--space-medium);
+    --icf02-sidebar-link-border-radius: var(--radius-medium);
+    --icf02-sidebar-link-font-size: var(--font-size-small);
+    --icf02-sidebar-link-color: var(--color-text);
+    --icf02-sidebar-link-icon-size: var(--icon-size-medium);
+    --icf02-sidebar-link-icon-color: var(--color-text-brand);
+    --icf02-sidebar-link-bg-hover: color-mix(
+        in srgb,
+        var(--icf02-sidebar-bg),
+        var(--state-overlay-color) var(--state-hover-overlay)
+    );
+    --icf02-sidebar-link-bg-active: var(--color-surface-highlight);
+    --icf02-sidebar-link-color-active: var(--color-text-brand);
+    --icf02-sidebar-link-font-weight-active: var(--font-weight-bold);
+    --icf02-sidebar-link-indicator-width: 3px;
+    --icf02-sidebar-link-indicator-color: var(--color-primary);
+    --icf02-sidebar-focus-outline: var(--border-width-thick) solid var(--color-border-focus);
+    --icf02-sidebar-focus-offset: var(--space-3xsmall);
+
+    /* Tokens: footer */
+    --icf02-sidebar-footer-gap: var(--space-small);
+    --icf02-sidebar-footer-padding-top: var(--space-medium);
+    --icf02-sidebar-meta-font-size: var(--font-size-xsmall);
+    --icf02-sidebar-meta-color: var(--color-text-placeholder);
+    --icf02-sidebar-meta-title-font-size: var(--font-size-small);
+    --icf02-sidebar-meta-title-font-weight: var(--font-weight-bold);
+    --icf02-sidebar-meta-title-color: var(--color-text);
+    --icf02-sidebar-status-padding-x: var(--space-small);
+    --icf02-sidebar-status-padding-y: var(--space-3xsmall);
+    --icf02-sidebar-status-border-radius: var(--radius-small);
+    --icf02-sidebar-status-font-size: var(--font-size-xsmall);
+    --icf02-sidebar-status-font-weight: var(--font-weight-bold);
+    --icf02-sidebar-status-color: var(--color-text-brand);
+    --icf02-sidebar-status-bg: var(--color-surface-highlight);
+    --icf02-sidebar-action-size: 40px;
+    --icf02-sidebar-action-icon-size: var(--icon-size-small);
+    --icf02-sidebar-action-bg: var(--color-surface);
+    --icf02-sidebar-action-bg-hover: color-mix(
+        in srgb,
+        var(--icf02-sidebar-action-bg),
+        var(--state-overlay-color) var(--state-hover-overlay)
+    );
+    --icf02-sidebar-action-color: var(--color-text-brand);
+    --icf02-sidebar-action-border-color: var(--color-border);
+
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--icf02-sidebar-gap);
+    box-sizing: border-box;
+    width: var(--icf02-sidebar-width);
+    height: var(--icf02-sidebar-height);
+    padding: var(--icf02-sidebar-padding-y) var(--icf02-sidebar-padding-x);
+    overflow-y: auto;
+    background-color: var(--icf02-sidebar-bg);
+    border-right: var(--icf02-sidebar-border-width) solid var(--icf02-sidebar-border-color);
+}
+
+
+/* Child elements: logo and product name */
+.icf02-sidebar .icf02-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--icf02-sidebar-brand-gap);
+    padding: 0 var(--icf02-sidebar-link-padding-x);
+    text-decoration: none;
+}
+
+.icf02-sidebar .icf02-sidebar-logo {
+    display: block;
+    width: var(--icf02-sidebar-logo-width);
+    height: var(--icf02-sidebar-logo-height);
+}
+
+.icf02-sidebar .icf02-sidebar-title {
+    font-size: var(--icf02-sidebar-title-font-size);
+    font-weight: var(--icf02-sidebar-title-font-weight);
+    color: var(--icf02-sidebar-title-color);
+}
+
+/* Child elements: groups of links */
+.icf02-sidebar .icf02-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: var(--icf02-sidebar-group-gap);
+}
+
+.icf02-sidebar .icf02-sidebar-group-label {
+    display: block;
+    padding: 0 var(--icf02-sidebar-link-padding-x) var(--icf02-sidebar-group-label-padding-bottom);
+    font-size: var(--icf02-sidebar-group-label-font-size);
+    font-weight: var(--icf02-sidebar-group-label-font-weight);
+    letter-spacing: var(--icf02-sidebar-group-label-letter-spacing);
+    text-transform: uppercase;
+    color: var(--icf02-sidebar-group-label-color);
+}
+
+.icf02-sidebar .icf02-sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--icf02-sidebar-item-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.icf02-sidebar .icf02-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: var(--icf02-sidebar-link-gap);
+    height: var(--icf02-sidebar-link-height);
+    padding: 0 var(--icf02-sidebar-link-padding-x);
+    font-size: var(--icf02-sidebar-link-font-size);
+    color: var(--icf02-sidebar-link-color);
+    text-decoration: none;
+    border-radius: var(--icf02-sidebar-link-border-radius);
+}
+
+.icf02-sidebar .icf02-sidebar-link .icon {
+    --icon-width: var(--icf02-sidebar-link-icon-size);
+    --icon-height: var(--icf02-sidebar-link-icon-size);
+    flex: none;
+    color: var(--icf02-sidebar-link-icon-color);
+}
+
+/* Child elements: footer with the unit's details and the icon actions, and the system state on a row below them */
+.icf02-sidebar .icf02-sidebar-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--icf02-sidebar-footer-gap);
+    margin-top: auto;
+    padding: var(--icf02-sidebar-footer-padding-top) var(--icf02-sidebar-link-padding-x) 0;
+    border-top: var(--icf02-sidebar-border-width) solid var(--icf02-sidebar-border-color);
+}
+
+.icf02-sidebar .icf02-sidebar-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: var(--icf02-sidebar-meta-font-size);
+    color: var(--icf02-sidebar-meta-color);
+}
+
+.icf02-sidebar .icf02-sidebar-meta-title {
+    font-size: var(--icf02-sidebar-meta-title-font-size);
+    font-weight: var(--icf02-sidebar-meta-title-font-weight);
+    color: var(--icf02-sidebar-meta-title-color);
+}
+
+.icf02-sidebar .icf02-sidebar-status {
+    grid-column: 1 / -1;
+    justify-self: start;
+    padding: var(--icf02-sidebar-status-padding-y) var(--icf02-sidebar-status-padding-x);
+    font-size: var(--icf02-sidebar-status-font-size);
+    font-weight: var(--icf02-sidebar-status-font-weight);
+    color: var(--icf02-sidebar-status-color);
+    background-color: var(--icf02-sidebar-status-bg);
+    border-radius: var(--icf02-sidebar-status-border-radius);
+}
+
+.icf02-sidebar .icf02-sidebar-actions {
+    grid-column: 2;
+    display: flex;
+    gap: var(--icf02-sidebar-footer-gap);
+}
+
+.icf02-sidebar .icf02-sidebar-action {
+    display: inline-grid;
+    place-items: center;
+    box-sizing: border-box;
+    width: var(--icf02-sidebar-action-size);
+    height: var(--icf02-sidebar-action-size);
+    padding: 0;
+    color: var(--icf02-sidebar-action-color);
+    background-color: var(--icf02-sidebar-action-bg);
+    border: var(--icf02-sidebar-border-width) solid var(--icf02-sidebar-action-border-color);
+    border-radius: var(--icf02-sidebar-link-border-radius);
+    cursor: pointer;
+}
+
+.icf02-sidebar .icf02-sidebar-action .icon {
+    --icon-width: var(--icf02-sidebar-action-icon-size);
+    --icon-height: var(--icf02-sidebar-action-icon-size);
+}
+
+
+/* States: hover */
+.icf02-sidebar .icf02-sidebar-link:hover {
+    background-color: var(--icf02-sidebar-link-bg-hover);
+}
+
+.icf02-sidebar .icf02-sidebar-action:hover {
+    background-color: var(--icf02-sidebar-action-bg-hover);
+}
+
+/* States: focus */
+.icf02-sidebar :is(.icf02-sidebar-brand, .icf02-sidebar-link, .icf02-sidebar-action):focus-visible {
+    outline: var(--icf02-sidebar-focus-outline);
+    outline-offset: var(--icf02-sidebar-focus-offset);
+}
+
+/* States: current page, marked by colour, weight and the bar on the left edge */
+.icf02-sidebar .icf02-sidebar-link:is([aria-current="page"], [aria-current="true"]) {
+    font-weight: var(--icf02-sidebar-link-font-weight-active);
+    color: var(--icf02-sidebar-link-color-active);
+    background-color: var(--icf02-sidebar-link-bg-active);
+    box-shadow: inset var(--icf02-sidebar-link-indicator-width) 0 0 var(--icf02-sidebar-link-indicator-color);
+}
